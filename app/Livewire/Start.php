@@ -18,21 +18,21 @@ class Start extends Component
         'subject' => 'required',
     ];
 
-    public function submit()
-    {
-        $this->validate();
+    // public function submit()
+    // {
+    //     $this->validate();
 
-        // Di sini kamu bisa simpan ke database, kirim email, dll.
-        // Contoh: ContactForm::create([...]);
+    //     // Di sini kamu bisa simpan ke database, kirim email, dll.
+    //     // Contoh: ContactForm::create([...]);
 
-        $this->submitted = true;
-        $this->reset(['name', 'email', 'message', 'subject']);
+    //     $this->submitted = true;
+    //     $this->reset(['name', 'email', 'message', 'subject']);
 
-        $this->dispatchBrowserEvent('form-submitted');
-    }
+    //     $this->dispatchBrowserEvent('form-submitted');
+    // }
 
     public function render()
     {
-        return view('livewire.start')->layout('layouts.index')->title('InfoHilang - Bagaimana InfoHilang Bekerja?');
+        return view('livewire.start')->layout('layouts.index')->title('Beranda | InfoHilang');
     }
 }

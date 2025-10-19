@@ -18,17 +18,18 @@ use App\Http\Controllers\Auth\AuthController;
 
 // Route::get('/', Start::class)->name('start');
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', Start::class)->name('start');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get('/register', [AuthController::class, 'showRegister']);
+Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister');
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::prefix('user')->group(function () {
+    Route::get('/home', [AuthController::class, 'showHome'])->name('home');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 
 
 //get api wilayah indonesia
