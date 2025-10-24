@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\Profile;
 use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
@@ -20,14 +21,15 @@ use App\Http\Controllers\Auth\AuthController;
 
 Route::get('/', Start::class)->name('start');
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('showLogin');
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
+Route::post('/masuk', [AuthController::class, 'login'])->name('login');
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('showRegister');
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/daftar', [AuthController::class, 'showRegister'])->name('showRegister');
+Route::post('/daftar', [AuthController::class, 'register'])->name('register');
 
 Route::prefix('user')->group(function () {
     Route::get('/home', [AuthController::class, 'showHome'])->name('home');
+    Route::get('/profile', action: Profile::class)->name('profile');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Register | InfoHilang</title>
+    <title>Daftar | InfoHilang</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
@@ -53,11 +53,21 @@
         <form action="" method="POST" class="space-y-5">
             @csrf
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                <input type="text" id="name" name="name" required
+                <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Nama Depan</label>
+                <input type="text" id="firstname" name="firstname" required
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan nama lengkap Anda" />
-                @error('name')
+                    placeholder="Masukkan nama depan Anda" />
+                @error('firstname')
+                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div>
+                <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Nama Belakang</label>
+                <input type="text" id="lastname" name="lastname" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
+                    placeholder="Masukkan nama belakang Anda" />
+                @error('lastname')
                     <p class="text-danger text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
