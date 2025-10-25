@@ -27,7 +27,6 @@
                     similique fugiat dolor, doloremque eveniet. Odit, consequatur. Ratione voluptate exercitationem hic
                     eligendi vitae animi nam in, est earum culpa illum aliquam.</p>
 
-
                 <!-- Detail -->
                 <div class="w-full my-auto py-6 flex flex-col justify-center gap-2">
                     <div class="w-full flex sm:flex-row flex-col gap-2 justify-center">

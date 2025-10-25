@@ -4,7 +4,7 @@
         id="beranda">
         <div class="absolute inset-0">
             <img src="{{ asset('img/home-bg.jpg') }}" alt="Background Image"
-                class="object-cover object-center w-full h-full" />
+                class="object-cover object-center w-full h-full" loading="lazy" />
             <div class="absolute inset-0 bg-black opacity-50"></div>
         </div>
 
@@ -45,15 +45,14 @@
                 <main class="mt-10 mx-auto max-w-7xl px-4 sm:mt-12 sm:px-6 md:mt-16 lg:mt-20 lg:px-8 xl:mt-28">
                     <div class="sm:text-center lg:text-left">
                         <h2 class="my-6 text-2xl tracking-tight font-extrabold text-gray-800 sm:text-4xl md:text-4xl">
-                            About me
+                            Tentang Kami
                         </h2>
 
                         <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem maxime repellat
-                            cumque asperiores, quidem quod? Quisquam laboriosam deleniti eaque fuga at nihil adipisci
-                            amet laborum nam asperiores autem, explicabo saepe aut alias nemo? Dolor, blanditiis!
-                            Placeat recusandae ipsa ea asperiores? Ut exercitationem quos magni dolorem sint harum
-                            distinctio, alias reprehenderit.
+                            InfoHilang adalah platform digital yang didedikasikan untuk membantu masyarakat dalam
+                            melaporkan, mencari, dan menemukan segala hal yang hilang—baik itu manusia, hewan
+                            peliharaan, maupun benda berharga. Kami percaya bahwa setiap kehilangan adalah panggilan
+                            untuk bertindak, dan setiap laporan adalah harapan yang layak diperjuangkan.
                         </p>
                     </div>
                 </main>
@@ -61,7 +60,7 @@
         </div>
         <div class="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
             <img class="h-56 w-full object-cover object-top sm:h-72 md:h-96 lg:w-full lg:h-full"
-                src="https://cdn.pixabay.com/photo/2016/03/23/04/01/woman-1274056_960_720.jpg" alt="">
+                src="{{ asset('img/img-about.png') }}" alt="" loading="lazy">
         </div>
     </section>
 
@@ -78,7 +77,8 @@
                 <!-- Barang Hilang -->
                 <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-highlight/50"
                     data-aos="zoom-in" data-aos-delay="200">
-                    <img src="{{ asset('img/item.png') }}" alt="Barang Hilang" srcset="" class="object-fill">
+                    <img src="{{ asset('img/item.png') }}" alt="Barang Hilang" srcset="" class="object-fill"
+                        loading="lazy">
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Barang Hilang</h3>
                     <p class="text-gray-600 leading-relaxed">
                         Dompet, ponsel, dokumen penting, kunci, atau barang berharga lainnya.
@@ -88,7 +88,8 @@
                 <!-- Orang Hilang -->
                 <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-success/50"
                     data-aos="zoom-in" data-aos-delay="300">
-                    <img src="{{ asset('img/people.png') }}" alt="Orang Hilang" srcset="" class="object-fill">
+                    <img src="{{ asset('img/people.png') }}" alt="Orang Hilang" srcset="" class="object-fill"
+                        loading="lazy">
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Orang Hilang</h3>
                     <p class="text-gray-600 leading-relaxed">
                         Anak, lansia, atau anggota keluarga yang belum kembali ke rumah.
@@ -98,7 +99,8 @@
                 <!-- Hewan Hilang -->
                 <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-danger/50"
                     data-aos="zoom-in" data-aos-delay="400">
-                    <img src="{{ asset('img/animal.png') }}" alt="Hewan Hilang" srcset="" class="object-fill">
+                    <img src="{{ asset('img/animal.png') }}" alt="Hewan Hilang" srcset="" class="object-fill"
+                        loading="lazy">
                     <h3 class="text-xl font-bold text-gray-800 mb-3">Hewan Peliharaan</h3>
                     <p class="text-gray-600 leading-relaxed">
                         Kucing, anjing, burung, atau hewan kesayangan yang hilang dari rumah.
@@ -115,18 +117,32 @@
                 Bagaimana InfoHilang Bekerja?
             </h2>
 
-            <div class="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-                @php($steps = [['num' => 1, 'title' => 'Laporkan', 'desc' => 'Isi formulir dengan detail kehilangan dan lokasi terakhir.'], ['num' => 2, 'title' => 'Sebarkan', 'desc' => 'Laporan muncul di peta dan notifikasi warga sekitar.'], ['num' => 3, 'title' => 'Temukan', 'desc' => 'Warga bisa melaporkan temuan langsung ke sistem.'], ['num' => 4, 'title' => 'Pulangkan', 'desc' => 'Kami bantu verifikasi dan koordinasi pengembalian.']])
-                @foreach ($steps as $index => $step)
-                    <div class="text-center" data-aos="fade-up" data-aos-delay="{{ 100 + $index * 100 }}">
-                        <div
-                            class="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center mx-auto mb-5 font-bold text-lg">
-                            {{ $step['num'] }}
+            <!-- Wrapper dengan relative agar garis bisa diposisikan secara absolute -->
+            <div class="relative max-w-5xl mx-auto">
+                <!-- Grid langkah-langkah -->
+                <div class="grid md:grid-cols-4 gap-6">
+                    @php($steps = [['num' => 1, 'title' => 'Laporkan', 'desc' => 'Isi formulir dengan detail kehilangan dan lokasi terakhir.'], ['num' => 2, 'title' => 'Sebarkan', 'desc' => 'Laporan muncul di peta dan notifikasi warga sekitar.'], ['num' => 3, 'title' => 'Temukan', 'desc' => 'Warga bisa melaporkan temuan langsung ke sistem.'], ['num' => 4, 'title' => 'Pulangkan', 'desc' => 'Kami bantu verifikasi dan koordinasi pengembalian.']])
+                    @foreach ($steps as $index => $step)
+                        <div class="text-center relative" data-aos="fade-up" data-aos-delay="{{ 100 + $index * 100 }}">
+                            <!-- Lingkaran nomor -->
+                            <div
+                                class="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center mx-auto mb-5 font-bold text-lg z-10 relative">
+                                {{ $step['num'] }}
+                            </div>
+                            <h3 class="font-bold text-gray-800 mb-3">{{ $step['title'] }}</h3>
+                            <p class="text-gray-600 text-sm leading-relaxed">{{ $step['desc'] }}</p>
                         </div>
-                        <h3 class="font-bold text-gray-800 mb-3">{{ $step['title'] }}</h3>
-                        <p class="text-gray-600 text-sm leading-relaxed">{{ $step['desc'] }}</p>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+
+                <!-- Garis putus-putus penghubung (hanya muncul di md+) -->
+                <div class="hidden md:block absolute top-7 left-0 right-0 h-0.5 pointer-events-none">
+                    <svg class="w-full h-full" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-dasharray="6,8">
+                        <line x1="12%" y1="0" x2="88%" y2="0"
+                            class="text-primary/30" />
+                    </svg>
+                </div>
             </div>
         </div>
     </section>

@@ -5,6 +5,7 @@ use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::post('/daftar', [AuthController::class, 'register'])->name('register');
 Route::prefix('user')->group(function () {
     Route::get('/home', [AuthController::class, 'showHome'])->name('home');
     Route::get('/profile', action: Profile::class)->name('profile');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
