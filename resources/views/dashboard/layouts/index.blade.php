@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('style')
 </head>
@@ -42,7 +43,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#!"
+                        <a href="{{ route('missing') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
@@ -60,7 +61,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            <span class="text-gray-700 md:block hidden">Laporan</span>
+                            <span class="text-gray-700 md:block hidden">Penemu</span>
                         </a>
                     </li>
 
@@ -104,17 +105,23 @@
         </main>
     </div>
 
+    <!-- Pusher Real-time Notification -->
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+
+    <!-- Leaflet Maps -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/qmsq1hga0tygul287yejg9t6gpfa5npa36c0ezchh4zom7x1/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
     <script>
         function toggleSidebar() {
             const sidebar = document.querySelector('aside');
             sidebar.classList.toggle('hidden');
             sidebar.classList.toggle('w-64');
         }
-    </script>
 
-    <!-- Pusher Real-time Notification -->
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script>
         Pusher.logToConsole = false;
 
         const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
@@ -125,7 +132,6 @@
         const userId = "{{ Auth::id() }}";
         const channel = pusher.subscribe('private-chatify.' + userId);
 
-        // Saat pesan baru diterima
         channel.bind('messaging', function(data) {
             if (data.from_id != userId) {
                 const badge = document.getElementById('chat-badge');
@@ -135,7 +141,6 @@
             }
         });
 
-        // Reset badge ketika user membuka halaman Chatify
         if (window.location.href.includes('/Chat')) {
             const badge = document.getElementById('chat-badge');
             if (badge) {

@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\MissingsController;
+use App\Http\Controllers\Dashboard\MissingPersonController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,11 @@ Route::prefix('user')->group(function () {
     Route::get('/profile', action: Profile::class)->name('profile');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
+
+    // Form laporan orang hilang
+    Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
+    Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
 });
 
 

@@ -51,4 +51,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function barangHilangs()
+    {
+        return $this->hasMany(BarangHilang::class);
+    }
+
+    public function orangHilangs()
+    {
+        return $this->hasMany(OrangHilang::class);
+    }
+
+    public function hewanHilangs()
+    {
+        return $this->hasMany(HewanHilang::class);
+    }
 }
