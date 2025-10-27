@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->json('document_pendukung')->nullable();
             $table->enum('status', ['Hilang', 'Ditemukan', 'Ditutup'])->default('Hilang');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

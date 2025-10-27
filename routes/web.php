@@ -40,6 +40,10 @@ Route::prefix('user')->group(function () {
     // Form laporan orang hilang
     Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
     Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
+    Route::get('/form-orang-hilang/{orangHilang}/edit', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
+    Route::put('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
+    Route::get('/{orangHilang}/print-pdf', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+    // Route::delete('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
 });
 
 

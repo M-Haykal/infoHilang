@@ -78,31 +78,13 @@
                                     name="ciri_ciri[{{ $characteristic }}]"
                                     value="{{ old('ciri_ciri.' . $characteristic) }}"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
-                                    placeholder="Contoh: {{ strtolower($characteristic) }}">
+                                    placeholder="Masukkan: {{ strtolower($characteristic) }}">
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <!-- Ciri-Ciri Khusus Dinamis -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Ciri-Ciri Khusus Lainnya</label>
-                    <div id="ciriCiriContainer" class="space-y-3">
-                        <!-- Input awal (opsional) -->
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" name="ciri_ciri_keys[]" placeholder="Nama ciri (misal: Tato)"
-                                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            <input type="text" name="ciri_ciri_values[]"
-                                placeholder="Deskripsi (misal: Tato naga di lengan kiri)"
-                                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                                onclick="removeField(this)">Hapus</button>
-                        </div>
-                    </div>
-                    <button type="button" class="mt-2 text-sm text-primary hover:underline" onclick="addCiriCiriField()">
-                        + Tambah Ciri-Ciri
-                    </button>
-                </div>
+                @include('dashboard.components.characteristics')
 
                 <!-- Kontak Darurat -->
                 <div class="mb-6">
@@ -122,23 +104,7 @@
                     </div>
                 </div>
 
-                <!-- Kontak Darurat Dinamis -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Kontak Darurat Lainnya</label>
-                    <div id="kontakContainer" class="space-y-3">
-                        <div class="flex flex-col sm:flex-row gap-2">
-                            <input type="text" name="kontak_keys[]" placeholder="Isikan jenis kontak"
-                                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            <input type="text" name="kontak_values[]" placeholder="Nomor atau alamat kontak"
-                                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                            <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                                onclick="removeField(this)">Hapus</button>
-                        </div>
-                    </div>
-                    <button type="button" class="mt-2 text-sm text-primary hover:underline" onclick="addKontakField()">
-                        + Tambah Kontak
-                    </button>
-                </div>
+                @include('dashboard.components.contacts')
 
                 <!-- Lokasi & Map -->
                 <div class="mb-6">
@@ -148,19 +114,19 @@
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
                         placeholder="Contoh: Stasiun Gambir, Jakarta Pusat">
 
-                    <!-- Map -->
                     @include('dashboard.components.maps')
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
                         <div>
                             <label for="latitude" class="block text-sm font-semibold text-gray-700 mb-2">Latitude</label>
                             <input type="text" id="latitude" name="latitude" readonly
+                                value="{{ old('latitude') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                         </div>
                         <div>
-                            <label for="longitude"
-                                class="block text-sm font-semibold text-gray-700 mb-2">Longitude</label>
+                            <label for="longitude" class="block text-sm font-semibold text-gray-700 mb-2">Longitude</label>
                             <input type="text" id="longitude" name="longitude" readonly
+                                value="{{ old('longitude') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                         </div>
                     </div>
@@ -179,14 +145,8 @@
                     <div>
                         <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Status
                             Laporan</label>
-                        <select id="status" name="status"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition">
-                            <option value="Hilang" {{ old('status', 'Hilang') == 'Hilang' ? 'selected' : '' }}>Hilang
-                            </option>
-                            <option value="Ditemukan" {{ old('status') == 'Ditemukan' ? 'selected' : '' }}>Ditemukan
-                            </option>
-                            <option value="Ditutup" {{ old('status') == 'Ditutup' ? 'selected' : '' }}>Ditutup</option>
-                        </select>
+                        <input type="text" id="status" name="status" value="Hilang" readonly
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition bg-gray-100 cursor-not-allowed">
                     </div>
                 </div>
 
@@ -215,82 +175,5 @@
             const field = button.closest('.flex');
             if (field) field.remove();
         }
-
-        // Tambah field Ciri-Ciri
-        function addCiriCiriField() {
-            const container = document.getElementById('ciriCiriContainer');
-            const div = document.createElement('div');
-            div.className = 'flex flex-col sm:flex-row gap-2';
-            div.innerHTML = `
-            <input type="text" name="ciri_ciri_keys[]" placeholder="Nama ciri (misal: Tato)"
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-            <input type="text" name="ciri_ciri_values[]" placeholder="Deskripsi (misal: Tato naga di lengan kiri)"
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-            <button type="button" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                onclick="removeField(this)">Hapus</button>
-        `;
-            container.appendChild(div);
-        }
-
-        // Tambah field Kontak
-        function addKontakField() {
-            const container = document.getElementById('kontakContainer');
-            const div = document.createElement('div');
-            div.className = 'flex flex-col sm:flex-row gap-2';
-            div.innerHTML = `
-            <input type="text" name="kontak_keys[]" placeholder="Jenis kontak (misal: WhatsApp)"
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-            <input type="text" name="kontak_values[]" placeholder="Nomor atau alamat kontak"
-                class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-            <button type="button" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                onclick="removeField(this)">Hapus</button>
-        `;
-            container.appendChild(div);
-        }
-
-        // Opsional: Isi ulang dari old() jika ada error
-        document.addEventListener('DOMContentLoaded', function() {
-            // Isi ulang Ciri-Ciri dari old input
-            @if (old('ciri_ciri_keys'))
-                const ciriKeys = {!! json_encode(old('ciri_ciri_keys')) !!};
-                const ciriVals = {!! json_encode(old('ciri_ciri_values')) !!};
-                const ciriContainer = document.getElementById('ciriCiriContainer');
-                ciriContainer.innerHTML = '';
-                ciriKeys.forEach((key, i) => {
-                    const div = document.createElement('div');
-                    div.className = 'flex flex-col sm:flex-row gap-2';
-                    div.innerHTML = `
-                    <input type="text" name="ciri_ciri_keys[]" value="${key}"
-                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                    <input type="text" name="ciri_ciri_values[]" value="${ciriVals[i] ?? ''}"
-                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                    <button type="button" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                        onclick="removeField(this)">Hapus</button>
-                `;
-                    ciriContainer.appendChild(div);
-                });
-            @endif
-
-            // Isi ulang Kontak dari old input
-            @if (old('kontak_keys'))
-                const kontakKeys = {!! json_encode(old('kontak_keys')) !!};
-                const kontakVals = {!! json_encode(old('kontak_values')) !!};
-                const kontakContainer = document.getElementById('kontakContainer');
-                kontakContainer.innerHTML = '';
-                kontakKeys.forEach((key, i) => {
-                    const div = document.createElement('div');
-                    div.className = 'flex flex-col sm:flex-row gap-2';
-                    div.innerHTML = `
-                    <input type="text" name="kontak_keys[]" value="${key}"
-                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                    <input type="text" name="kontak_values[]" value="${kontakVals[i] ?? ''}"
-                        class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                    <button type="button" class="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-                        onclick="removeField(this)">Hapus</button>
-                `;
-                    kontakContainer.appendChild(div);
-                });
-            @endif
-        });
     </script>
 @endpush

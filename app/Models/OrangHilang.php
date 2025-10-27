@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class OrangHilang extends Model
 {
@@ -25,6 +26,7 @@ class OrangHilang extends Model
         'tanggal_terakhir_dilihat',
         'status',
         'user_id',
+        'slug',
     ];
 
     protected $casts = [
@@ -36,5 +38,13 @@ class OrangHilang extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($person) {
+            $person->slug = Str::slug($person->nama_orang) . '-' . Str::random(5);
+        });
     }
 }

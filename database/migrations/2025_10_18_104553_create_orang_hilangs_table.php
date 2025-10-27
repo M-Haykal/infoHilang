@@ -25,6 +25,7 @@ return new class extends Migration {
             $table->dateTime('tanggal_terakhir_dilihat')->nullable();
             $table->enum('status', ['Hilang', 'Ditemukan', 'Ditutup'])->default('Hilang');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
 

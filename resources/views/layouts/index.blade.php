@@ -75,8 +75,6 @@
                                     Keluar
                                 </button>
                             </form>
-                            <a href="{{ url('Chat/1') }}" class="block px-4 py-2 hover:bg-accent text-center">Chat
-                                testing</a>
                         </div>
                     </div>
                 @else
@@ -134,8 +132,6 @@
                                         Keluar
                                     </button>
                                 </form>
-                                <a href="{{ url('Chat/1') }}" class="block px-4 py-2 hover:bg-accent text-center">Chat
-                                    testing</a>
                             </div>
                         </div>
                     @else
