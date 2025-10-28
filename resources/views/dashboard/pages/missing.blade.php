@@ -8,9 +8,8 @@
             <h1 class="text-2xl font-bold text-gray-800">Daftar Laporan Hilang, {{ Auth::user()->username }}!</h1>
             <p class="text-gray-600">Pantau dan kelola laporan kehilangan anda disini dengan mudah.</p>
         </header>
-        
-        <section class="menu-history-hilang max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="600"
-            data-aos-delay="200">
+
+        <section class="menu-history-hilang max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Histori Laporan</h2>
 
             <div class="flex justify-center space-x-10 border-b border-gray-200 mb-6">
@@ -70,17 +69,16 @@
 
                                 <!-- Tombol Aksi -->
                                 <div class="flex items-center gap-2 mt-3 sm:mt-0">
-                                    <a href="{{ route('form-orang-hilang.print-pdf', ['orangHilang' => $missingPerson->id]) }}"
+                                    <a href="{{ route('form-orang-hilang.detail', $missingPerson->slug) }}"
                                         class="px-4 py-2 text-sm bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
                                         Detail
                                     </a>
-                                    <a href="{{ route('form-orang-hilang.edit', $missingPerson->id) }}"
+                                    <a href="{{ route('form-orang-hilang.edit', $missingPerson->slug) }}"
                                         class="px-4 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
                                         Edit
                                     </a>
-                                    <form action=""
-                                        method="POST" onsubmit="return confirm('Yakin ingin menghapus laporan ini?')"
-                                        class="inline">
+                                    <form action="" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus laporan ini?')" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -88,6 +86,10 @@
                                             Hapus
                                         </button>
                                     </form>
+                                    <a href="{{ route('form-orang-hilang.print-pdf', ['orangHilang' => $missingPerson->slug]) }}"
+                                        class="px-4 py-2 text-sm bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                                        Cetak Poster
+                                    </a>
                                 </div>
                             </div>
                         @empty

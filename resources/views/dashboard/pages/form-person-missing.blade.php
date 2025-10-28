@@ -84,7 +84,7 @@
                     </div>
                 </div>
 
-                @include('dashboard.components.characteristics')
+                @include('dashboard.components.characteristics', ['ciriCiri' => []])
 
                 <!-- Kontak Darurat -->
                 <div class="mb-6">
@@ -104,7 +104,7 @@
                     </div>
                 </div>
 
-                @include('dashboard.components.contacts')
+                @include('dashboard.components.contacts', ['kontak' => []])
 
                 <!-- Lokasi & Map -->
                 <div class="mb-6">
@@ -151,7 +151,7 @@
                 </div>
 
                 <!-- Foto Upload -->
-                @include('dashboard.components.photo')
+                @include('dashboard.components.photo', ['foto' ?? []])
 
                 <!-- Hidden User ID -->
                 <input type="hidden" name="user_id" value="{{ $userId }}">

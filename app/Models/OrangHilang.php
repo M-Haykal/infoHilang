@@ -40,11 +40,23 @@ class OrangHilang extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($person) {
             $person->slug = Str::slug($person->nama_orang) . '-' . Str::random(5);
         });
+    }
+
+    public function comentars()
+    {
+        return $this->morphMany(Comentar::class, 'foundable')
+            ->whereNull('parent_id')
+            ->latest();
     }
 }

@@ -42,6 +42,15 @@ class MissingPersonController extends Controller
         return $pdf->stream();
     }
 
+    public function show(OrangHilang $orangHilang)
+    {
+        $orangHilang->load([
+            'comentars.user',
+            'comentars.replies.user'
+        ]);
+        return view('dashboard.pages.detail-person-missing', compact('orangHilang'));
+    }
+
     public function store(Request $request)
     {
         $this->missingPersonService->store($request);
@@ -60,6 +69,7 @@ class MissingPersonController extends Controller
     public function update(Request $request, OrangHilang $orangHilang)
     {
         $this->missingPersonService->update($request, $orangHilang);
-        return redirect()->back()->with('success', 'Data laporan Manusia berhasil diperbarui!');
+        // dd($request->all());
+        return redirect()->back()->with('success', 'Data laporan orang hilang berhasil diperbarui!');
     }
 }

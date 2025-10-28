@@ -7,6 +7,7 @@ use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingsController;
+use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
 
 /*
@@ -40,10 +41,16 @@ Route::prefix('user')->group(function () {
     // Form laporan orang hilang
     Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
     Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
-    Route::get('/form-orang-hilang/{orangHilang}/edit', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
-    Route::put('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
-    Route::get('/{orangHilang}/print-pdf', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+    Route::get('/detail-laporan/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
+    Route::get('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
+    Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
+    Route::get('/{orangHilang}/print-poster', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
     // Route::delete('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
+
+    // Komentar routes
+    Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
+    Route::put('/commentar/{comentar}', [CommentarController::class, 'update'])->name('commentar.update');
+    Route::delete('/commentar/{comentar}', [CommentarController::class, 'delete'])->name('commentar.delete');
 });
 
 

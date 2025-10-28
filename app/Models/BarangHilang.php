@@ -43,11 +43,23 @@ class BarangHilang extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     protected static function boot()
     {
         parent::boot();
         static::creating(function ($stuff) {
             $stuff->slug = Str::slug($stuff->nama_barang) . '-' . Str::random(5);
         });
+    }
+
+    public function comentars()
+    {
+        return $this->morphMany(Comentar::class, 'foundable')
+            ->whereNull('parent_id')
+            ->latest();
     }
 }

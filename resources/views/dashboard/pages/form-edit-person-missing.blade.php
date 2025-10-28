@@ -11,8 +11,17 @@
         </header>
 
         <!-- Form Container -->
+        @if ($errors->any())
+            <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
-            <form action="{{ route('form-orang-hilang.update', $orangHilang->id) }}" method="POST"
+            <form action="{{ route('form-orang-hilang.update', $orangHilang->slug) }}" method="POST"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -45,57 +54,20 @@
                     <div>
                         <label for="jenis_kelamin" class="block text-sm font-semibold text-gray-700 mb-2">Jenis
                             Kelamin</label>
-                        <select id="jenis_kelamin" name="jenis_kelamin"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition">
-                            <option value="Laki-laki"
-                                {{ old('jenis_kelamin', $orangHilang->jenis_kelamin) == 'Laki-laki' ? 'selected' : '' }}>
-                                Laki-laki</option>
-                            <option value="Perempuan"
-                                {{ old('jenis_kelamin', $orangHilang->jenis_kelamin) == 'Perempuan' ? 'selected' : '' }}>
-                                Perempuan</option>
-                        </select>
+                        <input type="text" id="jenis_kelamin" name="jenis_kelamin"
+                            value="{{ old('jenis_kelamin', $orangHilang->jenis_kelamin) }}"
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                            readonly>
                     </div>
                 </div>
 
                 <!-- Ciri-Ciri -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Ciri-Ciri Khusus Lainnya</label>
-                    <div id="ciriCiriContainer" class="space-y-3">
-                        @foreach ($orangHilang->ciri_ciri ?? [] as $key => $value)
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="text" name="ciri_ciri_keys[]" value="{{ $key }}"
-                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <input type="text" name="ciri_ciri_values[]" value="{{ $value }}"
-                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                                    onclick="removeField(this)">Hapus</button>
-                            </div>
-                        @endforeach
-                    </div>
-                    <button type="button" class="mt-2 text-sm text-primary hover:underline" onclick="addCiriCiriField()">
-                        + Tambah Ciri-Ciri
-                    </button>
-                </div>
+                @include('dashboard.components.characteristics', [
+                    'ciriCiri' => $orangHilang->ciri_ciri ?? [],
+                ])
 
                 <!-- Kontak -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Kontak Darurat Lainnya</label>
-                    <div id="kontakContainer" class="space-y-3">
-                        @foreach ($orangHilang->kontak ?? [] as $key => $value)
-                            <div class="flex flex-col sm:flex-row gap-2">
-                                <input type="text" name="kontak_keys[]" value="{{ $key }}"
-                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <input type="text" name="kontak_values[]" value="{{ $value }}"
-                                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                                <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                                    onclick="removeField(this)">Hapus</button>
-                            </div>
-                        @endforeach
-                    </div>
-                    <button type="button" class="mt-2 text-sm text-primary hover:underline" onclick="addKontakField()">
-                        + Tambah Kontak
-                    </button>
-                </div>
+                @include('dashboard.components.contacts', ['kontak' => $orangHilang->kontak ?? []])
 
                 <!-- Lokasi -->
                 <div class="mb-6">
@@ -127,8 +99,8 @@
                 <!-- Tanggal & Status -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
-                        <label for="tanggal_terakhir_dilihat"
-                            class="block text-sm font-semibold text-gray-700 mb-2">Tanggal Terakhir Dilihat</label>
+                        <label for="tanggal_terakhir_dilihat" class="block text-sm font-semibold text-gray-700 mb-2">Tanggal
+                            Terakhir Dilihat</label>
                         <input type="datetime-local" id="tanggal_terakhir_dilihat" name="tanggal_terakhir_dilihat"
                             value="{{ old('tanggal_terakhir_dilihat', $orangHilang->tanggal_terakhir_dilihat ? \Carbon\Carbon::parse($orangHilang->tanggal_terakhir_dilihat)->format('Y-m-d\TH:i') : '') }}"
                             class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition">
@@ -148,28 +120,14 @@
                 </div>
 
                 <!-- Foto -->
-                <div class="mb-6">
-                    <label for="imageInput" class="block text-sm font-semibold text-gray-700 mb-2">Foto (Opsional)</label>
-                    <input type="file" id="imageInput" name="foto[]" accept="image/*" multiple
-                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-700 cursor-pointer">
-                    <p class="text-xs text-gray-500 mt-2">Maksimal 5 foto. Format: JPG, PNG, GIF.</p>
-
-                    <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
-                        @foreach ($orangHilang->foto ?? [] as $foto)
-                            <div class="relative group rounded-lg overflow-hidden shadow-md">
-                                <img src="{{ asset('storage/' . $foto) }}" alt="Foto"
-                                    class="w-full h-32 object-cover">
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
+                @include('dashboard.components.photo', ['foto' => $orangHilang->foto ?? []])
 
                 <input type="hidden" name="user_id" value="{{ $orangHilang->user_id }}">
 
                 <!-- Submit -->
                 <div class="text-center">
                     <button type="submit"
-                        class="inline-block px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary/80 focus:outline-none focus:ring-4 focus:ring-primary/30 transition transform hover:scale-105">
+                        class="inline-block px-8 py-3 bg-highlight text-white font-semibold rounded-lg hover:bg-highlight/80 focus:outline-none focus:ring-4 focus:ring-highlight/30 transition transform hover:scale-105">
                         Simpan Perubahan
                     </button>
                 </div>
@@ -183,34 +141,6 @@
         function removeField(button) {
             const field = button.closest('.flex');
             if (field) field.remove();
-        }
-
-        function addCiriCiriField() {
-            const container = document.getElementById('ciriCiriContainer');
-            const div = document.createElement('div');
-            div.className = 'flex flex-col sm:flex-row gap-2';
-            div.innerHTML = `
-                <input type="text" name="ciri_ciri_keys[]" placeholder="Nama ciri"
-                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                <input type="text" name="ciri_ciri_values[]" placeholder="Deskripsi"
-                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                    onclick="removeField(this)">Hapus</button>`;
-            container.appendChild(div);
-        }
-
-        function addKontakField() {
-            const container = document.getElementById('kontakContainer');
-            const div = document.createElement('div');
-            div.className = 'flex flex-col sm:flex-row gap-2';
-            div.innerHTML = `
-                <input type="text" name="kontak_keys[]" placeholder="Jenis kontak"
-                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                <input type="text" name="kontak_values[]" placeholder="Nomor atau alamat"
-                    class="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
-                <button type="button" class="px-3 py-2 bg-danger text-white rounded-lg hover:bg-red-500"
-                    onclick="removeField(this)">Hapus</button>`;
-            container.appendChild(div);
         }
     </script>
 @endpush

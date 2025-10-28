@@ -102,27 +102,35 @@ class MissingPersonService
             }
         }
 
-        // Handle upload foto baru
+        // Ambil foto lama
         $fotoPaths = $orangHilang->foto ?? [];
-        if ($request->hasFile('foto')) {
-            if ($orangHilang->exists && !empty($orangHilang->foto)) {
-                foreach ($orangHilang->foto as $oldFoto) {
-                    Storage::disk('public')->delete($oldFoto);
-                }
-            }
 
-            $fotoPaths = [];
+        // Hapus yang di-delete
+        if ($request->filled('deleted_foto')) {
+            foreach ($request->deleted_foto as $path) {
+                Storage::disk('public')->delete($path);
+                $fotoPaths = array_filter($fotoPaths, fn($p) => $p !== $path);
+            }
+            $fotoPaths = array_values($fotoPaths);
+        }
+
+        // Tambah foto baru
+        if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $file) {
                 $fotoPaths[] = $file->store('orang', 'public');
             }
         }
 
-        // Simpan data
+        // Batasi 5
+        $fotoPaths = array_slice($fotoPaths, 0, 5);
+
+        $orangHilang->foto = $fotoPaths;
+
         $orangHilang->fill([
             'nama_orang' => $validated['nama_orang'],
             'deskripsi_orang' => $validated['deskripsi_orang'] ?? null,
             'umur' => $validated['umur'] ?? null,
-            'jenis_kelamin' => $validated['jenis_kelamin'],
+            'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
             'ciri_ciri' => $ciriCiri,
             'kontak' => $kontak,
             'lokasi_terakhir_dilihat' => $validated['lokasi_terakhir_dilihat'],
