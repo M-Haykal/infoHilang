@@ -74,11 +74,12 @@
                                         Detail
                                     </a>
                                     <a href="{{ route('form-orang-hilang.edit', $missingPerson->slug) }}"
-                                        class="px-4 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition">
+                                        class="px-4 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
+                                        data-confirm-edit>
                                         Edit
                                     </a>
-                                    <form action="" method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus laporan ini?')" class="inline">
+                                    <form action="{{ route('form-orang-hilang.destroy', $missingPerson->slug) }}"
+                                        method="POST" data-confirm-delete>
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit"
@@ -115,6 +116,7 @@
             </div>
         </section>
     </div>
+    @include('dashboard.components.alerts')
 @endsection
 
 @push('style')

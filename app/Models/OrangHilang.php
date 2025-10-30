@@ -49,7 +49,7 @@ class OrangHilang extends Model
     {
         parent::boot();
         static::creating(function ($person) {
-            $person->slug = Str::slug($person->nama_orang) . '-' . Str::random(5);
+            $person->slug = Str::random(10);
         });
     }
 

@@ -31,6 +31,7 @@ class User extends Authenticatable
         'kelurahan',
         'alamat',
         'no_hp',
+        'google_id',
     ];
 
     /**

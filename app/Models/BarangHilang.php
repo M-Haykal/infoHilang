@@ -52,7 +52,7 @@ class BarangHilang extends Model
     {
         parent::boot();
         static::creating(function ($stuff) {
-            $stuff->slug = Str::slug($stuff->nama_barang) . '-' . Str::random(5);
+            $stuff->slug = Str::random(10);
         });
     }
 

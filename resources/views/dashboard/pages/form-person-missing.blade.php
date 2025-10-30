@@ -12,7 +12,8 @@
 
         <!-- Form Container -->
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
-            <form action="{{ route('form-orang-hilang.store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('form-orang-hilang.store') }}" method="POST" enctype="multipart/form-data"
+                data-confirm-save>
                 @csrf
 
                 <!-- Nama Orang -->
@@ -119,14 +120,12 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
                         <div>
                             <label for="latitude" class="block text-sm font-semibold text-gray-700 mb-2">Latitude</label>
-                            <input type="text" id="latitude" name="latitude" readonly
-                                value="{{ old('latitude') }}"
+                            <input type="text" id="latitude" name="latitude" readonly value="{{ old('latitude') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                         </div>
                         <div>
                             <label for="longitude" class="block text-sm font-semibold text-gray-700 mb-2">Longitude</label>
-                            <input type="text" id="longitude" name="longitude" readonly
-                                value="{{ old('longitude') }}"
+                            <input type="text" id="longitude" name="longitude" readonly value="{{ old('longitude') }}"
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                         </div>
                     </div>
@@ -166,6 +165,7 @@
             </form>
         </div>
     </div>
+    @include('dashboard.components.alerts')
 @endsection
 
 @push('script')

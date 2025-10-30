@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poster Orang Hilang</title>
+    <title>Poster Orang Hilang {{ $orangHilang->nama_orang }}</title>
     <link rel="stylesheet" href="{{ public_path('build/assets/app-55865bb1.css') }}">
     <style>
         body {

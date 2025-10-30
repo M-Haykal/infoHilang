@@ -20,6 +20,11 @@ class MissingPersonService
         return $this->saveData($request, $orangHilang, $validated);
     }
 
+    public function destroy(OrangHilang $orangHilang)
+    {
+        return $orangHilang->delete();
+    }
+
     /**
      * Validasi umum
      */

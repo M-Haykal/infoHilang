@@ -7,14 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\OrangHilang;
 use App\Models\HewanHilang;
 use App\Models\BarangHilang;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $missingPersons = OrangHilang::count();
-        $missingAnimals = HewanHilang::count();
-        $missingItems = BarangHilang::count();
+        $userId = Auth::id();
+        $missingPersons = OrangHilang::where('user_id', $userId)->count();
+        $missingAnimals = HewanHilang::where('user_id', $userId)->count();
+        $missingItems = BarangHilang::where('user_id', $userId)->count();
 
         return view('dashboard.pages.dashboard', compact('missingPersons', 'missingAnimals', 'missingItems'));
     }

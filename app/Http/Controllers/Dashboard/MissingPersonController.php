@@ -72,4 +72,10 @@ class MissingPersonController extends Controller
         // dd($request->all());
         return redirect()->back()->with('success', 'Data laporan orang hilang berhasil diperbarui!');
     }
+
+    public function destroy(OrangHilang $orangHilang)
+    {
+        $this->missingPersonService->destroy($orangHilang);
+        return redirect()->back()->with('success', 'Laporan orang hilang berhasil dihapus!');
+    }
 }

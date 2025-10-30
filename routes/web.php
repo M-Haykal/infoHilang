@@ -5,6 +5,7 @@ use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\CommentarController;
@@ -25,6 +26,10 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 
 Route::get('/', Start::class)->name('start');
 
+// Google OAuth Routes
+Route::get('/oauth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+Route::get('/oauth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+
 Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
 Route::post('/masuk', [AuthController::class, 'login'])->name('login');
 
@@ -44,7 +49,8 @@ Route::prefix('user')->group(function () {
     Route::get('/detail-laporan/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
     Route::get('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
     Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
-    Route::get('/{orangHilang}/print-poster', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+    Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+    Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
     // Route::delete('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
 
     // Komentar routes
@@ -65,3 +71,11 @@ Route::prefix('wilayah')->group(function () {
         ->where('district_code', '[0-9.]+');
 });
 
+
+Route::get('/test-404', function () {
+    abort(404);
+});
+
+Route::get('/test-500', function () {
+    abort(401);
+});

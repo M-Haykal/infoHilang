@@ -22,7 +22,7 @@
         @endif
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
             <form action="{{ route('form-orang-hilang.update', $orangHilang->slug) }}" method="POST"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" data-confirm-save>
                 @csrf
                 @method('PUT')
 
@@ -135,6 +135,8 @@
         </div>
     </div>
 @endsection
+
+@include('dashboard.components.alerts')
 
 @push('script')
     <script>
