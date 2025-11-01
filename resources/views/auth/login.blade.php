@@ -77,7 +77,7 @@
                     <input type="checkbox" name="remember" class="text-primary focus:ring-primary rounded">
                     <span class="text-gray-600">Ingat saya</span>
                 </label>
-                <a href="" class="text-primary hover:underline">Lupa kata sandi?</a>
+                <a href="{{ route('password.request') }}" class="text-primary hover:underline">Lupa kata sandi?</a>
             </div>
 
             <button type="submit"

@@ -5,6 +5,8 @@ use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingsController;
@@ -22,22 +24,29 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 |
 */
 
-// Route::get('/', Start::class)->name('start');
-
 Route::get('/', Start::class)->name('start');
 
-// Google OAuth Routes
-Route::get('/oauth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
-Route::get('/oauth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
+Route::middleware('guest.redirect')->group(function () {
+    // Google OAuth Routes
+    Route::get('/oauth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('/oauth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
-Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
-Route::post('/masuk', [AuthController::class, 'login'])->name('login');
+    Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
+    Route::post('/masuk', [AuthController::class, 'login'])->name('login');
 
-Route::get('/daftar', [AuthController::class, 'showRegister'])->name('showRegister');
-Route::post('/daftar', [AuthController::class, 'register'])->name('register');
+    Route::get('/daftar', [AuthController::class, 'showRegister'])->name('showRegister');
+    Route::post('/daftar', [AuthController::class, 'register'])->name('register');
+
+    // Forgot Password Routes
+    Route::get('/lupa-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+    Route::post('/lupa-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+    // Reset Password Routes
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+    Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
+});
 
 Route::prefix('user')->group(function () {
-    Route::get('/home', [AuthController::class, 'showHome'])->name('home');
     Route::get('/profile', action: Profile::class)->name('profile');
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -51,7 +60,6 @@ Route::prefix('user')->group(function () {
     Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
     Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
     Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
-    // Route::delete('/form-orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
 
     // Komentar routes
     Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
@@ -69,13 +77,4 @@ Route::prefix('wilayah')->group(function () {
         ->where('regency_code', '[0-9.]+');
     Route::get('/villages/{district_code}', [WilayahController::class, 'getVillages'])
         ->where('district_code', '[0-9.]+');
-});
-
-
-Route::get('/test-404', function () {
-    abort(404);
-});
-
-Route::get('/test-500', function () {
-    abort(401);
 });

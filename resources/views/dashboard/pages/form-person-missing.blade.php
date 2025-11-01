@@ -110,10 +110,9 @@
                 <!-- Lokasi & Map -->
                 <div class="mb-6">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi Terakhir Dilihat</label>
-                    <input type="text" id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat"
-                        value="{{ old('lokasi_terakhir_dilihat') }}"
+                    <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="4"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
-                        placeholder="Contoh: Stasiun Gambir, Jakarta Pusat">
+                        placeholder="Contoh: Stasiun Gambir, Jakarta Pusat">{{ old('lokasi_terakhir_dilihat') }}</textarea>
 
                     @include('dashboard.components.maps')
 
