@@ -46,26 +46,29 @@ Route::middleware('guest.redirect')->group(function () {
     Route::post('/reset-password', [ResetPasswordController::class, 'resetPassword'])->name('password.update');
 });
 
-Route::prefix('user')->group(function () {
-    Route::get('/profile', action: Profile::class)->name('profile');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
+Route::middleware('auth')->group(function () {
+    Route::prefix('user')->group(function () {
+        Route::get('/profile', action: Profile::class)->name('profile');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+        Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
 
-    // Form laporan orang hilang
-    Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
-    Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
-    Route::get('/detail-laporan/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
-    Route::get('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
-    Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
-    Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
-    Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
+        // Form laporan orang hilang
+        Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
+        Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
+        Route::get('/detail-laporan/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
+        Route::get('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
+        Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
+        Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+        Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
 
-    // Komentar routes
-    Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
-    Route::put('/commentar/{comentar}', [CommentarController::class, 'update'])->name('commentar.update');
-    Route::delete('/commentar/{comentar}', [CommentarController::class, 'delete'])->name('commentar.delete');
+        // Komentar routes
+        Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
+        Route::put('/commentar/{comentar}', [CommentarController::class, 'update'])->name('commentar.update');
+        Route::delete('/commentar/{comentar}', [CommentarController::class, 'delete'])->name('commentar.delete');
+    });
 });
+
 
 
 //get api wilayah indonesia

@@ -8,7 +8,7 @@
     <div class="space-y-6">
         <header>
             <h1 class="text-2xl font-bold text-gray-800">Selamat Datang, {{ Auth::user()->username }}!</h1>
-            <p class="text-gray-600">Here's what's happening with your account today.</p>
+            <p class="text-gray-600">Ketahui jumlah pengaduan hilang barang, orang, dan hewan lalu menambahkan laporan.</p>
         </header>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div class="bg-white p-4 rounded-lg shadow-md">
@@ -25,6 +25,11 @@
             </div>
         </div>
 
+
+        <div x-data="{ open: false }">
+            <button @click="open = !open" class="px-4 py-2 bg-blue-500 text-white rounded">Toggle</button>
+            <p x-show="open" class="mt-3 text-gray-700">Alpine.js Berfungsi 🎉</p>
+        </div>
 
         <section class="menu-laporan max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Buat Laporan Kehilangan Baru</h2>

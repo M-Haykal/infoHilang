@@ -1,12 +1,14 @@
 <x-mail::message>
-# Introduction
+Selamat Datang di Info Hilang
 
-The body of your message.
+Halo {{ $user->username ?? 'Pengguna' }},
+Terima kasih telah bergabung dengan Info Hilang. Kami sangat senang bahwa Anda telah bergabung dengan kami.
 
-<x-mail::button :url="''">
-Button Text
+Silakan klik tombol di bawah ini untuk membuat laporan hilang Anda:
+<x-mail::button :url="route('dashboard')">
+    Buat Laporan
 </x-mail::button>
 
-Thanks,<br>
+Terima kasih,<br>
 {{ config('app.name') }}
 </x-mail::message>

@@ -19,6 +19,7 @@
 </head>
 
 <body class="min-h-screen flex flex-col bg-accent font-sans">
+    @include('components.loading')
     <nav class="bg-primary text-white shadow-md fixed w-full z-50">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Logo -->
@@ -188,25 +189,7 @@
     </footer>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('script')
-    <script>
-        AOS.init();
-        // Toggle mobile menu
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            const menuIcon = this.querySelector('.menu-icon');
-            const closeIcon = this.querySelector('.close-icon');
-            mobileMenu.classList.toggle('hidden');
-            menuIcon.classList.toggle('hidden');
-            closeIcon.classList.toggle('hidden');
-        });
-
-        document.getElementById('mobile-profile-button').addEventListener('click', function() {
-            const profileDropdown = document.getElementById('mobile-profile-dropdown');
-            const profileIcon = document.getElementById('mobile-profile-icon');
-            profileDropdown.classList.toggle('hidden');
-            profileIcon.classList.toggle('rotate-180');
-        });
-    </script>
+    <script src="{{ asset('js/start.js') }}"></script>
 </body>
 
 </html>

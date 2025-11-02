@@ -103,7 +103,6 @@
                 kelurahan: null
             };
 
-            // Toggle tampilan
             toggleBtn.addEventListener('click', () => {
                 if (wilayahSel.classList.contains('hidden')) {
                     loadProvinces();
@@ -115,7 +114,6 @@
                 }
             });
 
-            // Load provinsi
             async function loadProvinces() {
                 try {
                     const res = await fetch('/wilayah/provinces');
@@ -130,7 +128,6 @@
                 }
             }
 
-            // Isi select
             function populateSelect(select, data, placeholder) {
                 select.innerHTML = `<option value="">${placeholder}</option>`;
                 data.forEach(item => {
@@ -141,7 +138,6 @@
                 });
             }
 
-            // Event: Pilih provinsi
             provinsi.addEventListener('change', async () => {
                 kabupaten.disabled = true;
                 kecamatan.disabled = true;
@@ -162,7 +158,6 @@
                 }
             });
 
-            // Event: Pilih kabupaten
             kabupaten.addEventListener('change', async () => {
                 kecamatan.disabled = true;
                 kelurahan.disabled = true;
@@ -182,7 +177,6 @@
                 }
             });
 
-            // Event: Pilih kecamatan
             kecamatan.addEventListener('change', async () => {
                 kelurahan.disabled = true;
                 useBtn.disabled = true;
@@ -201,13 +195,10 @@
                 }
             });
 
-            // Event: Pilih kelurahan
             kelurahan.addEventListener('change', () => {
                 useBtn.disabled = !kelurahan.value;
             });
 
-            // Gunakan lokasi terpilih
-            // Gunakan lokasi terpilih → tambahkan ke input yang sudah ada
             useBtn.addEventListener('click', () => {
                 const prov = wilayahData.provinsi.find(p => p.code === provinsi.value)?.name || '';
                 const kab = wilayahData.kabupaten.find(k => k.code === kabupaten.value)?.name || '';
@@ -217,7 +208,6 @@
                 const alamatWilayah = [kel, kec, kab, prov].filter(Boolean).join(', ');
                 const lokasiSaatIni = lokasiInput.value.trim();
 
-                // Gabungkan: jika sudah ada isi, tambahkan koma + alamat wilayah
                 if (lokasiSaatIni) {
                     lokasiInput.value = `${lokasiSaatIni}, ${alamatWilayah}`;
                 } else {

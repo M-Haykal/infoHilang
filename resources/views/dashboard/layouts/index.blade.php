@@ -2,21 +2,21 @@
 <html lang="en">
 
 <head>
-    <meta name="user-id" content="{{ Auth::user()->id }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    @vite(['resources/css/app.css'])
     @stack('style')
 </head>
 
 <body class="bg-accent font-sans min-h-screen">
-    <div class="flex flex-col md:flex-row min-h-screen">
+    @include('components.loading')
+    <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside
-            class="bg-white shadow-lg transition-all duration-300 ease-in-out fixed md:static inset-y-0 left-0 z-50 w-20 md:w-64">
+        <aside class="bg-secondary shadow-lg w-20 md:w-64 h-screen sticky top-0 flex flex-col">
             <div class="p-4 flex items-center justify-between border-b">
                 <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
                         class="text-highlight">Hilang</span>
@@ -29,8 +29,8 @@
                     </svg>
                 </button>
             </div>
-            <nav class="py-4">
-                <ul class="space-y-2">
+            <nav class="py-4 overflow-y-auto flex-1">
+                <ul class="space-y-2 px-2">
                     <li>
                         <a href="{{ route('dashboard') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
@@ -86,9 +86,9 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-4 md:p-6 overflow-y-auto">
+        <main class="flex-1 p-4 overflow-y-auto">
             <!-- Mobile Menu Toggle -->
-            <div class="md:hidden flex justify-between items-center mb-4">
+            <div class="md:hidden flex justify-between items-center mb-4 bg-secondary shadow">
                 <h1 class="text-xl font-bold text-gray-800">InfoHilang</h1>
                 <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -105,6 +105,8 @@
         </main>
     </div>
 
+    @vite(['resources/js/app.js'])
+    
     <!-- Pusher Real-time Notification -->
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
@@ -118,40 +120,7 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.querySelector('aside');
-            sidebar.classList.toggle('hidden');
-            sidebar.classList.toggle('w-64');
-        }
-
-        Pusher.logToConsole = false;
-
-        const pusher = new Pusher('{{ config('broadcasting.connections.pusher.key') }}', {
-            cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
-            forceTLS: true
-        });
-
-        const userId = "{{ Auth::id() }}";
-        const channel = pusher.subscribe('private-chatify.' + userId);
-
-        channel.bind('messaging', function(data) {
-            if (data.from_id != userId) {
-                const badge = document.getElementById('chat-badge');
-                let count = parseInt(badge.textContent) || 0;
-                badge.textContent = count + 1;
-                badge.style.display = 'inline-flex';
-            }
-        });
-
-        if (window.location.href.includes('/Chat')) {
-            const badge = document.getElementById('chat-badge');
-            if (badge) {
-                badge.textContent = '0';
-                badge.style.display = 'none';
-            }
-        }
-    </script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 
     @stack('script')
 </body>
