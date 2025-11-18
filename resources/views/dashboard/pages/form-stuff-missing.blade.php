@@ -1,64 +1,80 @@
 @extends('dashboard.layouts.index')
 
-@section('title', 'Form Pengaduan Hilang Barang | InfoHilang')
+@section('title', 'Form Laporan Barang Hilang | InfoHilang')
 
 @section('content')
     <div class="space-y-6">
         <!-- Header -->
         <header>
-            <h1 class="text-2xl font-bold text-gray-800">Laporan Hilang Barang</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Laporan Barang Hilang</h1>
             <p class="text-gray-600">Isi formulir di bawah ini untuk melaporkan kehilangan Barang</p>
         </header>
 
         <!-- Form Container -->
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('form-barang-hilang.store') }}" method="POST" enctype="multipart/form-data"
+                data-confirm-save>
                 @csrf
 
-                <!-- Nama Orang -->
+                <!-- Nama Barang -->
                 <div class="mb-6">
-                    <label for="nama_orang" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap</label>
-                    <input type="text" id="nama_orang" name="nama_orang" value="{{ old('nama_orang') }}"
-                        class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('nama_orang') border-danger @enderror"
-                        placeholder="Masukkan nama lengkap orang yang hilang" required>
-                    @error('nama_orang')
+                    <label for="nama_barang" class="block text-sm font-semibold text-gray-700 mb-2">Nama Barang</label>
+                    <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}"
+                        class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('nama_barang') border-danger @enderror"
+                        placeholder="Masukan nama barang" required>
+                    @error('nama_barang')
                         <p class="text-danger text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Deskripsi Orang -->
+                <!-- Deskripsi Barang -->
                 <div class="mb-6">
-                    <label for="deskripsi_orang" class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi
-                        Fisik</label>
-                    <textarea id="deskripsi_orang" name="deskripsi_orang" rows="4"
-                        class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('deskripsi_orang') border-danger @enderror"
-                        placeholder="Contoh: Tinggi 165 cm, berat 60 kg, rambut hitam lurus, dll.">{{ old('deskripsi_orang') }}</textarea>
-                    @error('deskripsi_orang')
+                    <label for="deskripsi_barang" class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi
+                        Barang</label>
+                    <textarea id="deskripsi_barang" name="deskripsi_barang" rows="4"
+                        class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('deskripsi_barang') border-danger @enderror"
+                        placeholder="Contoh: Barang berwarna hitam, merk 'ABC', dll.">{{ old('deskripsi_barang') }}</textarea>
+                    @error('deskripsi_barang')
                         <p class="text-danger text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <!-- Ciri-Ciri Khusus -->
-                <div class="mb-6">
-                    <label class="block text-sm font-semibold text-gray-700 mb-3">Ciri-Ciri Khusus</label>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        @foreach ($characteristics as $characteristic)
-                            <div>
-                                <label for="ciri_ciri_{{ Str::snake($characteristic) }}"
-                                    class="block text-xs text-gray-600 mb-1">
-                                    {{ $characteristic }}
-                                </label>
-                                <input type="text" id="ciri_ciri_{{ Str::snake($characteristic) }}"
-                                    name="ciri_ciri[{{ $characteristic }}]"
-                                    value="{{ old('ciri_ciri.' . $characteristic) }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
-                                    placeholder="Contoh: {{ strtolower($characteristic) }}">
-                            </div>
-                        @endforeach
+                <!-- Jenis & Merk Barang -->
+                <div class="mb-6 grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="jenis_barang" class="block text-sm font-semibold text-gray-700 mb-2">Jenis
+                            Barang</label>
+                        <input type="text" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang') }}"
+                            class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('jenis_barang') border-danger @enderror"
+                            placeholder="Masukan jenis barang" required>
+                        @error('jenis_barang')
+                            <p class="text-danger text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    <div>
+                        <label for="merk_barang" class="block text-sm font-semibold text-gray-700 mb-2">Merk Barang</label>
+                        <input type="text" id="merk_barang" name="merk_barang" value="{{ old('merk_barang') }}"
+                            class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('merk_barang') border-danger @enderror"
+                            placeholder="Masukan merk barang" required>
+                        @error('merk_barang')
+                            <p class="text-danger text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
-                @include('dashboard.components.characteristics')
+                <!-- Warna Barang -->
+                <div class="mb-6">
+                    <label for="warna_barang" class="block text-sm font-semibold text-gray-700 mb-2">Warna Barang</label>
+                    <input type="text" id="warna_barang" name="warna_barang" value="{{ old('warna_barang') }}"
+                        class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('warna_barang') border-danger @enderror"
+                        placeholder="Masukan warna barang" required>
+                    @error('warna_barang')
+                        <p class="text-danger text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Ciri-Ciri Barang -->
+                @include('dashboard.components.characteristics', ['ciriCiri' => []])
 
                 <!-- Kontak Darurat -->
                 <div class="mb-6">
@@ -78,10 +94,30 @@
                     </div>
                 </div>
 
-                @include('dashboard.components.contacts')
+                @include('dashboard.components.contacts', ['kontak' => []])
 
-                <!-- Lokasi & Map -->
-                @include('dashboard.components.maps')
+                <!-- Lokasi Terakhir Terlihat -->
+                <div class="mb-6">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi Terakhir Dilihat</label>
+                    <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="4"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                        placeholder="Contoh: Stasiun Gambir, Jakarta Pusat">{{ old('lokasi_terakhir_dilihat') }}</textarea>
+
+                    @include('dashboard.components.maps')
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label for="latitude" class="block text-sm font-semibold text-gray-700 mb-2">Latitude</label>
+                            <input type="text" id="latitude" name="latitude" readonly value="{{ old('latitude') }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label for="longitude" class="block text-sm font-semibold text-gray-700 mb-2">Longitude</label>
+                            <input type="text" id="longitude" name="longitude" readonly value="{{ old('longitude') }}"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Tanggal & Status -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
@@ -96,19 +132,16 @@
                     <div>
                         <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Status
                             Laporan</label>
-                        <select id="status" name="status"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition">
-                            <option value="Hilang" {{ old('status', 'Hilang') == 'Hilang' ? 'selected' : '' }}>Hilang
-                            </option>
-                            <option value="Ditemukan" {{ old('status') == 'Ditemukan' ? 'selected' : '' }}>Ditemukan
-                            </option>
-                            <option value="Ditutup" {{ old('status') == 'Ditutup' ? 'selected' : '' }}>Ditutup</option>
-                        </select>
+                        <input type="text" id="status" name="status" value="Hilang" readonly
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
                     </div>
                 </div>
 
                 <!-- Foto Upload -->
-                @include('dashboard.components.photo')
+                @include('dashboard.components.photo', ['foto' => []])
+
+                <!-- Document Upload -->
+                @include('dashboard.components.documents', ['dokumen' => []])
 
                 <!-- Hidden User ID -->
                 <input type="hidden" name="user_id" value="{{ $userId }}">
@@ -128,9 +161,5 @@
 @push('script')
     <script>
         // Fungsi umum untuk menghapus field
-        function removeField(button) {
-            const field = button.closest('.flex');
-            if (field) field.remove();
-        }
     </script>
 @endpush

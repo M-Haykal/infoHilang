@@ -1,12 +1,12 @@
 @extends('dashboard.layouts.index')
 
-@section('title', 'Form Pengaduan Hilang Manusia | InfoHilang')
+@section('title', 'Form Laporan Orang Hilang | InfoHilang')
 
 @section('content')
     <div class="space-y-6">
         <!-- Header -->
         <header>
-            <h1 class="text-2xl font-bold text-gray-800">Laporan Hilang Orang</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Laporan Orang Hilang</h1>
             <p class="text-gray-600">Isi formulir di bawah ini untuk melaporkan kehilangan orang</p>
         </header>
 
@@ -164,15 +164,11 @@
             </form>
         </div>
     </div>
-    @include('dashboard.components.alerts')
+   
 @endsection
 
 @push('script')
     <script>
-        // Fungsi umum untuk menghapus field
-        function removeField(button) {
-            const field = button.closest('.flex');
-            if (field) field.remove();
-        }
+        
     </script>
 @endpush

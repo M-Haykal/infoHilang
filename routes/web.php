@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Livewire\Chat;
 use App\Livewire\Profile;
 use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +49,7 @@ Route::middleware('guest.redirect')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/chat' , Chat::class)->name('chat');
     Route::prefix('user')->group(function () {
         Route::get('/profile', action: Profile::class)->name('profile');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -56,11 +59,20 @@ Route::middleware('auth')->group(function () {
         // Form laporan orang hilang
         Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
         Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
-        Route::get('/detail-laporan/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
-        Route::get('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
-        Route::put('/edit-laporan/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
+        Route::get('/detail-laporan-barang/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
+        Route::get('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
+        Route::put('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
         Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
         Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
+
+        // Form laporan hilang barang
+        Route::get('/form-barang-hilang', [MissingStuffController::class, 'index'])->name('form-barang-hilang');
+        Route::post('/form-barang-hilang', [MissingStuffController::class, 'store'])->name('form-barang-hilang.store');
+        Route::get('/detail-laporan-barang/{barangHilang}', [MissingStuffController::class, 'show'])->name('form-barang-hilang.detail');
+        Route::get('/edit-laporan-barang/{barangHilang}', [MissingStuffController::class, 'edit'])->name('form-barang-hilang.edit');
+        Route::put('/edit-laporan-barang/{barangHilang}', [MissingStuffController::class, 'update'])->name('form-barang-hilang.update');
+        Route::get('/print-poster/{barangHilang}', [MissingStuffController::class, 'printPdf'])->name('form-barang-hilang.print-pdf');
+        Route::delete('/barang-hilang/{barangHilang}', [MissingStuffController::class, 'destroy'])->name('form-barang-hilang.destroy');
 
         // Komentar routes
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');

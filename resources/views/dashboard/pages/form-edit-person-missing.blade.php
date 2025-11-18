@@ -136,13 +136,6 @@
     </div>
 @endsection
 
-@include('dashboard.components.alerts')
-
 @push('script')
-    <script>
-        function removeField(button) {
-            const field = button.closest('.flex');
-            if (field) field.remove();
-        }
-    </script>
+    <script></script>
 @endpush

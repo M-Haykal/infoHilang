@@ -6,7 +6,6 @@
 
     <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
         {{-- Foto lama --}}
-        {{-- Foto lama --}}
         @if (!empty($foto))
             @foreach ($foto as $path)
                 <div class="relative group rounded-lg overflow-hidden shadow-md preview-existing"

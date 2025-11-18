@@ -25,22 +25,16 @@
             </div>
         </div>
 
-
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="px-4 py-2 bg-blue-500 text-white rounded">Toggle</button>
-            <p x-show="open" class="mt-3 text-gray-700">Alpine.js Berfungsi 🎉</p>
-        </div>
-
         <section class="menu-laporan max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="100">
             <h2 class="text-2xl font-semibold text-gray-800 mb-6">Buat Laporan Kehilangan Baru</h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <a href="#card1"
+                <a href="{{ route('form-barang-hilang') }}"
                     class="block bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
                     data-aos="zoom-in" data-aos-delay="200">
                     <img src="{{ asset('img/item.png') }}" alt="Gambar Menu Barang" class="w-full h-48 object-cover">
                     <div class="p-5">
-                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Barang</h3>
+                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Barang Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan barang yang hilang dengan detail dan lokasi.</p>
                     </div>
                 </a>
@@ -50,7 +44,7 @@
                     data-aos="zoom-in" data-aos-delay="300">
                     <img src="{{ asset('img/people.png') }}" alt="Gambar Menu Orang" class="w-full h-48 object-cover">
                     <div class="p-5">
-                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Orang</h3>
+                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Orang Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan orang hilang dengan informasi lengkap.</p>
                     </div>
                 </a>
@@ -60,7 +54,7 @@
                     data-aos="zoom-in" data-aos-delay="400">
                     <img src="{{ asset('img/animal.png') }}" alt="Gambar Menu Hewan" class="w-full h-48 object-cover">
                     <div class="p-5">
-                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Hewan</h3>
+                        <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Hewan Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan hewan peliharaan yang hilang.</p>
                     </div>
                 </a>

@@ -104,9 +104,10 @@
             </section>
         </main>
     </div>
+    @include('dashboard.components.alerts')
 
     @vite(['resources/js/app.js'])
-    
+
     <!-- Pusher Real-time Notification -->
     <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
