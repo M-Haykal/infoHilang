@@ -2,18 +2,11 @@
 <html lang="id">
 
 <head>
-    {{-- <meta name="user-id" content="{{ Auth::user()->id }}">
-    <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'InfoHilang' }}</title>
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
     @stack('style')
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
@@ -153,38 +146,89 @@
     </nav>
 
     <!-- Konten Utama -->
-    <main class="flex-grow">
+    <main class="flex flex-1 justify-center py-5">
         {{ $slot }}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="text-center">
-                <div class="text-xl font-bold mb-2">InfoHilang</div>
-                <p class="text-gray-400 mb-4">Menghubungkan harapan, memulihkan yang hilang.</p>
+    <footer class="bg-secondary dark:bg-background-dark/50 border-t border-border-light dark:border-border-dark mt-16">
+        <div class="max-w-6xl mx-auto py-12 px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="size-6 text-primary">
+                            <img src="{{ asset('img/logo-infoHilang.png') }}" alt="" srcset="">
+                        </div>
+                        <h2 class="text-text-light dark:text-text-dark text-xl font-bold">InfoHilang</h2>
+                    </div>
+                    <p class="text-sm text-subtext-light dark:text-subtext-dark">Membantu menyatukan kembali yang
+                        terpisah.</p>
+                </div>
+                <div class="md:col-span-3 grid grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div>
+                        <h3 class="font-bold text-text-light dark:text-text-dark mb-4">Tautan Cepat</h3>
+                        <ul class="space-y-2">
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">FAQ</a></li>
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Kontak Kami</a></li>
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Kebijakan Privasi</a></li>
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Syarat &amp; Ketentuan</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-text-light dark:text-text-dark mb-4">Layanan</h3>
+                        <ul class="space-y-2">
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Lapor Kehilangan</a></li>
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Lapor Penemuan</a></li>
+                            <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                    href="#">Lihat Semua Laporan</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-text-light dark:text-text-dark mb-4">Ikuti Kami</h3>
+                        <div class="flex space-x-4">
+                            <a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                href="#">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                                </svg>
+                            </a>
+                            <a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                href="#">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
+                                    </path>
+                                </svg>
+                            </a>
+                            <a class="text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
+                                href="#">
+                                <svg fill="none" height="24" stroke="currentColor" stroke-linecap="round"
+                                    stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect height="20" rx="5" ry="5" width="20" x="2" y="2">
+                                    </rect>
+                                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-6 max-w-3xl mx-auto">
-                <h3 class="text-lg font-semibold mb-3 flex items-center justify-center">
-                    <span class="mr-2">🌟</span> Visi
-                </h3>
-                <p class="text-gray-300 text-sm leading-relaxed mb-6 text-center">
-                    Menjadi platform digital terpercaya dalam pelaporan dan pencarian kehilangan, yang menghubungkan
-                    harapan dan tindakan demi terciptanya masyarakat yang peduli dan tanggap.
-                </p>
-                <h3 class="text-lg font-semibold mb-3 flex items-center justify-center">
-                    <span class="mr-2">🎯</span> Misi
-                </h3>
-                <ul class="text-gray-300 text-sm leading-relaxed list-disc list-inside text-left mx-auto max-w-xl">
-                    <li>Menyediakan layanan pelaporan kehilangan yang cepat, aman, dan mudah digunakan.</li>
-                    <li>Mendorong partisipasi aktif masyarakat dalam proses pencarian dan pemulangan.</li>
-                    <li>Menjaga privasi dan keamanan data pengguna secara bertanggung jawab.</li>
-                    <li>Menghubungkan pelapor, warga sekitar, dan pihak berwenang melalui teknologi yang inklusif.</li>
-                    <li>Menumbuhkan budaya empati dan solidaritas dalam menghadapi kehilangan.</li>
-                </ul>
+            <div
+                class="mt-8 border-t border-border-light dark:border-border-dark pt-6 text-center text-sm text-subtext-light dark:text-subtext-dark">
+                <p>© 2024 InfoHilang. All rights reserved.</p>
             </div>
-            <p class="text-sm text-gray-500 mt-6 text-center">&copy; {{ date('Y') }} InfoHilang. Semua laporan
-                ditangani dengan privasi dan kehati-hatian.</p>
         </div>
     </footer>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

@@ -4,12 +4,33 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\BarangHilang;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class MissingStuffService
 {
+    protected $gemini;
+
+    public function __construct(GeminiConnectService $gemini)
+    {
+        $this->gemini = $gemini;
+    }
+
     public function store(Request $request)
     {
         $validated = $this->validateRequest($request);
+
+        // CEK DUPLIKAT DULU!
+        $duplicateCheck = $this->checkForDuplicates($request, $validated);
+
+        if ($duplicateCheck['isDuplicate']) {
+            // Bisa return array atau throw exception
+            throw ValidationException::withMessages([
+                'duplicate' => 'Laporan barang ini terdeteksi sebagai duplikat! '
+                    . 'Kemiripan: ' . $duplicateCheck['similarity'] . '%. '
+                    . $duplicateCheck['reason']
+            ]);
+        }
+
         return $this->saveData($request, new BarangHilang(), $validated);
     }
 
@@ -36,6 +57,122 @@ class MissingStuffService
         }
 
         return $barangHilang->delete();
+    }
+
+    // ================== DUPLIKAT CHECKER ==================
+    private function checkForDuplicates(Request $request, array $validated)
+    {
+        $existingReports = BarangHilang::whereIn('status', ['Hilang', 'Ditemukan'])->get();
+
+        $highestSimilarity = 0;
+        $isDuplicate = false;
+        $reason = '';
+        $existingId = null;
+
+        foreach ($existingReports as $report) {
+            $imageResult = $this->compareImagesWithExisting($request, $report);
+            $textResult = $this->compareTextWithExisting($validated, $report);
+
+            // Bobot: 65% gambar, 35% teks (barang biasanya lebih bergantung visual)
+            $totalScore = ($imageResult['similarity'] * 0.65) + ($textResult['similarity'] * 0.35);
+
+            if ($totalScore > $highestSimilarity) {
+                $highestSimilarity = $totalScore;
+                $isDuplicate = $imageResult['duplicate'] || $textResult['duplicate'];
+                $reason = $imageResult['reason'] ?? $textResult['reason'] ?? 'Kemiripan tinggi';
+                $existingId = $report->id;
+            }
+        }
+
+        return [
+            'isDuplicate' => $isDuplicate && $highestSimilarity >= 80, // threshold
+            'similarity' => round($highestSimilarity),
+            'reason' => $reason,
+            'existing_id' => $existingId
+        ];
+    }
+
+    private function compareImagesWithExisting(Request $request, BarangHilang $existing)
+    {
+        if (!$request->hasFile('foto') || empty($existing->foto)) {
+            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Tidak ada foto untuk dibandingkan'];
+        }
+
+        $highest = 0;
+        $reason = '';
+
+        foreach ($request->file('foto') as $newFile) {
+            $tempPath = $newFile->getPathname();
+
+            foreach ($existing->foto as $oldPath) {
+                $oldFullPath = storage_path('app/public/' . $oldPath);
+                if (!file_exists($oldFullPath))
+                    continue;
+
+                try {
+                    $result = $this->gemini->compareImages($tempPath, $oldFullPath);
+
+                    if ($result && isset($result['similarity'])) {
+                        if ($result['similarity'] > $highest) {
+                            $highest = $result['similarity'];
+                            $reason = $result['reason'] ?? 'Gambar sangat mirip';
+                        }
+                        if ($result['duplicate'] ?? false) {
+                            return $result + ['duplicate' => true];
+                        }
+                    }
+                } catch (\Exception $e) {
+                    \Log::warning('Gemini image compare failed: ' . $e->getMessage());
+                }
+            }
+        }
+
+        return [
+            'duplicate' => $highest >= 90,
+            'similarity' => $highest,
+            'reason' => $reason ?: 'Gambar tidak terlalu mirip'
+        ];
+    }
+
+    private function compareTextWithExisting(array $newData, BarangHilang $existing)
+    {
+        $existingData = $existing->only([
+            'nama_barang',
+            'jenis_barang',
+            'merk_barang',
+            'warna_barang',
+            'deskripsi_barang',
+            'ciri_ciri',
+            'lokasi_terakhir_dilihat'
+        ]);
+
+        $prompt = "
+            Kamu adalah AI pendeteksi laporan barang hilang duplikat.
+            Bandingkan data baru dengan data lama.
+
+            DATA BARU:
+            " . json_encode($newData, JSON_UNESCAPED_UNICODE) . "
+
+            DATA LAMA:
+            " . json_encode($existingData, JSON_UNESCAPED_UNICODE) . "
+
+            Berikan hasil dalam JSON tanpa penjelasan tambahan:
+            {
+                \"duplicate\": true/false,
+                \"similarity\": 0-100,
+                \"reason\": \"alasan singkat dalam 10 kata\"
+            }
+        ";
+
+        try {
+            $response = $this->gemini->generateContent($prompt);
+            $result = json_decode($response, true);
+
+            return $result ?: ['duplicate' => false, 'similarity' => 0, 'reason' => 'Gagal parse AI'];
+        } catch (\Exception $e) {
+            \Log::error('Gemini text duplicate check failed: ' . $e->getMessage());
+            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Error AI'];
+        }
     }
 
     /**

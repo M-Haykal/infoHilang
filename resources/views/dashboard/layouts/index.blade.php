@@ -18,9 +18,11 @@
         <!-- Sidebar -->
         <aside class="bg-secondary shadow-lg w-20 md:w-64 h-screen sticky top-0 flex flex-col">
             <div class="p-4 flex items-center justify-between border-b">
-                <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
-                        class="text-highlight">Hilang</span>
-                </h1>
+            <a href="{{ route('start') }}">
+                    <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
+                            class="text-highlight">Hilang</span>
+                    </h1>
+                </a>
                 <button class="md:hidden p-2 rounded-full hover:bg-gray-200" onclick="toggleSidebar()">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -66,7 +68,7 @@
                     </li>
 
                     {{-- 🔔 Chat menu dengan badge notifikasi --}}
-                    <li class="relative">
+                    {{-- <li class="relative">
                         <a href="{{ url('Chat') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors relative">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
@@ -80,7 +82,7 @@
                                 class="absolute top-1 right-3 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full"
                                 style="display:none;">0</span>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </nav>
         </aside>

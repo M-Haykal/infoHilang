@@ -10,6 +10,13 @@
             <p class="text-gray-600">Isi formulir di bawah ini untuk melaporkan kehilangan orang</p>
         </header>
 
+        @if ($errors->has('duplicate'))
+            <div class="alert alert-danger">
+                <strong>Laporan Ditolak!</strong><br>
+                {{ $errors->first('duplicate') }}
+            </div>
+        @endif
+
         <!-- Form Container -->
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
             <form action="{{ route('form-orang-hilang.store') }}" method="POST" enctype="multipart/form-data"
@@ -164,11 +171,9 @@
             </form>
         </div>
     </div>
-   
+
 @endsection
 
 @push('script')
-    <script>
-        
-    </script>
+    <script></script>
 @endpush

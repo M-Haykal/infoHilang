@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\MissingStuffService;
 use App\Models\BarangHilang;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class MissingStuffController extends Controller
 {
@@ -25,6 +26,15 @@ class MissingStuffController extends Controller
         return view('dashboard.pages.form-stuff-missing', compact('userId', 'contacts'));
     }
 
+    public function show(BarangHilang $barangHilang)
+    {
+        $barangHilang->load([
+            'comentars.user',
+            'comentars.replies.user'
+        ]);
+        return view('dashboard.pages.detail-stuff-missing', compact('barangHilang'));
+    }
+
     public function edit(BarangHilang $barangHilang)
     {
         $userId = Auth::user()->id;
@@ -35,8 +45,18 @@ class MissingStuffController extends Controller
 
     public function store(Request $request)
     {
-        $this->missingStuffService->store($request);
-        return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
+        try {
+            $this->missingStuffService->store($request);
+            return redirect()->back()->with('success', 'Laporan barang hilang berhasil dikirim!');
+        } catch (ValidationException $e) {
+            if ($e->getMessage() === "The duplicate field is required." || str_contains($e->getMessage(), 'duplikat')) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors($e->errors())
+                    ->with('duplicate_warning', true);
+            }
+            throw $e;
+        }
     }
 
     public function update(Request $request, BarangHilang $barangHilang)

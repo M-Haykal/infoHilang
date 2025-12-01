@@ -59,7 +59,7 @@ Route::middleware('auth')->group(function () {
         // Form laporan orang hilang
         Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
         Route::post('/form-orang-hilang', [MissingPersonController::class, 'store'])->name('form-orang-hilang.store');
-        Route::get('/detail-laporan-barang/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
+        Route::get('/detail-laporan-orang/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
         Route::get('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
         Route::put('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
         Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');

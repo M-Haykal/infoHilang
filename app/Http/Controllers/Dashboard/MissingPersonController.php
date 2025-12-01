@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Services\GeminiConnectService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\OrangHilang;
 use App\Services\MissingPersonService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Validation\ValidationException;
 
 class MissingPersonController extends Controller
 {
@@ -53,8 +55,17 @@ class MissingPersonController extends Controller
 
     public function store(Request $request)
     {
-        $this->missingPersonService->store($request);
-        return redirect()->back()->with('success', 'Laporan berhasil dikirim!');
+        try {
+            $this->missingPersonService->store($request);
+            return redirect()->back()->with('success', 'Laporan orang hilang berhasil dikirim!');
+        } catch (ValidationException $e) {
+            if ($e->errors()['duplicate'] ?? false) {
+                return redirect()->back()
+                    ->withInput()
+                    ->withErrors($e->errors());
+            }
+            throw $e;
+        }
     }
 
     public function edit(OrangHilang $orangHilang)
