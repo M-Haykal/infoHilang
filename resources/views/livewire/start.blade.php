@@ -1,16 +1,18 @@
 <div class="layout-content-container flex flex-col max-w-6xl flex-1">
     <!-- Hero Section -->
-    <section class="py-16 md:py-24 px-4">
+    <section class="py-16 md:py-24" data-aos="fade-up">
         <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
             <div class="flex flex-col gap-6 text-center lg:text-left lg:w-1/2">
                 <div class="flex flex-col gap-4">
                     <h1
                         class="text-text-light dark:text-text-dark text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
-                        Menyatukan Kembali yang Hilang</h1>
+                        Menyatukan Kembali yang Hilang
+                    </h1>
                     <h2
                         class="text-subtext-light dark:text-subtext-dark text-base md:text-lg font-normal leading-normal max-w-xl mx-auto lg:mx-0">
                         Platform komunitas untuk melaporkan dan menemukan barang, hewan, atau orang yang hilang. Mari
-                        bantu satu sama lain.</h2>
+                        bantu satu sama lain.
+                    </h2>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
                     <button
@@ -24,8 +26,7 @@
                 </div>
             </div>
             <div class="w-full lg:w-1/2">
-                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
-                    data-alt="A collage of images showing a lost dog poster, a found wallet, and a happy reunion."
+                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl shadow-2xl"
                     style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDu3cXyLw15eaX2bvfH77alu0dVJpN75BHOqc-IkTEBUNddlulyfTmRKPluaX8JMU4GHQkFXstoW1o_Uqwk1YCegJmBiHfs7CIPQIxff2DjuSqdbuPFcaEqRgVzz5jWeNaGHAR6twiY3G2ii1nM6hXr3PLjwMapP89IyREvts86ZL4uayQuen7hUviK_g29Wfk24ZK9tJLRi-jzNe27fwY_37QLn3Bu3tf5JbeMLCEgTpayMFmMi3u0AslT9BUfKbL1jiAQGkC5AiA');">
                 </div>
             </div>

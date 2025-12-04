@@ -4,6 +4,7 @@ use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Livewire\Chat;
 use App\Livewire\Profile;
 use App\Livewire\Start;
+use App\Livewire\ListMissing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
@@ -27,6 +28,7 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 */
 
 Route::get('/', Start::class)->name('start');
+Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes

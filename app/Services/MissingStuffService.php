@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\BarangHilang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
+use Mews\Purifier\Facades\Purifier;
 
 class MissingStuffService
 {
@@ -74,7 +75,7 @@ class MissingStuffService
             $textResult = $this->compareTextWithExisting($validated, $report);
 
             // Bobot: 65% gambar, 35% teks (barang biasanya lebih bergantung visual)
-            $totalScore = ($imageResult['similarity'] * 0.65) + ($textResult['similarity'] * 0.35);
+            $totalScore = $imageResult['similarity'] * 0.8 + $textResult['similarity'] * 0.2;
 
             if ($totalScore > $highestSimilarity) {
                 $highestSimilarity = $totalScore;
@@ -85,7 +86,7 @@ class MissingStuffService
         }
 
         return [
-            'isDuplicate' => $isDuplicate && $highestSimilarity >= 80, // threshold
+            'isDuplicate' => $highestSimilarity >= 72, // threshold
             'similarity' => round($highestSimilarity),
             'reason' => $reason,
             'existing_id' => $existingId
@@ -294,13 +295,16 @@ class MissingStuffService
 
         $docPaths = array_slice($docPaths, 0, 3);
 
+        $cleanDescription = Purifier::clean($validated['deskripsi_barang']);
+        $cleanLokasi = Purifier::clean($validated['lokasi_terakhir_dilihat']);
+
         $barangHilang->fill([
             'nama_barang' => $validated['nama_barang'],
             'jenis_barang' => $validated['jenis_barang'],
             'merk_barang' => $validated['merk_barang'] ?? null,
             'warna_barang' => $validated['warna_barang'] ?? null,
-            'deskripsi_barang' => $validated['deskripsi_barang'] ?? null,
-            'lokasi_terakhir_dilihat' => $validated['lokasi_terakhir_dilihat'],
+            'deskripsi_barang' => $cleanDescription,
+            'lokasi_terakhir_dilihat' => $cleanLokasi,
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
             'tanggal_terakhir_dilihat' => $validated['tanggal_terakhir_dilihat'] ?? null,

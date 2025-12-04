@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Services\GeminiConnectService;
 use Illuminate\Validation\ValidationException;
+use Mews\Purifier\Facades\Purifier;
 
 class MissingPersonService
 {
@@ -264,16 +265,19 @@ class MissingPersonService
         // Batasi 5
         $fotoPaths = array_slice($fotoPaths, 0, 5);
 
+        $cleanDescription = Purifier::clean($validated['deskripsi_orang'] ?? '');
+        $cleanLocation = Purifier::clean($validated['lokasi_terakhir_dilihat'] ?? '');
+
         $orangHilang->foto = $fotoPaths;
 
         $orangHilang->fill([
             'nama_orang' => $validated['nama_orang'],
-            'deskripsi_orang' => $validated['deskripsi_orang'] ?? null,
+            'deskripsi_orang' => $cleanDescription,
             'umur' => $validated['umur'] ?? null,
             'jenis_kelamin' => $validated['jenis_kelamin'] ?? null,
             'ciri_ciri' => $ciriCiri,
             'kontak' => $kontak,
-            'lokasi_terakhir_dilihat' => $validated['lokasi_terakhir_dilihat'],
+            'lokasi_terakhir_dilihat' => $cleanLocation,
             'latitude' => $validated['latitude'],
             'longitude' => $validated['longitude'],
             'tanggal_terakhir_dilihat' => $validated['tanggal_terakhir_dilihat'] ?? null,

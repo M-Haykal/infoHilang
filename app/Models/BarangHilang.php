@@ -62,4 +62,24 @@ class BarangHilang extends Model
             ->whereNull('parent_id')
             ->latest();
     }
+
+    public function getReportNameAttribute()
+    {
+        return $this->nama_barang;
+    }
+
+    public function getLocationAttribute()
+    {
+        return $this->lokasi_terakhir_dilihat;
+    }
+
+    public function getFotoAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function getReportTypeAttribute()
+    {
+        return 'barang';
+    }
 }

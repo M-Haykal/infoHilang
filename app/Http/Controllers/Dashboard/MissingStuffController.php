@@ -49,13 +49,9 @@ class MissingStuffController extends Controller
             $this->missingStuffService->store($request);
             return redirect()->back()->with('success', 'Laporan barang hilang berhasil dikirim!');
         } catch (ValidationException $e) {
-            if ($e->getMessage() === "The duplicate field is required." || str_contains($e->getMessage(), 'duplikat')) {
-                return redirect()->back()
-                    ->withInput()
-                    ->withErrors($e->errors())
-                    ->with('duplicate_warning', true);
-            }
-            throw $e;
+            return redirect()->back()
+                ->withInput()
+                ->withErrors($e->errors());
         }
     }
 

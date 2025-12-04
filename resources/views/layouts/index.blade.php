@@ -9,20 +9,28 @@
     <title>{{ $title ?? 'InfoHilang' }}</title>
     @stack('style')
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
+
 </head>
 
 <body class="min-h-screen flex flex-col bg-accent font-sans">
     @include('components.loading')
-    <nav class="bg-primary text-white shadow-md fixed w-full z-50">
+    <nav class="bg-secondary text-white shadow-md fixed w-full z-50">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Logo -->
             <a href="{{ route('start') }}" class="text-2xl font-bold flex items-center">
                 <img src="{{ asset('img/logo-infoHilang.png') }}" alt="Logo InfoHilang" srcset=""
-                    class="object-fill w-10"> <span class="ml-2">InfoHilang</span>
+                    class="object-fill w-10">
+                <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
+                        class="text-highlight">Hilang</span>
+                </h1>
             </a>
 
             <!-- Hamburger Button (Mobile) -->
-            <button id="mobile-menu-button" class="md:hidden focus:outline-none" aria-label="Toggle mobile menu">
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none text-primary" aria-label="Toggle mobile menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"
@@ -34,15 +42,15 @@
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-6">
-                <a href="{{ route('start') }}" class="hover:text-highlight transition">Beranda</a>
-                <a href="#!" class="hover:text-highlight transition">Daftar Hilang</a>
-                <a href="#!" class="hover:text-highlight transition">Blog</a>
+                <a href="{{ route('start') }}" class="text-primary hover:text-highlight transition">Beranda</a>
+                <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar Hilang</a>
+                <a href="#!" class="text-primary hover:text-highlight transition">Blog</a>
 
                 @auth
                     <div class="relative group">
                         <button
-                            class="flex items-center space-x-2 bg-blue-700 px-3 py-2 rounded-lg hover:bg-blue-600 transition">
-                            <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) . '&background=1E88E5&color=fff' }}"
+                            class="flex items-center space-x-2 bg-primary px-3 py-2 rounded-lg hover:bg-primary transition">
+                            <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) . '&background=' . Str::random('6', '0123456789ABCDEF') . '&color=fff' }}"
                                 class="h-8 w-8 rounded-full border border-white" alt="Avatar">
                             <span>{{ Auth::user()->firstname ?? Auth::user()->username }}</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -87,11 +95,11 @@
 
             <!-- Mobile Menu -->
             <div id="mobile-menu"
-                class="hidden md:hidden absolute top-16 left-0 w-full bg-primary text-white shadow-md">
+                class="hidden md:hidden absolute top-16 left-0 w-full bg-accent text-white shadow-md">
                 <div class="flex flex-col items-center space-y-4 py-4">
-                    <a href="{{ route('start') }}" class="hover:text-highlight transition">Beranda</a>
-                    <a href="#!" class="hover:text-highlight transition">Daftar Hilang</a>
-                    <a href="#!" class="hover:text-highlight transition">Blog</a>
+                    <a href="{{ route('start') }}" class="text-primary hover:text-highlight transition">Beranda</a>
+                    <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar Hilang</a>
+                    <a href="#!" class="text-primary hover:text-highlight transition">Blog</a>
                     @auth
                         <div class="w-full px-4">
                             <!-- Profile Dropdown for Mobile -->
@@ -231,9 +239,14 @@
             </div>
         </div>
     </footer>
+
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('script')
     <script src="{{ asset('js/start.js') }}"></script>
+
+    {{-- Font Awesome --}}
+    <script src="{{ asset('js/all.js') }}"></script>
+    <script src="{{ asset('js/all.min.js') }}"></script>
 </body>
 
 </html>

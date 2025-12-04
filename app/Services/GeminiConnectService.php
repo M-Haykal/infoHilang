@@ -10,9 +10,7 @@ class GeminiConnectService
 
     public function __construct()
     {
-        $this->apiUrl =
-            'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key='
-            . env('GEMINI_API_KEY');
+        $this->apiUrl = 'https://generativelanguage.googleapis.com/v1/models/' . env('GEMINI_MODEL', 'gemini-1.5-flash') . ':generateContent?key=' . env('GEMINI_API_KEY');
     }
 
     public function generateContent($prompt)
@@ -33,13 +31,18 @@ class GeminiConnectService
     public function compareImages($newImagePath, $existingImagePath)
     {
         $prompt = "
-            Kamu adalah AI yang membandingkan dua gambar.
-            Berikan hasil dalam JSON tanpa tambahan kata:
+            Kamu adalah detektor duplikat barang hilang yang SANGAT KETAT.
+            Jika dua gambar menunjukkan barang yang SAMA (bentuk, warna, detail, latar), maka WAJIB duplicate: true dan similarity minimal 90.
+
+            Hanya jawab JSON ini:
+
             {
-                \"duplicate\": true/false,
-                \"similarity\": 0-100,
-                \"reason\": \"alasan singkat\"
+                \"duplicate\": true,
+                \"similarity\": 95,
+                \"reason\": \"barang identik\"
             }
+
+            JANGAN pernah kasih alasan panjang. JANGAN tambah kata.
         ";
 
         $newImg = base64_encode(file_get_contents($newImagePath));

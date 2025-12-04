@@ -82,6 +82,9 @@
                             <p class="text-gray-500 text-sm text-center mt-4">Belum ada laporan lain.</p>
                         @endforelse
                     </div>
+                    <div class="mt-10">
+                        {{ $missingItems->links() }}
+                    </div>
                 </div>
                 <div id="tab2" class="tab-pane hidden">
                     <h3 class="text-xl font-semibold text-gray-800 mb-4">Orang Hilang</h3>
@@ -91,7 +94,7 @@
                             <div
                                 class="flex flex-col sm:flex-row sm:items-start sm:justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
                                 <div class="flex items-start space-x-4">
-                                    <img src="{{ asset('storage/' . ($missingPerson->foto[0] ?? 'default.jpg')) }}"
+                                <img src="{{ asset('storage/' . ($missingPerson->foto[0] ?? 'default.jpg')) }}"
                                         alt="Orang" class="w-16 h-16 object-cover rounded">
                                     <div>
                                         <h4 class="font-semibold text-gray-800">{{ $missingPerson->nama_orang }}</h4>
@@ -132,6 +135,9 @@
                         @empty
                             <p class="text-gray-500 text-sm text-center mt-4">Belum ada laporan lain.</p>
                         @endforelse
+                    </div>
+                    <div class="mt-10">
+                        {{ $missingPersons->links() }}
                     </div>
                 </div>
                 <div id="tab3" class="tab-pane hidden">

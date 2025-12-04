@@ -19,7 +19,7 @@ class Start extends Component
             'barangHilang' => $barangHilang,
             'hewanHilang' => $hewanHilang,
             'orangHilang' => $orangHilang,
-        ])->layout('layouts.index')->title('Beranda | InfoHilang');
+        ])->layout('layouts.index')->title('InfoHilang');
     }
 }
 
