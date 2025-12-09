@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Livewire\Chat;
 use App\Livewire\Profile;
 use App\Livewire\Start;
@@ -15,6 +14,8 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
+use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\MissingAnimalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/edit-laporan-barang/{barangHilang}', [MissingStuffController::class, 'update'])->name('form-barang-hilang.update');
         Route::get('/print-poster/{barangHilang}', [MissingStuffController::class, 'printPdf'])->name('form-barang-hilang.print-pdf');
         Route::delete('/barang-hilang/{barangHilang}', [MissingStuffController::class, 'destroy'])->name('form-barang-hilang.destroy');
+
+        // Form laporan hewan hilang
+        Route::get('/getAnimal', [MissingAnimalController::class, 'getAnimal'])->name('get-hewan-hilang');
+        Route::get('/form-hewan-hilang', [MissingAnimalController::class, 'index'])->name('form-hewan-hilang');
 
         // Komentar routes
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');

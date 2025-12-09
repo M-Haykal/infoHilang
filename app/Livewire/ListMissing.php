@@ -3,37 +3,180 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\BarangHilang;
-use App\Models\OrangHilang;
-use App\Models\HewanHilang;
+use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\BarangHilang;
+use App\Models\HewanHilang;
+use App\Models\OrangHilang;
 
 class ListMissing extends Component
 {
+    use WithPagination;
+
+    public string $search = '';
+    public string $status = 'Hilang';
+    public string $kategori = '';
+    public string $lokasi = '';
+    public string $date = '';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'status' => ['except' => 'Hilang'],
+        'kategori' => ['except' => ''],
+        'lokasi' => ['except' => ''],
+        'date' => ['except' => ''],
+        'page' => ['except' => 1],
+    ];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+    public function updating($property)
+    {
+        if (in_array($property, ['status', 'kategori', 'lokasi', 'date'])) {
+            $this->resetPage();
+        }
+    }
+
+    public function resetFilters()
+    {
+        $this->reset(['search', 'status', 'kategori', 'lokasi', 'date']);
+    }
+
     public function render()
     {
-        $barangHilang = BarangHilang::all();
-        $orangHilang = OrangHilang::all();
-        $hewanHilang = HewanHilang::all();
+        $barang = $this->getBarangQuery()->get();
+        $hewan = $this->getHewanQuery()->get();
+        $orang = $this->getOrangQuery()->get();
 
-        // Gabungkan semua data
-        $allReports = $barangHilang->concat($orangHilang)->concat($hewanHilang);
+        $all = collect()->merge($barang)->merge($hewan)->merge($orang);
 
-        // Acak urutan data gabungan
-        $shuffledReports = $allReports->shuffle();
+        // Tambahkan report_type & normalisasi kolom yang dipakai di Blade
+        $all = $all->map(function ($item) {
+            // Tentukan tipe laporan
+            if ($item instanceof BarangHilang) {
+                $item->report_type = 'Barang';
+                $item->report_name = $item->nama_barang;
+                $item->deskripsi = $item->deskripsi_barang;
+            } elseif ($item instanceof HewanHilang) {
+                $item->report_type = 'Hewan';
+                $item->report_name = $item->nama_hewan;
+                $item->deskripsi = $item->deskripsi_hewan;
+            } elseif ($item instanceof OrangHilang) {
+                $item->report_type = 'Orang';
+                $item->report_name = $item->nama_orang;
+                $item->deskripsi = $item->deskripsi_orang;
+            }
 
-        $page = request()->get('page', 1);
+            // Pastikan kolom lokasi & tanggal konsisten
+            $item->lokasi = $item->lokasi_terakhir_dilihat ?? $item->lokasi ?? '';
+            return $item;
+        });
+
+        // Sorting berdasarkan yang terbaru
+        $all = $all->sortByDesc('created_at');
+
+        // Manual pagination
         $perPage = 9;
-        $paginator = new LengthAwarePaginator(
-            $shuffledReports->forPage($page, $perPage),
-            $shuffledReports->count(),
+        $currentPage = max(1, request()->get('page', 1));
+        $paginated = $all->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+        $reports = new LengthAwarePaginator(
+            $paginated,
+            $all->count(),
             $perPage,
-            $page,
+            $currentPage,
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
-        return view('livewire.list-missing', [
-            'reports' => $paginator,
-        ])->layout('layouts.index')->title('Daftar Hilang | InfoHilang');
+        return view('livewire.list-missing', compact('reports'))
+            ->layout('layouts.index')
+            ->title('Daftar Hilang | InfoHilang');
+    }
+
+    private function getBarangQuery()
+    {
+        $query = BarangHilang::query();
+
+        if ($this->search) {
+            $keyword = '%' . $this->search . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_barang', 'like', $keyword)
+                    ->orWhere('deskripsi_barang', 'like', $keyword)
+                    ->orWhere('jenis_barang', 'like', $keyword)
+                    ->orWhere('merk_barang', 'like', $keyword);
+            });
+        }
+
+        $this->applyCommonFilters($query);
+        return $query;
+    }
+
+    private function getHewanQuery()
+    {
+        $query = HewanHilang::query();
+
+        if ($this->search) {
+            $keyword = '%' . $this->search . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_hewan', 'like', $keyword)
+                    ->orWhere('deskripsi_hewan', 'like', $keyword)
+                    ->orWhere('ras', 'like', $keyword)
+                    ->orWhere('warna', 'like', $keyword);
+            });
+        }
+
+        $this->applyCommonFilters($query);
+        return $query;
+    }
+
+    private function getOrangQuery()
+    {
+        $query = OrangHilang::query();
+
+        if ($this->search) {
+            $keyword = '%' . $this->search . '%';
+            $query->where(function ($q) use ($keyword) {
+                $q->where('nama_orang', 'like', $keyword)
+                    ->orWhere('deskripsi_orang', 'like', $keyword)
+                    ->orWhere('ciri_ciri', 'like', $keyword);
+            });
+        }
+
+        $this->applyCommonFilters($query);
+        return $query;
+    }
+
+    private function applyCommonFilters($query)
+    {
+        // Status
+        if ($this->status) {
+            $query->where('status', $this->status);
+        }
+
+        // Lokasi
+        if ($this->lokasi) {
+            $query->where('lokasi_terakhir_dilihat', 'like', '%' . $this->lokasi . '%');
+        }
+
+        // Tanggal
+        if ($this->date) {
+            $query->whereDate('tanggal_terakhir_dilihat', $this->date);
+        }
+
+        // Kategori filter
+        if ($this->kategori) {
+            $modelClass = $query->getModel()::class;
+            $allowed = [
+                'Barang' => BarangHilang::class,
+                'Hewan' => HewanHilang::class,
+                'Orang' => OrangHilang::class,
+            ];
+
+            if ($modelClass !== $allowed[$this->kategori]) {
+                $query->whereRaw('1 = 0'); // kosongkan hasil
+            }
+        }
     }
 }

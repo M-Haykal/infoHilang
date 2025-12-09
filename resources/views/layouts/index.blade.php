@@ -86,7 +86,7 @@
                             Masuk
                         </a>
                         <a href="{{ route('showRegister') }}"
-                            class="border border-white px-4 py-2 rounded-lg font-semibold hover:bg-white hover:text-primary transition">
+                            class="border border-primary text-primary px-4 py-2 rounded-lg font-semibold hover:bg-primary hover:text-white transition">
                             Daftar
                         </a>
                     </div>
@@ -190,7 +190,7 @@
                         <h3 class="font-bold text-text-light dark:text-text-dark mb-4">Layanan</h3>
                         <ul class="space-y-2">
                             <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
-                                    href="#">Lapor Kehilangan</a></li>
+                                    href="{{ route('dashboard') }}">Lapor Kehilangan</a></li>
                             <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
                                     href="#">Lapor Penemuan</a></li>
                             <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"

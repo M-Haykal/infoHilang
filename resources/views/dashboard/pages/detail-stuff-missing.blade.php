@@ -6,7 +6,7 @@
     <div class="space-y-6">
         <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">{{ $barangHilang->nama_orang }}</h1>
+            <h1 class="text-2xl font-bold text-gray-800">{{ $barangHilang->nama_barang }}</h1>
             <p class="text-gray-600 mt-1">
                 Dilaporkan hilang sejak
                 {{ date('d M Y H:i', strtotime($barangHilang->tanggal_terakhir_dilihat)) }}
@@ -53,19 +53,23 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
             <!-- Data Pribadi -->
             <div class="bg-white rounded-xl shadow-sm p-5">
-                <h2 class="font-semibold text-gray-800 mb-4 border-b pb-2">Informasi Pribadi</h2>
+                <h2 class="font-semibold text-gray-800 mb-4 border-b pb-2">Informasi Barang</h2>
                 <ul class="space-y-3 text-sm text-gray-700">
                     <li class="flex justify-between">
-                        <span class="font-medium">Jenis Kelamin:</span>
-                        <span>{{ $barangHilang->jenis_kelamin }}</span>
+                        <span class="font-medium">Jenis Barang:</span>
+                        <span>{{ $barangHilang->jenis_barang }}</span>
                     </li>
                     <li class="flex justify-between">
-                        <span class="font-medium">Usia:</span>
-                        <span>{{ $barangHilang->umur ? $barangHilang->umur . ' tahun' : 'Tidak diketahui' }}</span>
+                        <span class="font-medium">Merk Barang:</span>
+                        <span>{{ $barangHilang->merk_barang }}</span>
+                    </li>
+                    <li class="flex justify-between">
+                        <span class="font-medium">Warna Barang:</span>
+                        <span>{{ $barangHilang->warna_barang }}</span>
                     </li>
                     <li>
-                        <span class="font-medium block mb-1">Deskripsi Fisik:</span>
-                        <p class="text-gray-600">{{ $barangHilang->deskripsi_orang ?: '–' }}</p>
+                        <span class="font-medium block mb-1">Deskripsi Barang:</span>
+                        <p class="text-gray-600">{{ $barangHilang->deskripsi_barang ?: '–' }}</p>
                     </li>
                 </ul>
             </div>
@@ -114,7 +118,7 @@
         <!-- Komentar -->
         @include('dashboard.components.commentars', [
             'model' => $barangHilang,
-            'modelName' => 'App\Models\barangHilang',
+            'modelName' => 'App\Models\BarangHilang',
         ])
     </div>
 @endsection

@@ -188,8 +188,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <div
                 class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><span
-                        class="material-symbols-outlined">edit_document</span></div>
+                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-file-pen"></i></div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">1. Buat Laporan
                     </h2>
@@ -199,8 +198,7 @@
             </div>
             <div
                 class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><span
-                        class="material-symbols-outlined">campaign</span></div>
+                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-bullhorn"></i></div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">2. Sebarkan Info
                     </h2>
@@ -210,8 +208,7 @@
             </div>
             <div
                 class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><span
-                        class="material-symbols-outlined">notifications_active</span></div>
+                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-bell"></i></div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">3. Dapatkan
                         Notifikasi</h2>
@@ -221,8 +218,7 @@
             </div>
             <div
                 class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><span
-                        class="material-symbols-outlined">favorite</span></div>
+                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-heart"></i></div>
                 <div class="flex flex-col gap-1">
                     <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">4. Temukan Kembali
                     </h2>

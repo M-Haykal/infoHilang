@@ -49,7 +49,7 @@
                     </div>
                 </a>
 
-                <a href="#card3"
+                <a href="{{ route('form-hewan-hilang') }}"
                     class="block bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
                     data-aos="zoom-in" data-aos-delay="400">
                     <img src="{{ asset('img/animal.png') }}" alt="Gambar Menu Hewan" class="w-full h-48 object-cover">
