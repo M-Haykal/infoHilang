@@ -1,4 +1,4 @@
-<x-mail::message>
+{{-- <x-mail::message>
 Selamat Datang di Info Hilang
 
 Halo {{ $user->username ?? 'Pengguna' }},
@@ -11,4 +11,20 @@ Silakan klik tombol di bawah ini untuk membuat laporan hilang Anda:
 
 Terima kasih,<br>
 {{ config('app.name') }}
-</x-mail::message>
+</x-mail::message> --}}
+
+@component('mail::message')
+    {{-- Greeting --}}
+    Selamat Datang di Info Hilang, {{ $user->username ?? 'Pengguna' }}!
+
+    {{-- Body --}}
+    Terima kasih telah bergabung dengan Info Hilang. Kami sangat senang bahwa Anda telah bergabung dengan kami.
+
+    {{-- Action Button --}}
+    @component('mail::button', ['url' => route('dashboard')])
+        Buat Laporan
+    @endcomponent
+
+    Terima kasih,<br>
+    {{ config('app.name') }}
+@endcomponent

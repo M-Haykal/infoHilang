@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.default.css">
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     @vite(['resources/css/app.css'])
     @stack('style')
@@ -18,7 +19,7 @@
         <!-- Sidebar -->
         <aside class="bg-secondary shadow-lg w-20 md:w-64 h-screen sticky top-0 flex flex-col">
             <div class="p-4 flex items-center justify-between border-b">
-            <a href="{{ route('start') }}">
+                <a href="{{ route('start') }}">
                     <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
                             class="text-highlight">Hilang</span>
                     </h1>
@@ -123,9 +124,70 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script defer src="{{ asset('js/dashboard.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
     @stack('script')
+
+    <script>
+        document.getElementById('check-duplicate-btn')?.addEventListener('click', async function() {
+            const btn = this;
+            const type = btn.dataset.type; // orang | hewan | barang
+            const resultDiv = document.getElementById('duplicate-result');
+
+            resultDiv.innerHTML = '';
+            resultDiv.classList.add('hidden');
+            btn.disabled = true;
+            btn.innerHTML = 'Mengecek AI...';
+
+            const formData = new FormData(btn.closest('form'));
+
+            try {
+                // INI YANG HARUS DIGANTI → tambah /user/
+                const response = await fetch(`/user/check-duplicate/${type}`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.isDuplicate) {
+                    resultDiv.className =
+                        'mt-8 p-6 bg-red-100 border-l-4 border-red-600 text-red-800 rounded-r-xl shadow-lg';
+                    resultDiv.innerHTML =
+                        `<p class="font-bold text-xl">Duplikat Terdeteksi!</p><p>Kemiripan: <strong>${data.similarity}%</strong> — ${data.reason}</p>`;
+                } else if (data.similarity > 70) {
+                    resultDiv.className =
+                        'mt-8 p-6 bg-yellow-100 border-l-4 border-yellow-600 text-yellow-800 rounded-r-xl shadow-lg';
+                    resultDiv.innerHTML =
+                        `<p class="font-bold text-xl">Peringatan!</p><p>Kemiripan: ${data.similarity}% — ${data.reason}</p>`;
+                } else {
+                    resultDiv.className =
+                        'mt-8 p-6 bg-green-100 border-l-4 border-green-600 text-green-800 rounded-r-xl shadow-lg';
+                    resultDiv.innerHTML =
+                        `<p class="font-bold text-xl">Aman!</p><p>Tidak ada duplikat. Kemiripan tertinggi: ${data.similarity}%.</p>`;
+                }
+
+                resultDiv.classList.remove('hidden');
+
+            } catch (err) {
+                console.error(err);
+                resultDiv.className =
+                    'mt-8 p-6 bg-gray-100 border-l-4 border-gray-600 text-gray-800 rounded-r-xl';
+                resultDiv.innerHTML = '<p class="font-bold">Gagal! Cek console (F12)</p>';
+                resultDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = 'Cek Duplikat dengan AI';
+            }
+        });
+    </script>
 </body>
 
 </html>

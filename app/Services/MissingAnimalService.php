@@ -8,14 +8,15 @@ use Illuminate\Support\Facades\Storage;
 use App\Services\GeminiConnectService;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
+use App\Services\DuplicateDetectionService;
 
 class MissingAnimalService
 {
-    protected $gemini;
+    protected $duplicateDetection;
 
-    public function __construct(GeminiConnectService $gemini)
+    public function __construct(DuplicateDetectionService $duplicateDetection)
     {
-        $this->gemini = $gemini;
+        $this->duplicateDetection = $duplicateDetection;
     }
 
     public function store(Request $request)
@@ -23,7 +24,14 @@ class MissingAnimalService
         $validated = $this->validateRequest($request);
 
         // Cek duplikat dulu
-        $duplicateCheck = $this->checkForDuplicates($request, $validated);
+        $duplicateCheck = $this->duplicateDetection->check(
+            $request,
+            $validated,
+            HewanHilang::class,
+            ['nama_hewan', 'deskripsi_hewan', 'lokasi_terakhir_dilihat'],
+            0.80,
+            80
+        );
 
         if ($duplicateCheck['isDuplicate']) {
             throw ValidationException::withMessages([
@@ -47,115 +55,9 @@ class MissingAnimalService
         return $hewanHilang->delete();
     }
 
-    // ================== DUPLIKAT DETECTION ==================
-    private function checkForDuplicates(Request $request, array $validated)
-    {
-        $existingReports = HewanHilang::whereIn('status', ['Hilang', 'Ditemukan'])->get();
-
-        $highestSimilarity = 0;
-        $isDuplicate = false;
-        $reason = '';
-        $existingId = null;
-
-        foreach ($existingReports as $report) {
-            $imageResult = $this->compareImagesWithExisting($request, $report);
-            $textResult = $this->compareTextWithExisting($validated, $report);
-
-            // Bobot: 60% gambar (wajah penting), 40% teks
-            $totalScore = ($imageResult['similarity'] * 0.60) + ($textResult['similarity'] * 0.40);
-
-            if ($totalScore > $highestSimilarity) {
-                $highestSimilarity = $totalScore;
-                $isDuplicate = $imageResult['duplicate'] || $textResult['duplicate'];
-                $reason = $imageResult['reason'] ?? $textResult['reason'] ?? 'Kemiripan tinggi';
-                $existingId = $report->id;
-            }
-        }
-
-        return [
-            'isDuplicate' => $isDuplicate && $highestSimilarity >= 80,
-            'similarity' => round($highestSimilarity),
-            'reason' => $reason,
-            'existing_id' => $existingId
-        ];
-    }
-
-    private function compareImagesWithExisting(Request $request, HewanHilang $existing)
-    {
-        if (!$request->hasFile('foto') || empty($existing->foto)) {
-            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Tidak ada foto'];
-        }
-
-        $highest = 0;
-        $reason = '';
-
-        foreach ($request->file('foto') as $newFile) {
-            $tempPath = $newFile->getPathname();
-
-            foreach ($existing->foto as $oldPath) {
-                $oldFullPath = storage_path('app/public/' . $oldPath);
-                if (!file_exists($oldFullPath))
-                    continue;
-
-                try {
-                    $result = $this->gemini->compareImages($tempPath, $oldFullPath);
-
-                    if ($result && ($result['similarity'] ?? 0) > $highest) {
-                        $highest = $result['similarity'];
-                        $reason = $result['reason'] ?? 'Wajah sangat mirip';
-                    }
-
-                    if ($result['duplicate'] ?? false) {
-                        return $result;
-                    }
-                } catch (\Exception $e) {
-                    \Log::warning('Gemini image compare failed: ' . $e->getMessage());
-                }
-            }
-        }
-
-        return ['duplicate' => false, 'similarity' => $highest, 'reason' => $reason];
-    }
-
-    private function compareTextWithExisting(array $newData, HewanHilang $existing)
-    {
-        $existingData = $existing->only([
-            'nama_hewan',
-            'umur',
-            'jenis_kelamin',
-            'ciri_ciri',
-            'deskripsi_hewan',
-            'lokasi_terakhir_dilihat'
-        ]);
-
-        $prompt = "
-            Kamu adalah AI pendeteksi laporan hewan hilang duplikat.
-            Bandingkan data baru dengan data lama.
-
-            DATA BARU:
-            " . json_encode($newData, JSON_UNESCAPED_UNICODE) . "
-
-            DATA LAMA:
-            " . json_encode($existingData, JSON_UNESCAPED_UNICODE) . "
-
-            Berikan hasil dalam JSON tanpa penjelasan tambahan:
-            {
-                \"duplicate\": true/false,
-                \"similarity\": 0-100,
-                \"reason\": \"alasan singkat dalam 10 kata\"
-            }
-        ";
-
-        try {
-
-        } catch (\Exception $e) {
-            \Log::warning('OpenAI text compare failed: ' . $e->getMessage());
-            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Gagal membandingkan teks'];
-        }
-    }
-
-    // ================== END DUPLIKAT DETECTION ==================
-
+    /**
+     * Validasi umum
+     */
     private function validateRequest(Request $request, $id = null)
     {
         return $request->validate([

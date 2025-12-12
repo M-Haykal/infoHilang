@@ -1,4 +1,4 @@
-<div class="mb-6">
+<div class="mb-6" data-photo-upload>
     <label for="imageInput" class="block text-sm font-semibold text-gray-700 mb-2">Foto (Opsional)</label>
     <input type="file" id="imageInput" name="foto[]" accept="image/*" multiple
         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-blue-700 cursor-pointer">

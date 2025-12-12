@@ -16,6 +16,7 @@ use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
+use App\Http\Controllers\Dashboard\DuplicateCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,12 +53,14 @@ Route::middleware('guest.redirect')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/chat' , Chat::class)->name('chat');
+    Route::get('/chat', Chat::class)->name('chat');
     Route::prefix('user')->group(function () {
         Route::get('/profile', action: Profile::class)->name('profile');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
+        Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])
+            ->name('check-duplicate');
 
         // Form laporan orang hilang
         Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');
@@ -80,6 +83,10 @@ Route::middleware('auth')->group(function () {
         // Form laporan hewan hilang
         Route::get('/getAnimal', [MissingAnimalController::class, 'getAnimal'])->name('get-hewan-hilang');
         Route::get('/form-hewan-hilang', [MissingAnimalController::class, 'index'])->name('form-hewan-hilang');
+        Route::post('/hewan/tambah-jenis', [MissingAnimalController::class, 'tambahJenis'])
+            ->name('hewan.tambah-jenis');
+        Route::post('/hewan/tambah-ras', [MissingAnimalController::class, 'tambahRas'])
+            ->name('hewan.tambah-ras');
 
         // Komentar routes
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');

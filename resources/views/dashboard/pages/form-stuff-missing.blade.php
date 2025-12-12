@@ -3,7 +3,7 @@
 @section('title', 'Form Laporan Barang Hilang | InfoHilang')
 
 @section('content')
-    <div class="space-y-6">
+    <div class="space-y-6" data-page="form-stuff-missing">
         <!-- Header -->
         <header>
             <h1 class="text-2xl font-bold text-gray-800">Laporan Barang Hilang</h1>
@@ -33,7 +33,7 @@
                 @csrf
 
                 <!-- Nama Barang -->
-                <div class="mb-6">
+                <div class="mb-6" id="input-namaBarang">
                     <label for="nama_barang" class="block text-sm font-semibold text-gray-700 mb-2">Nama Barang</label>
                     <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}"
                         class="w-full px-4 py-3 border  rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('nama_barang') border-danger @enderror"
@@ -113,7 +113,7 @@
                 @include('dashboard.components.contacts', ['kontak' => []])
 
                 <!-- Lokasi Terakhir Terlihat -->
-                <div class="mb-6">
+                <div class="mb-6 map-container">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi Terakhir Dilihat</label>
                     <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="4"
                         class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
@@ -162,20 +162,24 @@
                 <!-- Hidden User ID -->
                 <input type="hidden" name="user_id" value="{{ $userId }}">
 
-                <!-- Submit Button -->
-                <div class="text-center">
+                <!-- Submit Button + Cek Duplikat -->
+                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mt-10">
                     <button type="submit"
-                        class="inline-block px-8 py-3 bg-success text-white font-semibold rounded-lg hover:bg-success/80 focus:outline-none focus:ring-4 focus:ring-primary/30 transition transform hover:scale-105">
-                        Kirim Pengaduan
+                        class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
+                        Kirim Laporan
+                    </button>
+
+                    <button type="button" id="check-duplicate-btn" data-type="orang"
+                        class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center gap-3 text-lg">
+                        Cek Duplikat dengan AI
                     </button>
                 </div>
             </form>
+            <div id="duplicate-result" class="mt-8 hidden"></div>
         </div>
     </div>
 @endsection
 
 @push('script')
-    <script>
-        // Fungsi umum untuk menghapus field
-    </script>
+    <script></script>
 @endpush

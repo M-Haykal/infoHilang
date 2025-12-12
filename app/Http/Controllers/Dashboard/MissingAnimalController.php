@@ -5,25 +5,124 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\MissingAnimalService;
 
 class MissingAnimalController extends Controller
 {
     public function index()
     {
-        $userId = Auth::user()->id;
-        $animalsJson = public_path('json/animals.json');
+        $userId = Auth::id();
 
-        if (!file_exists($animalsJson)) {
-            return view('dashboard.pages.form-animal-missing', ['animals' => [], 'error' => 'File not found.']);
+        $jenisPath = public_path('json/animals.json');
+        $rasPath = public_path('json/race_animal.json');
+
+        if (!file_exists($jenisPath) || !file_exists($rasPath)) {
+            return view('dashboard.pages.form-animal-missing', [
+                'jenisHewan' => [],
+                'rasHewan' => [],
+                'userId' => $userId,
+                'error' => 'File JSON tidak ditemukan.'
+            ]);
         }
 
-        $json = file_get_contents($animalsJson);
-        $animals = json_decode($json, true);
+        $jenisHewan = json_decode(file_get_contents($jenisPath), true);
+        $rasHewan = json_decode(file_get_contents($rasPath), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            return view('dashboard.pages.form-animal-missing', ['animals' => [], 'error' => 'Error decoding JSON data.']);
+            return view('dashboard.pages.form-animal-missing', [
+                'jenisHewan' => [],
+                'rasHewan' => [],
+                'userId' => $userId,
+                'error' => 'Format JSON rusak.'
+            ]);
         }
 
-        return view('dashboard.pages.form-animal-missing', compact('userId', 'animals'));
+        sort($jenisHewan);
+
+        return view('dashboard.pages.form-animal-missing', compact('userId', 'jenisHewan', 'rasHewan'));
+    }
+
+    // Di controller
+    public function tambahJenis(Request $request)
+    {
+        $request->validate(['jenis' => 'required|string|min:2|max:50']);
+
+        $jenisBaru = ucwords(strtolower(trim($request->jenis)));
+
+        $file = public_path('json/animals.json');
+
+        if (!file_exists($file)) {
+            return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
+        }
+
+        $daftar = json_decode(file_get_contents($file), true);
+
+        if (in_array($jenisBaru, $daftar)) {
+            return response()->json(['success' => false, 'message' => 'Sudah ada']);
+        }
+
+        $daftar[] = $jenisBaru;
+        sort($daftar);
+
+        file_put_contents($file, json_encode($daftar, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return response()->json(['success' => true]);
+    }
+
+    // Di controller
+    public function tambahRas(Request $request)
+    {
+        $request->validate([
+            'jenis' => 'required|string|min:2',
+            'ras' => 'required|string|min:2|max:50'
+        ]);
+
+        $jenis = ucwords(trim($request->jenis));
+        $rasBaru = ucwords(trim($request->ras));
+
+        $file = public_path('json/race_animal.json');
+
+        if (!file_exists($file)) {
+            return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
+        }
+
+        $daftar = json_decode(file_get_contents($file), true);
+
+        if (!isset($daftar[$jenis])) {
+            $daftar[$jenis] = [];
+        }
+
+        if (in_array($rasBaru, $daftar[$jenis])) {
+            return response()->json(['success' => false, 'message' => 'Ras sudah ada']);
+        }
+
+        $daftar[$jenis][] = $rasBaru;
+        sort($daftar[$jenis]);
+
+        file_put_contents($file, json_encode($daftar, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return response()->json(['success' => true]);
+    }
+
+    public function checkDuplicate(Request $request, MissingAnimalService $service)
+    {
+        try {
+            $duplicateCheck = $service->checkForDuplicates($request, $request->all());
+
+            return response()->json([
+                'isDuplicate' => $duplicateCheck['isDuplicate'],
+                'similarity' => $duplicateCheck['similarity'],
+                'reason' => $duplicateCheck['reason'],
+                'existing_report' => $duplicateCheck['existing_id'] ? [
+                    'url' => route('hewan.show', $duplicateCheck['existing_id'])
+                ] : null
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isDuplicate' => false,
+                'similarity' => 0,
+                'reason' => 'Gagal cek duplikat'
+            ], 500);
+        }
     }
 }

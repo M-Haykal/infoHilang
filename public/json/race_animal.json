@@ -1,0 +1,31 @@
+{
+  "Anjing": [
+    "Affenpinscher","Akbash","Akita","Alaskan Malamute","American Bulldog",
+    "Anjing Afgan","Anjing Beagle","Anjing Border Collie","Anjing Chihuahua",
+    "Anjing Corgi","Anjing Dachshund","Anjing Dalmatian","Anjing French Bulldog",
+    "Anjing Golden Retriever","Anjing Husky Siberia","Anjing Jack Russell Terrier",
+    "Anjing Kintamani","Anjing Labrador Retriever","Anjing Maltese","Anjing Pomeranian",
+    "Anjing Poodle","Anjing Pug","Anjing Rottweiler","Anjing Shih Tzu","Anjing Shiba Inu"
+  ],
+  "Kucing": [
+    "Kucing Anggora","Kucing Bengal","Kucing British Shorthair","Kucing Domestic (Kampung)",
+    "Kucing Himalaya","Kucing Maine Coon","Kucing Persia","Kucing Persia Peaknose",
+    "Kucing Ragdoll","Kucing Russian Blue","Kucing Scottish Fold","Kucing Siam","Kucing Sphynx"
+  ],
+  "Burung": [
+    "Burung Beo","Burung Cockatiel","Burung Falk","Burung Kakatua","Burung Kenari",
+    "Burung Lovebird","Burung Nuri","Burung Parkit","Burung Parkit Australia",
+    "Burung Perkutut","Burung Pleci","Burung Prenjak","Cockatiel"
+  ],
+  "Hamster": ["Hamster Campbell","Hamster Roborovski","Hamster Syria","Hamster Winter White"],
+  "Kelinci": ["Kelinci Anggora","Kelinci Dutch","Kelinci Flemish Giant","Kelinci Lop","Kelinci Rex"],
+  "Ikan Cupang": ["Cupang Halfmoon","Cupang Plakat","Cupang Giant","Cupang Double Tail"],
+  "Ikan Hias": ["Ikan Koi","Ikan Guppy","Ikan Molly","Ikan Neon Tetra","Ikan Discus"],
+  "Ikan Louhan": ["Louhan Cencu","Louhan Kamfa","Louhan Zhen Zhu"],
+  "Kura-kura": ["Kura-kura Brazil","Kura-kura Ambon","Kura-kura Sulcata"],
+  "Landak Mini": ["Landak Mini Albino","Landak Mini Cinnamon","Landak Mini Pinto"],
+  "Marmut": ["Marmut Peru","Marmut Abyssinian","Marmut American"],
+  "Sugar Glider": ["Sugar Glider Classic Grey","Sugar Glider Leucistic","Sugar Glider Cremino"],
+  "Tikus": ["Tikus Fancy","Tikus Putih","Tikus Dumbo"],
+  "Tortoise": ["Tortoise Sulcata","Tortoise Red Foot","Tortoise Russian"]
+}

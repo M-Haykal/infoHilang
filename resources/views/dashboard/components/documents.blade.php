@@ -1,4 +1,4 @@
-<div class="mb-6">
+<div class="mb-6" data-documents>
     <label for="documentInput" class="block text-sm font-semibold text-gray-700 mb-2">Dokumen Pendukung (Opsional)</label>
     <input type="file" id="documentInput" name="document_pendukung[]" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple
         class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-white hover:file:bg-gray-800 cursor-pointer">

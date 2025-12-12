@@ -89,4 +89,26 @@ class MissingPersonController extends Controller
         $this->missingPersonService->destroy($orangHilang);
         return redirect()->back()->with('success', 'Laporan orang hilang berhasil dihapus!');
     }
+
+    public function checkDuplicate(Request $request, MissingPersonService $service)
+    {
+        try {
+            $duplicateCheck = $service->checkForDuplicates($request, $request->all());
+
+            return response()->json([
+                'isDuplicate' => $duplicateCheck['isDuplicate'],
+                'similarity' => $duplicateCheck['similarity'],
+                'reason' => $duplicateCheck['reason'],
+                'existing_report' => $duplicateCheck['existing_id'] ? [
+                    'url' => route('form-orang-hilang.detail', $duplicateCheck['existing_id'])
+                ] : null
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'isDuplicate' => false,
+                'similarity' => 0,
+                'reason' => 'Gagal cek duplikat'
+            ], 500);
+        }
+    }
 }
