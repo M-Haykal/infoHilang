@@ -84,57 +84,59 @@
                 </div>
 
                 <div class="mb-6 hidden" id="input-jenis-baru">
-                    <div class="mt-3 space-y-2">
+                    <div class="space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
                         <input type="text" id="jenis_baru" placeholder="Ketik jenis baru..."
-                            class="w-full px-1/2 px-4 py-2 border rounded-lg">
-                        <div>
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+                        <div class="flex gap-3">
                             <button type="button" id="simpan-jenis-baru"
-                                class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">Simpan</button>
-                            <button>
-                                <button type="button" id="batal-jenis-baru"
-                                    class="ml-2 text-gray-600 text-sm">Batal</button>
+                                class="bg-success text-white px-6 py-2 rounded-lg hover:bg-success/90 font-medium">Simpan</button>
+                            <button type="button" id="batal-jenis-baru"
+                                class="text-gray-600 px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">Batal</button>
                         </div>
                     </div>
 
                     <input type="hidden" name="jenis_hewan" id="jenis_hewan_final" required>
                 </div>
 
-                <!-- Ras Hewan -->
-                <div class="mb-6" id="ras-container" style="display: none;">
+                <div class="mb-6" id="ras-container">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         Ras Hewan <span class="text-red-500">*</span>
                     </label>
 
-                    <select name="ras" id="ras_select" class="w-full px-4 py-3 border rounded-lg">
+                    <!-- Hint awal -->
+                    <p class="text-sm text-gray-500 mt-1 mb-3" id="ras-hint">
+                        Pilih jenis hewan terlebih dahulu untuk mengaktifkan pilihan ras.
+                    </p>
+
+                    <select name="ras" id="ras_select" class="w-full px-4 py-3 border rounded-lg" disabled>
                         <option value="">Pilih ras</option>
                     </select>
 
                     <div class="mt-2">
                         <span class="text-sm text-gray-500">Tidak ada di daftar?</span>
                         <button type="button" id="tambah-ras-btn"
-                            class="text-primary font-medium hover:underline ml-1 text-sm">
+                            class="text-primary font-medium hover:underline ml-1 text-sm" disabled>
                             + Tambah ras baru
                         </button>
                     </div>
 
-                    <div id="input-ras-baru" class="mt-3 hidden space-y-2">
-                        <input type="text" id="ras_baru" placeholder="Ketik ras baru..."
-                            class="w-full px-4 py-2 border rounded-lg">
-                        <div>
-                            <button type="button" id="simpan-ras-baru"
-                                class="bg-green-600 text-white px-4 py-2 rounded text-sm hover:bg-green-700">Simpan</button>
-                            <button type="button" id="batal-ras-baru" class="ml-2 text-gray-600 text-sm">Batal</button>
+                    <!-- Input tambah ras baru (mirip jenis hewan) -->
+                    <div id="input-ras-baru-container" class="mb-6 hidden">
+                        <div class="space-y-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <input type="text" id="ras_baru_input" placeholder="Ketik ras baru..."
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary">
+                            <div class="flex gap-3">
+                                <button type="button" id="simpan-ras-baru-btn"
+                                    class="bg-success text-white px-6 py-2 rounded-lg hover:bg-success/90 font-medium">
+                                    Simpan Ras
+                                </button>
+                                <button type="button" id="batal-ras-baru-btn"
+                                    class="text-gray-600 px-6 py-2 rounded-lg border border-gray-300 hover:bg-gray-100">
+                                    Batal
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Ras Manual (untuk jenis tanpa ras) -->
-                <div class="mb-6 hidden" id="ras-manual-container">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Ras Hewan (Ketik Manual) <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text" name="ras" id="ras_manual" value="{{ old('ras') }}"
-                        class="w-full px-4 py-3 border rounded-lg" placeholder="Contoh: Campuran">
                 </div>
 
                 <!-- Umur dan Warna -->
@@ -212,9 +214,8 @@
 
                 <input type="hidden" name="user_id" value="{{ $userId }}">
 
-
                 <!-- Tombol Submit + Cek Duplikat -->
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
+                <div class="flex flex-col sm:flex-row gap-4 justify-end items-center mt-8">
                     <button type="submit"
                         class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
                         Kirim Laporan
@@ -233,43 +234,88 @@
 
 @push('script')
     <script>
-        const rasHewan = @json($rasHewan); // dari race_animal.json
+        const rasHewan = @json($rasHewan);
 
-        // Update hidden field jenis
         document.getElementById('jenis_hewan_select').addEventListener('change', function() {
             const jenis = this.value;
             document.getElementById('jenis_hewan_final').value = jenis;
             updateRasSection(jenis);
         });
 
-        // Fungsi utama update ras
         function updateRasSection(jenis) {
-            const rasContainer = document.getElementById('ras-container');
-            const rasManual = document.getElementById('ras-manual-container');
             const rasSelect = document.getElementById('ras_select');
+            const tambahRasBtn = document.getElementById('tambah-ras-btn');
+            const inputContainer = document.getElementById('input-ras-baru-container');
+            const hint = document.getElementById('ras-hint');
 
-            // Reset
-            rasContainer.style.display = 'none';
-            rasManual.classList.add('hidden');
             rasSelect.innerHTML = '<option value="">Pilih ras</option>';
+            rasSelect.disabled = true;
+            tambahRasBtn.disabled = true;
+            inputContainer.classList.add('hidden');
 
+            if (hint) hint.style.display = jenis ? 'none' : 'block';
             if (!jenis) return;
 
             const punyaRas = rasHewan[jenis] && Array.isArray(rasHewan[jenis]) && rasHewan[jenis].length > 0;
 
             if (punyaRas) {
-                rasContainer.style.display = 'block';
+                rasSelect.disabled = false;
+                tambahRasBtn.disabled = false;
+
                 rasHewan[jenis].forEach(r => {
                     const opt = new Option(r, r);
                     if (r === "{{ old('ras') }}") opt.selected = true;
                     rasSelect.appendChild(opt);
                 });
             } else {
-                rasManual.classList.remove('hidden');
+                inputContainer.classList.remove('hidden');
             }
         }
 
-        // === TAMBAH JENIS BARU ===
+        document.getElementById('tambah-ras-btn').onclick = () => {
+            document.getElementById('input-ras-baru-container').classList.remove('hidden');
+        };
+
+        document.getElementById('batal-ras-baru-btn').onclick = () => {
+            document.getElementById('input-ras-baru-container').classList.add('hidden');
+            document.getElementById('ras_baru_input').value = '';
+        };
+
+        document.getElementById('simpan-ras-baru-btn').onclick = () => {
+            const rasBaru = document.getElementById('ras_baru_input').value.trim();
+            const jenis = document.getElementById('jenis_hewan_final').value || document.getElementById(
+                'jenis_hewan_select').value;
+
+            if (rasBaru.length < 2) return alert('Ras minimal 2 huruf!');
+            if (!jenis) return alert('Pilih jenis hewan dulu!');
+
+            fetch('{{ route('hewan.tambah-ras') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        jenis: jenis,
+                        ras: rasBaru
+                    })
+                })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        const opt = new Option(rasBaru, rasBaru, true, true);
+                        document.getElementById('ras_select').add(opt);
+                        document.getElementById('ras_select').disabled = false;
+                        document.getElementById('input-ras-baru-container').classList.add('hidden');
+                        document.getElementById('ras_baru_input').value = '';
+
+                        alert('Ras baru berhasil ditambahkan!');
+                    } else {
+                        alert(res.message || 'Gagal menambahkan ras');
+                    }
+                });
+        };
+
         document.getElementById('tambah-jenis-btn').onclick = () => {
             document.getElementById('input-jenis-baru').classList.remove('hidden');
             document.getElementById('jenis_hewan_select').disabled = true;
@@ -306,57 +352,14 @@
                         document.getElementById('jenis_hewan_select').disabled = false;
                         document.getElementById('jenis_baru').value = '';
 
-                        updateRasSection(nama); // otomatis muncul input manual ras
+                        updateRasSection(nama);
                         alert('Jenis baru ditambahkan!');
-                    }
-                });
-        };
-
-        // === TAMBAH RAS BARU ===
-        document.getElementById('tambah-ras-btn').onclick = () => {
-            document.getElementById('input-ras-baru').classList.remove('hidden');
-        };
-
-        document.getElementById('batal-ras-baru').onclick = () => {
-            document.getElementById('input-ras-baru').classList.add('hidden');
-            document.getElementById('ras_baru').value = '';
-        };
-
-        document.getElementById('simpan-ras-baru').onclick = () => {
-            const ras = document.getElementById('ras_baru').value.trim();
-            const jenis = document.getElementById('jenis_hewan_select').value;
-
-            if (ras.length < 2) return alert('Minimal 2 huruf!');
-            if (!jenis) return alert('Pilih jenis hewan dulu!');
-
-            fetch('{{ route('hewan.tambah-ras') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        jenis: jenis,
-                        ras: ras
-                    })
-                })
-                .then(r => r.json())
-                .then(res => {
-                    if (res.success) {
-                        // Tambah ke dropdown
-                        const opt = new Option(ras, ras, true, true);
-                        document.getElementById('ras_select').add(opt);
-
-                        document.getElementById('input-ras-baru').classList.add('hidden');
-                        document.getElementById('ras_baru').value = '';
-                        alert('Ras "' + ras + '" berhasil ditambahkan!');
                     } else {
-                        alert(res.message || 'Gagal menambah ras');
+                        alert(res.message || 'Gagal menambahkan jenis');
                     }
                 });
         };
 
-        // Old input support
         document.addEventListener('DOMContentLoaded', () => {
             const oldJenis = "{{ old('jenis_hewan') }}";
             if (oldJenis) {

@@ -17,11 +17,66 @@ window.Echo = new Echo({
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const page =
-        document.body.dataset.page ||
-        document.querySelector("[data-page]")?.dataset.page;
+    const pageElement = document.querySelector(
+        '[data-page="dashboard"], [data-page="form-animal-missing"], [data-page="form-person-missing"], [data-page="form-stuff-missing"]'
+    );
+    if (!pageElement) return;
+
+    const page = pageElement.dataset.page;
 
     const tours = {
+        dashboard: {
+            key: "tour_dashboard_done",
+            steps: [
+                {
+                    title: "Selamat Datang di Dashboard InfoHilang!",
+                    intro: "Di sini Anda dapat melihat ringkasan laporan kehilangan dan menambahkan laporan baru.",
+                },
+                {
+                    title: "Halaman Dashboard",
+                    element: "#dashboard",
+                    intro: "Ini adalah halaman dashboard utama Anda. Dengan berbagai menu dan informasi penting.",
+                },
+                {
+                    title: "Keterangan Barang Hilang",
+                    element: "#missing-stuff-card",
+                    intro: "Jumlah laporan barang hilang yang telah dibuat.",
+                },
+                {
+                    title: "Keterangan Orang Hilang",
+                    element: "#missing-person-card",
+                    intro: "Jumlah laporan orang hilang yang telah dibuat.",
+                },
+                {
+                    title: "Keterangan Hewan Hilang",
+                    element: "#missing-animal-card",
+                    intro: "Jumlah laporan hewan hilang yang telah dibuat.",
+                },
+                {
+                    title: "Menu Laporan Kehilangan Baru",
+                    element: "#menu-report",
+                    intro: "Gunakan menu ini untuk menambahkan laporan kehilangan baru dengan mudah.",
+                },
+                {
+                    title: "Laporan Barang Hilang",
+                    element: "#add-stuff-missing",
+                    intro: "Klik di sini untuk membuat laporan barang hilang.",
+                },
+                {
+                    title: "Laporan Orang Hilang",
+                    element: "#add-person-missing",
+                    intro: "Klik di sini untuk membuat laporan orang hilang.",
+                },
+                {
+                    title: "Laporan Hewan Hilang",
+                    element: "#add-animal-missing",
+                    intro: "Klik di sini untuk membuat laporan hewan hilang.",
+                },
+                {
+                    intro: "Itu saja untuk tur singkat ini! Semoga hari Anda menyenangkan!",
+                },
+            ],
+        },
         "form-animal-missing": {
             key: "tour_animal_done",
             steps: [
@@ -188,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!tourConfig) return;
 
     if (localStorage.getItem(tourConfig.key) === "yes") {
-        return; 
+        return;
     }
 
     setTimeout(() => {
@@ -201,7 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 disableInteraction: true,
                 showProgress: true,
                 exitOnOverlayClick: false,
-                exitOnEsc: false,
+                exitOnEsc: true,
             })
             .oncomplete(() => localStorage.setItem(tourConfig.key, "yes"))
             .onexit(() => localStorage.setItem(tourConfig.key, "yes"))

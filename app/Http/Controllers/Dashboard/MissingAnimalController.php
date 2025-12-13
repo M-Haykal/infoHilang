@@ -73,12 +73,12 @@ class MissingAnimalController extends Controller
     public function tambahRas(Request $request)
     {
         $request->validate([
-            'jenis' => 'required|string|min:2',
-            'ras' => 'required|string|min:2|max:50'
+            'jenis' => 'required|string|min:2|max:100',
+            'ras' => 'required|string|min:2|max:100'
         ]);
 
         $jenis = ucwords(trim($request->jenis));
-        $rasBaru = ucwords(trim($request->ras));
+        $ras = ucwords(trim($request->ras));
 
         $file = public_path('json/race_animal.json');
 
@@ -86,19 +86,23 @@ class MissingAnimalController extends Controller
             return response()->json(['success' => false, 'message' => 'File tidak ditemukan']);
         }
 
-        $daftar = json_decode(file_get_contents($file), true);
+        $daftar = json_decode(file_get_contents($file), true) ?? [];
 
+        // Buat array untuk jenis ini jika belum ada
         if (!isset($daftar[$jenis])) {
             $daftar[$jenis] = [];
         }
 
-        if (in_array($rasBaru, $daftar[$jenis])) {
+        // Cek apakah ras sudah ada
+        if (in_array($ras, $daftar[$jenis], true)) {
             return response()->json(['success' => false, 'message' => 'Ras sudah ada']);
         }
 
-        $daftar[$jenis][] = $rasBaru;
+        // Tambahkan ras baru
+        $daftar[$jenis][] = $ras;
         sort($daftar[$jenis]);
 
+        // Simpan ke file
         file_put_contents($file, json_encode($daftar, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return response()->json(['success' => true]);

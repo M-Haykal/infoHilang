@@ -194,7 +194,7 @@
                             <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
                                     href="#">Lapor Penemuan</a></li>
                             <li><a class="text-sm text-subtext-light dark:text-subtext-dark hover:text-primary dark:hover:text-primary transition-colors"
-                                    href="#">Lihat Semua Laporan</a></li>
+                                    href="{{ route('list-missing') }}">Lihat Semua Laporan</a></li>
                         </ul>
                     </div>
                     <div>

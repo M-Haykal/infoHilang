@@ -15,10 +15,10 @@
                     </h2>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                    <button
+                    <a href="{{ route('dashboard') }}"
                         class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-opacity">
                         <span class="truncate">Lapor Kehilangan</span>
-                    </button>
+                    </a>
                     <button
                         class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary/10 dark:bg-primary/20 text-primary text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
                         <span class="truncate">Cari Temuan</span>

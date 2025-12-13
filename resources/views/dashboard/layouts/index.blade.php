@@ -67,23 +67,6 @@
                             <span class="text-gray-700 md:block hidden">Penemu</span>
                         </a>
                     </li>
-
-                    {{-- 🔔 Chat menu dengan badge notifikasi --}}
-                    {{-- <li class="relative">
-                        <a href="{{ url('Chat') }}"
-                            class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors relative">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-3.582 8-8 8a8.013 8.013 0 01-8-8c0-2.21.895-4.208 2.342-5.518L12 2l4.658 4.482A7.993 7.993 0 0120 12z" />
-                            </svg>
-                            <span class="text-gray-700 md:block hidden">Chat</span>
-
-                            <span id="chat-badge"
-                                class="absolute top-1 right-3 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full"
-                                style="display:none;">0</span>
-                        </a>
-                    </li> --}}
                 </ul>
             </nav>
         </aside>
@@ -142,14 +125,14 @@
             btn.innerHTML = 'Mengecek AI...';
 
             const formData = new FormData(btn.closest('form'));
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
             try {
-                // INI YANG HARUS DIGANTI → tambah /user/
                 const response = await fetch(`/user/check-duplicate/${type}`, {
                     method: 'POST',
                     body: formData,
                     headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'X-CSRF-TOKEN': csrfToken,
                         'X-Requested-With': 'XMLHttpRequest',
                         'Accept': 'application/json'
                     }
