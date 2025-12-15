@@ -2,135 +2,113 @@
 
 namespace App\Services;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use App\Services\GeminiConnectService;
-use Illuminate\Support\Str;
+use App\Models\HewanHilang;
+use App\Models\BarangHilang;
+use App\Models\OrangHilang;
 
 class DuplicateDetectionService
 {
-    protected $gemini;
+    protected array $modelMap = [
+        'hewan' => HewanHilang::class,
+        'barang' => BarangHilang::class,
+        'orang' => OrangHilang::class,
+    ];
 
-    public function __construct(GeminiConnectService $gemini)
+    public function check(string $type, array $data): array
     {
-        $this->gemini = $gemini;
-    }
-
-    /**
-     * Cek duplikat untuk model apa saja
-     * 
-     * @param Request $request
-     * @param array $validated
-     * @param string $modelClass   contoh: OrangHilang::class
-     * @param array $textFields    field teks yang dibandingkan
-     * @param float $imageWeight   bobot gambar (0.6 untuk orang, 0.8 untuk barang/hewan)
-     * @param int $threshold       default 80
-     * 
-     * @return array
-     */
-    public function check(Request $request, array $validated, string $modelClass, array $textFields = [], float $imageWeight = 0.6, int $threshold = 80): array
-    {
-        $existingReports = $modelClass::whereIn('status', ['Hilang', 'Ditemukan'])->get();
-
-        $highestSimilarity = 0;
-        $isDuplicate = false;
-        $reason = 'Tidak ada kemiripan';
-        $existingId = null;
-
-        foreach ($existingReports as $report) {
-            $imageSim = $this->compareImages($request, $report);
-            $textSim = $this->compareText($validated, $report, $textFields);
-
-            $totalScore = ($imageSim['similarity'] * $imageWeight) + ($textSim['similarity'] * (1 - $imageWeight));
-
-            if ($totalScore > $highestSimilarity) {
-                $highestSimilarity = $totalScore;
-                $isDuplicate = $imageSim['duplicate'] || $textSim['duplicate'];
-                $reason = $imageSim['reason'] ?? $textSim['reason'] ?? 'Kemiripan tinggi';
-                $existingId = $report->id;
-            }
+        if (!isset($this->modelMap[$type])) {
+            return $this->fail('Tipe laporan tidak dikenali');
         }
 
-        $finalDuplicate = $isDuplicate && $highestSimilarity >= $threshold;
+        $modelClass = $this->modelMap[$type];
 
-        return [
-            'isDuplicate' => $finalDuplicate,
-            'similarity' => round($highestSimilarity),
-            'reason' => $reason,
-            'existing_id' => $finalDuplicate ? $existingId : null,
-        ];
-    }
+        $nama = strtolower(trim($this->extractName($type, $data)));
+        $lokasi = strtolower(trim($data['lokasi_terakhir_dilihat'] ?? ''));
+        $deskripsi = strtolower(trim($this->extractDescription($type, $data)));
 
-    // === IMAGE COMPARISON (Universal) ===
-    private function compareImages(Request $request, $existingModel): array
-    {
-        if (!$request->hasFile('foto') || empty($existingModel->foto)) {
-            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Tidak ada foto'];
+        if ($nama === '') {
+            return $this->fail('Nama belum diisi');
         }
+
+        $existingReports = $modelClass::where('status', 'Hilang')->get();
 
         $highest = 0;
-        $reason = '';
+        $best = null;
 
-        foreach ($request->file('foto') as $newFile) {
-            $tempPath = $newFile->getPathname();
+        foreach ($existingReports as $old) {
+            $score = $this->calculateSimilarity(
+                $nama,
+                $deskripsi,
+                $lokasi,
+                strtolower($old->report_name ?? ''),
+                strtolower($old->deskripsi ?? ''),
+                strtolower($old->location ?? '')
+            );
 
-            foreach ($existingModel->foto as $oldPath) {
-                $oldFullPath = storage_path('app/public/' . $oldPath);
-                if (!file_exists($oldFullPath))
-                    continue;
-
-                try {
-                    $result = $this->gemini->compareImages($tempPath, $oldFullPath);
-                    $sim = $result['similarity'] ?? 0;
-
-                    if ($sim > $highest) {
-                        $highest = $sim;
-                        $reason = $result['reason'] ?? 'Gambar sangat mirip';
-                    }
-                    if ($result['duplicate'] ?? false) {
-                        return $result;
-                    }
-                } catch (\Exception $e) {
-                    \Log::warning('Gemini image compare failed: ' . $e->getMessage());
-                }
+            if ($score > $highest) {
+                $highest = $score;
+                $best = $old;
             }
         }
 
         return [
-            'duplicate' => $highest >= 90,
-            'similarity' => $highest,
-            'reason' => $reason ?: 'Gambar tidak mirip'
+            'isDuplicate' => $highest >= 65,
+            'similarity' => round($highest),
+            'reason' => $highest >= 65
+                ? 'Data mirip dengan laporan sebelumnya'
+                : 'Tidak ada kemiripan signifikan',
+            'existing_id' => $best?->id,
+            'existing_report' => $best ? [
+                'type' => $best->report_type,
+                'name' => $best->report_name,
+                'url' => url("/user/form-{$best->report_type}-hilang?{$best->id}")
+            ] : null
         ];
     }
 
-    // === TEXT COMPARISON (Universal) ===
-    private function compareText(array $newData, $existingModel, array $fields): array
+    protected function calculateSimilarity(
+        string $namaNew,
+        string $descNew,
+        string $lokasiNew,
+        string $namaOld,
+        string $descOld,
+        string $lokasiOld
+    ): float {
+        similar_text($namaNew, $namaOld, $s1);
+        similar_text($descNew, $descOld, $s2);
+        similar_text($lokasiNew, $lokasiOld, $s3);
+
+        return ($s1 * 0.4) + ($s2 * 0.3) + ($s3 * 0.3);
+    }
+
+    protected function extractName(string $type, array $data): string
     {
-        $existingData = $existingModel->only($fields);
+        return match ($type) {
+            'hewan' => $data['nama_hewan'] ?? '',
+            'barang' => $data['nama_barang'] ?? '',
+            'orang' => $data['nama_orang'] ?? '',
+            default => '',
+        };
+    }
 
-        $prompt = "
-            Kamu adalah AI pendeteksi duplikat laporan hilang.
-            Bandingkan data baru dengan data lama.
+    protected function extractDescription(string $type, array $data): string
+    {
+        return match ($type) {
+            'hewan' => $data['deskripsi_hewan'] ?? '',
+            'barang' => $data['deskripsi_barang'] ?? '',
+            'orang' => $data['deskripsi_orang'] ?? '',
+            default => '',
+        };
+    }
 
-            DATA BARU: " . json_encode($newData, JSON_UNESCAPED_UNICODE) . "
-            DATA LAMA: " . json_encode($existingData, JSON_UNESCAPED_UNICODE) . "
-
-            Jawab hanya JSON:
-            {
-                \"duplicate\": true/false,
-                \"similarity\": 0-100,
-                \"reason\": \"alasan singkat max 10 kata\"
-            }
-        ";
-
-        try {
-            $response = $this->gemini->generateContent($prompt);
-            $result = json_decode($response, true);
-
-            return $result ?: ['duplicate' => false, 'similarity' => 0, 'reason' => 'Gagal parse AI'];
-        } catch (\Exception $e) {
-            \Log::error('Gemini text compare failed: ' . $e->getMessage());
-            return ['duplicate' => false, 'similarity' => 0, 'reason' => 'Error AI'];
-        }
+    protected function fail(string $reason): array
+    {
+        return [
+            'isDuplicate' => false,
+            'similarity' => 0,
+            'reason' => $reason,
+            'existing_id' => null,
+            'existing_report' => null
+        ];
     }
 }

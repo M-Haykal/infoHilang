@@ -21,14 +21,8 @@ class MissingStuffService
         $validated = $this->validateRequest($request);
 
         // CEK DUPLIKAT DULU!
-        $duplicateCheck = $this->duplicateDetection->check(
-            $request,
-            $validated,
-            BarangHilang::class,
-            ['nama_barang', 'deskripsi_barang', 'lokasi_terakhir_dilihat'],
-            0.60,
-            80
-        );
+         $duplicateCheck = $this->duplicateDetection
+            ->check($type, $request->all());
 
         if ($duplicateCheck['isDuplicate']) {
             // Bisa return array atau throw exception

@@ -4,6 +4,8 @@ import Alpine from "alpinejs";
 import Pusher from "pusher-js";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
+import 'select2';
+import 'select2/dist/css/select2.min.css';
 
 window.Pusher = Pusher;
 window.Alpine = Alpine;

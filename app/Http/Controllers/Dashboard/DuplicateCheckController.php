@@ -34,7 +34,7 @@ class DuplicateCheckController extends Controller
                 'fields' => ['nama_hewan', 'jenis_hewan', 'ras', 'warna', 'umur', 'ciri_ciri'],
                 'image_weight' => 0.75,
                 'threshold' => 78,
-                'route' => 'form-hewan-hilang.detail'
+                'route' => 'form-hewan-hilang.store'
             ],
             'barang' => [
                 'model' => BarangHilang::class,
@@ -52,14 +52,8 @@ class DuplicateCheckController extends Controller
         $cfg = $config[$type];
 
         try {
-            $result = $this->duplicateDetection->check(
-                $request,
-                $request->all(),
-                $cfg['model'],
-                $cfg['fields'],
-                $cfg['image_weight'],
-                $cfg['threshold']
-            );
+            $result = $this->duplicateDetection
+                ->check($type, $request->all());
 
             // Tambahkan URL kalau ada laporan mirip
             if ($result['existing_id']) {

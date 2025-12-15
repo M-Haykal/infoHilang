@@ -24,14 +24,8 @@ class MissingPersonService
         $validated = $this->validateRequest($request);
 
         // Cek duplikat dulu
-        $duplicateCheck = $this->duplicateDetection->check(
-            $request,
-            $validated,
-            OrangHilang::class,
-            ['nama_orang', 'deskripsi_orang', 'lokasi_terakhir_dilihat'],
-            0.60,
-            80
-        );
+        $duplicateCheck = $this->duplicateDetection
+            ->check($type, $request->all());
 
         if ($duplicateCheck['isDuplicate']) {
             throw ValidationException::withMessages([

@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
             ->name('hewan.tambah-jenis');
         Route::post('/hewan/tambah-ras', [MissingAnimalController::class, 'tambahRas'])
             ->name('hewan.tambah-ras');
+        Route::post('/form-hewan-hilang', [MissingAnimalController::class, 'store'])->name('form-hewan-hilang.store');
 
         // Komentar routes
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');

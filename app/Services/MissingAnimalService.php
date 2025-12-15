@@ -19,27 +19,22 @@ class MissingAnimalService
         $this->duplicateDetection = $duplicateDetection;
     }
 
-    public function store(Request $request)
+    public function store(Request $request): HewanHilang
     {
         $validated = $this->validateRequest($request);
 
         // Cek duplikat dulu
-        $duplicateCheck = $this->duplicateDetection->check(
-            $request,
-            $validated,
-            HewanHilang::class,
-            ['nama_hewan', 'deskripsi_hewan', 'lokasi_terakhir_dilihat'],
-            0.80,
-            80
-        );
+        $duplicateCheck = $this->duplicateDetection
+            ->check($type, $request->all());
 
         if ($duplicateCheck['isDuplicate']) {
             throw ValidationException::withMessages([
-                'duplicate' => 'Laporan ini terdeteksi sebagai duplikat! '
-                    . 'Kemiripan: ' . $duplicateCheck['similarity'] . '% → '
-                    . $duplicateCheck['reason']
+                'duplicate' =>
+                    'Laporan mirip dengan data sebelumnya (' .
+                    $duplicateCheck['similarity'] . '%)'
             ]);
         }
+
 
         return $this->saveData($request, new HewanHilang(), $validated);
     }
@@ -63,6 +58,7 @@ class MissingAnimalService
         return $request->validate([
             'nama_hewan' => 'required|string|max:255',
             'deskripsi_hewan' => 'nullable|string',
+            'jenis_hewan' => 'required|string|max:100',
             'ras' => 'nullable|string|max:100',
             'jenis_kelamin' => 'required|in:Jantan,Betina',
             'umur' => 'nullable|string|max:100',
@@ -84,7 +80,7 @@ class MissingAnimalService
         ]);
     }
 
-    private function saveData(Request $request, HewanHilang $hewanHilang, array $validated)
+    private function saveData(Request $request, HewanHilang $hewanHilang, array $validated): HewanHilang
     {
         // Format ciri-ciri
         $ciriCiri = [];
@@ -158,7 +154,7 @@ class MissingAnimalService
         // Batasi 5
         $fotoPaths = array_slice($fotoPaths, 0, 5);
 
-        $cleanDescription = Purifier::clean($validated['deskripsi_orang'] ?? '');
+        $cleanDescription = Purifier::clean($validated['deskripsi_hewan'] ?? '');
         $cleanLocation = Purifier::clean($validated['lokasi_terakhir_dilihat'] ?? '');
 
         $hewanHilang->foto = $fotoPaths;
@@ -166,6 +162,7 @@ class MissingAnimalService
         $hewanHilang->fill([
             'nama_hewan' => $validated['nama_hewan'],
             'deskripsi_hewan' => $cleanDescription,
+            'jenis_hewan' => $validated['jenis_hewan'],
             'ras' => $validated['ras'] ?? null,
             'jenis_kelamin' => $validated['jenis_kelamin'],
             'umur' => $validated['umur'] ?? null,
@@ -180,5 +177,7 @@ class MissingAnimalService
             'foto' => $fotoPaths,
             'user_id' => $validated['user_id'],
         ])->save();
+
+        return $hewanHilang;
     }
 }

@@ -8,7 +8,10 @@
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.default.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     @vite(['resources/css/app.css'])
     @stack('style')
 </head>
@@ -25,11 +28,7 @@
                     </h1>
                 </a>
                 <button class="md:hidden p-2 rounded-full hover:bg-gray-200" onclick="toggleSidebar()">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
             <nav class="py-4 overflow-y-auto flex-1">
@@ -37,33 +36,21 @@
                     <li>
                         <a href="{{ route('dashboard') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0l-2-2m2 2V4a1 1 0 00-1-1h-3a1 1 0 00-1 1z" />
-                            </svg>
+                            <i class="fa-regular fa-house"></i>
                             <span class="text-gray-700 md:block hidden">Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('missing') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-4.35-4.35m1.85-5.15a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
+                            <i class="fa-solid fa-magnifying-glass"></i>
                             <span class="text-gray-700 md:block hidden">Hilang</span>
                         </a>
                     </li>
                     <li>
                         <a href="#!"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
+                            <i class="fa-regular fa-flag"></i>
                             <span class="text-gray-700 md:block hidden">Penemu</span>
                         </a>
                     </li>
@@ -77,11 +64,7 @@
             <div class="md:hidden flex justify-between items-center mb-4 bg-secondary shadow">
                 <h1 class="text-xl font-bold text-gray-800">InfoHilang</h1>
                 <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16m-7 6h7" />
-                    </svg>
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
 
@@ -110,6 +93,13 @@
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script src="{{ asset('js/all.js') }}"></script>
+    <script src="{{ asset('js/all.min.js') }}"></script>
 
     @stack('script')
 

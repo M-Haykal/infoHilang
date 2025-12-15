@@ -162,7 +162,7 @@
                 <input type="hidden" name="user_id" value="{{ $userId }}">
 
                 <!-- Submit Button + Cek Duplikat -->
-                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mt-10">
+                <div class="flex flex-col sm:flex-row gap-5 justify-end items-center mt-10">
                     <button type="submit"
                         class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
                         Kirim Laporan

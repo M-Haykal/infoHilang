@@ -3,6 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="description"
+        content="InfoHilang adalah platform kemanusiaan tercepat untuk lapor dan temukan Orang Hilang, Hewan Hilang, dan Barang Hilang. Cepat, Gratis, dan Terhubung!">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -30,7 +32,8 @@
             </a>
 
             <!-- Hamburger Button (Mobile) -->
-            <button id="mobile-menu-button" class="md:hidden focus:outline-none text-primary" aria-label="Toggle mobile menu">
+            <button id="mobile-menu-button" class="md:hidden focus:outline-none text-primary"
+                aria-label="Toggle mobile menu">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"
@@ -43,7 +46,8 @@
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-6">
                 <a href="{{ route('start') }}" class="text-primary hover:text-highlight transition">Beranda</a>
-                <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar Hilang</a>
+                <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar
+                    Hilang</a>
                 <a href="#!" class="text-primary hover:text-highlight transition">Blog</a>
 
                 @auth
@@ -94,11 +98,11 @@
             </div>
 
             <!-- Mobile Menu -->
-            <div id="mobile-menu"
-                class="hidden md:hidden absolute top-16 left-0 w-full bg-accent text-white shadow-md">
+            <div id="mobile-menu" class="hidden md:hidden absolute top-16 left-0 w-full bg-accent text-white shadow-md">
                 <div class="flex flex-col items-center space-y-4 py-4">
                     <a href="{{ route('start') }}" class="text-primary hover:text-highlight transition">Beranda</a>
-                    <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar Hilang</a>
+                    <a href="{{ route('list-missing') }}" class="text-primary hover:text-highlight transition">Daftar
+                        Hilang</a>
                     <a href="#!" class="text-primary hover:text-highlight transition">Blog</a>
                     @auth
                         <div class="w-full px-4">

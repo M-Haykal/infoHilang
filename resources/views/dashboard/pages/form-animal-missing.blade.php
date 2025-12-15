@@ -21,7 +21,8 @@
             </div>
         @endif
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
-            <form action="" method="POST" enctype="multipart/form-data" data-confirm-save>
+            <form action="{{ route('form-hewan-hilang.store') }}" method="POST" enctype="multipart/form-data"
+                data-confirm-save>
                 @csrf
 
                 <!-- Nama Hewan -->
@@ -55,7 +56,7 @@
                         </label>
 
                         <select id="jenis_hewan_select"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary">
+                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary jenis_hewan">
                             <option value="">Pilih jenis hewan</option>
                             @foreach ($jenisHewan as $j)
                                 <option value="{{ $j }}">{{ $j }}</option>
@@ -217,12 +218,12 @@
                 <!-- Tombol Submit + Cek Duplikat -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-end items-center mt-8">
                     <button type="submit"
-                        class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
+                        class="px-10 py-4 bg-success text-secondary font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
                         Kirim Laporan
                     </button>
 
                     <button type="button" id="check-duplicate-btn" data-type="hewan"
-                        class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center gap-3 text-lg">
+                        class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-secondary font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center gap-3 text-lg">
                         Cek Duplikat dengan AI
                     </button>
                 </div>
@@ -235,6 +236,18 @@
 @push('script')
     <script>
         const rasHewan = @json($rasHewan);
+
+        // $(document).ready(function() {
+        //     $('#jenis_hewan_select').select2({
+        //         placeholder: "Pilih jenis hewan",
+        //         width: '100%'
+        //     });
+
+        //     $('#ras_select').select2({
+        //         placeholder: "Pilih ras hewan",
+        //         width: '100%'
+        //     });
+        // });
 
         document.getElementById('jenis_hewan_select').addEventListener('change', function() {
             const jenis = this.value;
@@ -249,7 +262,7 @@
             const hint = document.getElementById('ras-hint');
 
             rasSelect.innerHTML = '<option value="">Pilih ras</option>';
-            rasSelect.disabled = true;
+            $('#ras_select').prop('disabled', false).trigger('change.select2');
             tambahRasBtn.disabled = true;
             inputContainer.classList.add('hidden');
 
@@ -305,7 +318,10 @@
                     if (res.success) {
                         const opt = new Option(rasBaru, rasBaru, true, true);
                         document.getElementById('ras_select').add(opt);
-                        document.getElementById('ras_select').disabled = false;
+                        const rasSelect = document.getElementById('ras_select');
+                        if (rasSelect.disabled) {
+                            rasSelect.disabled = false;
+                        }
                         document.getElementById('input-ras-baru-container').classList.add('hidden');
                         document.getElementById('ras_baru_input').value = '';
 

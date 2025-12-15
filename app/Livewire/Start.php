@@ -19,7 +19,7 @@ class Start extends Component
             'barangHilang' => $barangHilang,
             'hewanHilang' => $hewanHilang,
             'orangHilang' => $orangHilang,
-        ])->layout('layouts.index')->title('InfoHilang');
+        ])->layout('layouts.index')->title('InfoHilang - Platform Lapor & Temukan Orang, Hewan, Barang Hilang');
     }
 }
 

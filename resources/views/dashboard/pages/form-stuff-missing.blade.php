@@ -11,7 +11,7 @@
         </header>
 
         @if ($errors->has('duplicate'))
-            <div class="mb-6 p-5 bg-red-100 border-l-4 border-red-500 text-red-800 rounded-r-lg">
+            <div class="mb-6 p-5 bg-danger/100 border-l-4 border-danger/500 text-danger/800 rounded-r-lg">
                 <div class="flex items-center gap-3">
                     <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
@@ -163,7 +163,7 @@
                 <input type="hidden" name="user_id" value="{{ $userId }}">
 
                 <!-- Submit Button + Cek Duplikat -->
-                <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mt-10">
+                <div class="flex flex-col sm:flex-row gap-5 justify-end items-center mt-10">
                     <button type="submit"
                         class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg">
                         Kirim Laporan

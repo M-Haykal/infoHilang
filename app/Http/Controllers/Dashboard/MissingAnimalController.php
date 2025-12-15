@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\MissingAnimalService;
+use Illuminate\Validation\ValidationException;
 
 class MissingAnimalController extends Controller
 {
@@ -108,25 +109,18 @@ class MissingAnimalController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function checkDuplicate(Request $request, MissingAnimalService $service)
+    public function store(Request $request, MissingAnimalService $service)
     {
-        try {
-            $duplicateCheck = $service->checkForDuplicates($request, $request->all());
 
-            return response()->json([
-                'isDuplicate' => $duplicateCheck['isDuplicate'],
-                'similarity' => $duplicateCheck['similarity'],
-                'reason' => $duplicateCheck['reason'],
-                'existing_report' => $duplicateCheck['existing_id'] ? [
-                    'url' => route('hewan.show', $duplicateCheck['existing_id'])
-                ] : null
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'isDuplicate' => false,
-                'similarity' => 0,
-                'reason' => 'Gagal cek duplikat'
-            ], 500);
+        dd($request->all());
+        try {
+            $this->missingAnimalService = $service->store($request);
+            return redirect()->back()
+                ->with('success', 'Laporan hewan hilang berhasil dibuat!');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
         }
     }
 }
