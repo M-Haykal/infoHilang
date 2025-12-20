@@ -8,6 +8,7 @@ use Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Events\CommentCreated;
 
 class CommentarService
 {
@@ -46,13 +47,17 @@ class CommentarService
             ]);
         }
 
-        return Comentar::create([
+        $comment = Comentar::create([
             'content' => $validated['content'],
             'user_id' => Auth::id(),
             'parent_id' => $validated['parent_id'] ?? null,
             'foundable_type' => $foundableType,
             'foundable_id' => $foundableId,
         ]);
+
+        broadcast(new CommentCreated($comment))->toOthers();
+
+        return $comment;
     }
 
     public function update(Request $request, Comentar $comentar)

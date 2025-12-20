@@ -6,6 +6,13 @@
         </p>
     </div>
 
+    <!-- MAP SECTION -->
+    <div class="px-4 mt-6">
+        <h1 class="text-3xl font-black">Peta</h1>
+        <p class="">Laporan hilang di sekitarmu</p>
+        <div id="map" wire:ignore class="w-full h-64 mt-4 rounded-lg shadow-inner border mb-6 z-[-1]"></div>
+    </div>
+
     <!-- SearchBar -->
     <div class="px-4 py-3">
         <label class="flex flex-col min-w-40 h-14 w-full">
@@ -182,3 +189,55 @@
         </div>
     </div>
 </div>
+
+@push('script')
+    <script>
+        let map;
+        let markers = [];
+
+        document.addEventListener('livewire:init', () => {
+            navigator.geolocation.getCurrentPosition(pos => {
+                Livewire.dispatch('setUserLocation', [
+                    pos.coords.latitude,
+                    pos.coords.longitude
+                ]);
+
+                map = L.map('map').setView(
+                    [pos.coords.latitude, pos.coords.longitude],
+                    14
+                );
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+                    .addTo(map);
+
+                L.marker([pos.coords.latitude, pos.coords.longitude])
+                    .addTo(map)
+                    .bindPopup('Lokasi Anda')
+                    .openPopup();
+
+                const radiusKm = 5; // ubah ke 1–5 sesuai kebutuhan
+                const radiusMeter = radiusKm * 1000;
+
+                window.radiusCircle = L.circle([pos.coords.latitude, pos.coords.longitude], {
+                    radius: radiusMeter,
+                    color: '#2563eb',
+                    fillColor: '#3b82f6',
+                    fillOpacity: 0.15,
+                    weight: 2
+                }).addTo(map);
+            });
+        });
+
+        Livewire.on('refreshMap', reports => {
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
+
+            reports.forEach(r => {
+                const marker = L.marker([r.lat, r.lng])
+                    .addTo(map)
+                    .bindPopup(`${r.type} • ${r.distance} km`);
+                markers.push(marker);
+            });
+        });
+    </script>
+@endpush

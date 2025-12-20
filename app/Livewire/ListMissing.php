@@ -13,11 +13,18 @@ class ListMissing extends Component
 {
     use WithPagination;
 
+    public $userLat;
+    public $userLng;
+    public $radius = 5;
+    public $mapReports = [];
+
     public string $search = '';
     public string $status = 'Hilang';
     public string $kategori = '';
     public string $lokasi = '';
     public string $date = '';
+
+    protected $listeners = ['setUserLocation'];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -90,6 +97,7 @@ class ListMissing extends Component
             ['path' => request()->url(), 'query' => request()->query()]
         );
 
+        $this->loadMapReports();
         return view('livewire.list-missing', compact('reports'))
             ->layout('layouts.index')
             ->title('Daftar Hilang | InfoHilang');
@@ -179,4 +187,66 @@ class ListMissing extends Component
             }
         }
     }
+
+    public function setUserLocation($lat, $lng)
+    {
+        $this->userLat = $lat;
+        $this->userLng = $lng;
+
+        $this->loadMapReports();
+    }
+
+    private function loadMapReports()
+    {
+        if (!$this->userLat || !$this->userLng)
+            return;
+
+        $all = collect()
+            ->merge($this->getBarangQuery()->get())
+            ->merge($this->getHewanQuery()->get())
+            ->merge($this->getOrangQuery()->get());
+
+        $this->mapReports = $all
+            ->filter(fn($item) => $item->latitude && $item->longitude)
+            ->map(function ($item) {
+                $distance = $this->distanceKm(
+                    $this->userLat,
+                    $this->userLng,
+                    $item->latitude,
+                    $item->longitude
+                );
+
+                if ($distance > $this->radius)
+                    return null;
+
+                return [
+                    'id' => $item->id,
+                    'lat' => $item->latitude,
+                    'lng' => $item->longitude,
+                    'type' => class_basename($item),
+                    'distance' => round($distance, 2),
+                ];
+            })
+            ->filter()
+            ->values()
+            ->toArray();
+
+        $this->dispatch('refreshMap', $this->mapReports);
+    }
+
+    private function distanceKm($lat1, $lon1, $lat2, $lon2)
+    {
+        $earthRadius = 6371;
+
+        $dLat = deg2rad($lat2 - $lat1);
+        $dLon = deg2rad($lon2 - $lon1);
+
+        $a = sin($dLat / 2) ** 2 +
+            cos(deg2rad($lat1)) *
+            cos(deg2rad($lat2)) *
+            sin($dLon / 2) ** 2;
+
+        return $earthRadius * 2 * asin(sqrt($a));
+    }
+
 }

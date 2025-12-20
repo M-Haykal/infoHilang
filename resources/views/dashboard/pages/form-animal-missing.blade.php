@@ -11,15 +11,33 @@
         </header>
 
         <!-- Form Container -->
-        @if ($errors->any())
-            <div class="bg-red-100 text-red-700 p-4 rounded mb-6">
-                <ul class="list-disc pl-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if (session('success'))
+            <div id="toast-success"
+                class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800 duration-300 ease-in-out"
+                role="alert">
+                <div
+                    class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-success/500 bg-success/100 rounded-lg dark:bg-success/800 dark:text-success/200">
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                        viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                    </svg>
+                    <span class="sr-only">Check icon</span>
+                </div>
+                <div class="ml-3 text-sm font-normal">{{ session('success') }}</div>
+                <button type="button"
+                    class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                    data-dismiss-target="#toast-success" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
             </div>
         @endif
+
         <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8" data-aos="fade-up" data-aos-delay="100">
             <form action="{{ route('form-hewan-hilang.store') }}" method="POST" enctype="multipart/form-data"
                 data-confirm-save>
@@ -50,18 +68,26 @@
 
                 <div class="grid grid-cols-2 gap-4">
                     <!-- Jenis Hewan -->
-                    <div class="mb-6">
+                    <div class="w-full mb-6">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                            Jenis Hewan <span class="text-red-500">*</span>
+                            Jenis Hewan <span class="text-danger/500">*</span>
                         </label>
 
-                        <select id="jenis_hewan_select"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary jenis_hewan">
-                            <option value="">Pilih jenis hewan</option>
-                            @foreach ($jenisHewan as $j)
-                                <option value="{{ $j }}">{{ $j }}</option>
-                            @endforeach
-                        </select>
+                        <div class="relative">
+                            <select
+                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+                                id="jenis_hewan_select">
+                                <option value="">Pilih jenis hewan</option>
+                                @foreach ($jenisHewan as $j)
+                                    <option value="{{ $j }}">{{ $j }}</option>
+                                @endforeach
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                            </svg>
+                        </div>
 
                         <div class="mt-2">
                             <span class="text-sm text-gray-500">Tidak ada di daftar?</span>
@@ -73,14 +99,25 @@
                     </div>
 
                     <!-- Jenis Kelamin -->
-                    <div class="mb-6">
+                    <div class="w-full mb-6">
                         <label class="block text-sm font-semibold text-gray-700 mb-2">Jenis Kelamin <span
-                                class="text-red-500">*</span></label>
-                        <select name="jenis_kelamin" class="w-full px-4 py-3 border rounded-lg" required>
-                            <option value="" disabled selected>Pilih jenis kelamin</option>
-                            <option value="Jantan" {{ old('jenis_kelamin') == 'Jantan' ? 'selected' : '' }}>Jantan</option>
-                            <option value="Betina" {{ old('jenis_kelamin') == 'Betina' ? 'selected' : '' }}>Betina</option>
-                        </select>
+                                class="text-danger/500">*</span></label>
+
+                        <div class="relative">
+                            <select
+                                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                                <option value="" disabled selected>Pilih jenis kelamin</option>
+                                <option value="Jantan" {{ old('jenis_kelamin') == 'Jantan' ? 'selected' : '' }}>Jantan
+                                </option>
+                                <option value="Betina" {{ old('jenis_kelamin') == 'Betina' ? 'selected' : '' }}>Betina
+                                </option>
+                            </select>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                            </svg>
+                        </div>
                     </div>
                 </div>
 
@@ -101,7 +138,7 @@
 
                 <div class="mb-6" id="ras-container">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
-                        Ras Hewan <span class="text-red-500">*</span>
+                        Ras Hewan <span class="text-danger/500">*</span>
                     </label>
 
                     <!-- Hint awal -->
@@ -109,9 +146,18 @@
                         Pilih jenis hewan terlebih dahulu untuk mengaktifkan pilihan ras.
                     </p>
 
-                    <select name="ras" id="ras_select" class="w-full px-4 py-3 border rounded-lg" disabled>
-                        <option value="">Pilih ras</option>
-                    </select>
+                    <div class="relative">
+                        <select name="ras" id="ras_select"
+                            class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer""
+                            disabled>
+                            <option value="">Pilih ras</option>
+                        </select>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                            stroke="currentColor" class="h-5 w-5 ml-1 absolute top-2.5 right-2.5 text-slate-700">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                        </svg>
+                    </div>
 
                     <div class="mt-2">
                         <span class="text-sm text-gray-500">Tidak ada di daftar?</span>
@@ -193,6 +239,16 @@
                     </div>
                 </div>
 
+                <!-- Timeline First Aid -->
+                <div id="first-aid-container" class="mb-6 hidden">
+                    <h3 class="text-lg font-bold text-accent/800 mb-3">
+                        Langkah Pertolongan Pertama
+                    </h3>
+
+                    <ul id="first-aid-list" class="space-y-3 border-l-2 border-success pl-4">
+                    </ul>
+                </div>
+
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                     <div>
                         <label for="tanggal_terakhir_dilihat" class="block text-sm font-semibold text-gray-700 mb-2">
@@ -213,8 +269,6 @@
                 <!-- Foto Upload -->
                 @include('dashboard.components.photo', ['foto' ?? []])
 
-                <input type="hidden" name="user_id" value="{{ $userId }}">
-
                 <!-- Tombol Submit + Cek Duplikat -->
                 <div class="flex flex-col sm:flex-row gap-4 justify-end items-center mt-8">
                     <button type="submit"
@@ -224,7 +278,7 @@
 
                     <button type="button" id="check-duplicate-btn" data-type="hewan"
                         class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-secondary font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center gap-3 text-lg">
-                        Cek Duplikat dengan AI
+                        Cek Duplikat Laporan
                     </button>
                 </div>
             </form>
@@ -236,23 +290,49 @@
 @push('script')
     <script>
         const rasHewan = @json($rasHewan);
+        const firstAidSteps = @json($firstAidSteps);
 
-        // $(document).ready(function() {
-        //     $('#jenis_hewan_select').select2({
-        //         placeholder: "Pilih jenis hewan",
-        //         width: '100%'
-        //     });
+        function renderFirstAid(jenis) {
+            const container = document.getElementById('first-aid-container');
+            const list = document.getElementById('first-aid-list');
 
-        //     $('#ras_select').select2({
-        //         placeholder: "Pilih ras hewan",
-        //         width: '100%'
-        //     });
-        // });
+            list.innerHTML = '';
+
+            if (!jenis) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            const steps = firstAidSteps[jenis] ?? firstAidSteps['Default'] ?? [];
+
+            if (steps.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            steps.forEach((step, index) => {
+                const li = document.createElement('li');
+                li.className = 'relative pl-4';
+
+                li.innerHTML = `
+                    <span class="absolute -left-3 top-1 w-6 h-6 bg-success text-white rounded-full flex items-center justify-center text-sm">
+                        ${index + 1}
+                    </span>
+                    <p class="text-gray-700">${step}</p>
+                `;
+
+                list.appendChild(li);
+            });
+
+            container.classList.remove('hidden');
+        }
+
 
         document.getElementById('jenis_hewan_select').addEventListener('change', function() {
             const jenis = this.value;
             document.getElementById('jenis_hewan_final').value = jenis;
             updateRasSection(jenis);
+            renderFirstAid(jenis);
         });
 
         function updateRasSection(jenis) {

@@ -5,13 +5,15 @@
     <meta charset="UTF-8">
     <meta name="description"
         content="InfoHilang adalah platform kemanusiaan tercepat untuk lapor dan temukan Orang Hilang, Hewan Hilang, dan Barang Hilang. Cepat, Gratis, dan Terhubung!">
+    <meta name="theme-color" content="#ffd57d">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'InfoHilang' }}</title>
     @stack('style')
+    @livewireStyles
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     {{-- Font Awesome --}}
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
@@ -20,7 +22,7 @@
 
 <body class="min-h-screen flex flex-col bg-accent font-sans">
     @include('components.loading')
-    <nav class="bg-secondary text-white shadow-md fixed w-full z-50">
+    <nav class="bg-secondary text-white shadow-md fixed w-full z-30">
         <div class="container mx-auto px-6 py-3 flex justify-between items-center">
             <!-- Logo -->
             <a href="{{ route('start') }}" class="text-2xl font-bold flex items-center">
@@ -247,10 +249,15 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('script')
     <script src="{{ asset('js/start.js') }}"></script>
+    <!-- Leaflet Maps -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     {{-- Font Awesome --}}
     <script src="{{ asset('js/all.js') }}"></script>
     <script src="{{ asset('js/all.min.js') }}"></script>
+
+    @livewireScripts
+
 </body>
 
 </html>

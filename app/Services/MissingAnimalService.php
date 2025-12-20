@@ -9,6 +9,7 @@ use App\Services\GeminiConnectService;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 use App\Services\DuplicateDetectionService;
+use Illuminate\Support\Facades\Auth;
 
 class MissingAnimalService
 {
@@ -34,7 +35,6 @@ class MissingAnimalService
                     $duplicateCheck['similarity'] . '%)'
             ]);
         }
-
 
         return $this->saveData($request, new HewanHilang(), $validated);
     }
@@ -159,6 +159,8 @@ class MissingAnimalService
 
         $hewanHilang->foto = $fotoPaths;
 
+        $userId = Auth::id();
+
         $hewanHilang->fill([
             'nama_hewan' => $validated['nama_hewan'],
             'deskripsi_hewan' => $cleanDescription,
@@ -175,7 +177,7 @@ class MissingAnimalService
             'tanggal_terakhir_dilihat' => $validated['tanggal_terakhir_dilihat'] ?? null,
             'status' => $validated['status'],
             'foto' => $fotoPaths,
-            'user_id' => $validated['user_id'],
+            'user_id' => $userId,
         ])->save();
 
         return $hewanHilang;

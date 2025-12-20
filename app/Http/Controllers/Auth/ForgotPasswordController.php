@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use App\Mail\SendEmailResetPassword;
 use Illuminate\Support\Facades\Mail;
+use App\Jobs\SendEmailResetPasswordJob;
 
 class ForgotPasswordController extends Controller
 {
@@ -39,7 +40,7 @@ class ForgotPasswordController extends Controller
         }
 
         $token = Password::createToken($user);
-        Mail::to($user->email)->send(new SendEmailResetPassword($token, $user));
+        dispatch(new SendEmailResetPasswordJob($user, $token));
 
         return back()->with('success', 'Link reset password telah dikirim ke email Anda.');
 

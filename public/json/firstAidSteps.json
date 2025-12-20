@@ -1,0 +1,34 @@
+{
+  "Kucing": [
+    "Periksa kolong tempat tidur, sofa, dan lemari",
+    "Taruh kotak pasir atau alas tidur di luar rumah",
+    "Panggil nama kucing dengan suara pelan",
+    "Cek CCTV atau area sekitar rumah",
+    "Tanya tetangga kiri dan kanan"
+  ],
+  "Anjing": [
+    "Cari di area pagar dan pintu terbuka",
+    "Panggil nama anjing dengan suara familiar",
+    "Sebar pakaian dengan bau pemilik",
+    "Periksa area taman atau lapangan terdekat",
+    "Hubungi RT/RW sekitar"
+  ],
+  "Burung": [
+    "Periksa kandang dan area gantungan",
+    "Putar suara burung sejenis",
+    "Cari di pohon atau kabel sekitar rumah",
+    "Tanya tetangga yang memelihara burung"
+  ],
+  "Hamster": [
+    "Periksa sela lemari dan bawah kulkas",
+    "Letakkan makanan favorit sebagai umpan",
+    "Cari di area gelap dan sempit",
+    "Tutup pintu dan ventilasi"
+  ],
+  "Default": [
+    "Tetap tenang dan fokus",
+    "Catat waktu terakhir terlihat",
+    "Cari di area terdekat terlebih dahulu",
+    "Hubungi orang sekitar"
+  ]
+}

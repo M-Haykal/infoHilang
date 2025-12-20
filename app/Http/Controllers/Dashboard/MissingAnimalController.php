@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use App\Services\MissingAnimalService;
 use Illuminate\Validation\ValidationException;
 
@@ -12,35 +11,35 @@ class MissingAnimalController extends Controller
 {
     public function index()
     {
-        $userId = Auth::id();
-
         $jenisPath = public_path('json/animals.json');
         $rasPath = public_path('json/race_animal.json');
+        $firstAidPath = public_path('json/firstAidSteps.json');
 
-        if (!file_exists($jenisPath) || !file_exists($rasPath)) {
+        if (!file_exists($jenisPath) || !file_exists($rasPath) || !file_exists($firstAidPath)) {
             return view('dashboard.pages.form-animal-missing', [
                 'jenisHewan' => [],
                 'rasHewan' => [],
-                'userId' => $userId,
+                'firstAidSteps' => [],
                 'error' => 'File JSON tidak ditemukan.'
             ]);
         }
 
         $jenisHewan = json_decode(file_get_contents($jenisPath), true);
         $rasHewan = json_decode(file_get_contents($rasPath), true);
+        $firstAidSteps = json_decode(file_get_contents($firstAidPath), true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
             return view('dashboard.pages.form-animal-missing', [
                 'jenisHewan' => [],
                 'rasHewan' => [],
-                'userId' => $userId,
+                'firstAidSteps' => [],
                 'error' => 'Format JSON rusak.'
             ]);
         }
 
         sort($jenisHewan);
 
-        return view('dashboard.pages.form-animal-missing', compact('userId', 'jenisHewan', 'rasHewan'));
+        return view('dashboard.pages.form-animal-missing', compact('jenisHewan', 'rasHewan', 'firstAidSteps'));
     }
 
     // Di controller
