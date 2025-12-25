@@ -5,45 +5,33 @@
 @section('content')
     <div class="space-y-6">
         <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Daftar Laporan Hilang, {{ Auth::user()->username }}!</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto">Pantau dan kelola laporan kehilangan anda disini dengan mudah.</p>
+            <h1 class="text-3xl font-bold text-accent/800 mb-2">Daftar Laporan Hilang, {{ Auth::user()->username }}!</h1>
+            <p class="text-accent/600 max-w-2xl mx-auto">Pantau dan kelola laporan kehilangan anda disini dengan mudah.</p>
         </header>
 
         <section class="menu-history-hilang max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <!-- Tab Headers -->
-                <div class="flex flex-col sm:flex-row justify-between border-b border-gray-200">
-                    <h2 class="text-xl font-semibold text-gray-800 p-6 pb-0">Histori Laporan</h2>
+                <div class="flex flex-col sm:flex-row justify-between border-b border-accent/200">
+                    <h2 class="text-xl font-semibold text-accent/800 p-6 pb-0">Histori Laporan</h2>
 
                     <div class="flex space-x-1 sm:space-x-2 p-2">
                         <button
                             class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm rounded-lg transition-all duration-300 active bg-primary/10 text-primary"
                             data-tab="tab1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                            </svg>
+                            <i class="fa-solid fa-box mr-2"></i>
                             Barang Hilang
                         </button>
                         <button
-                            class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm rounded-lg transition-all duration-300 text-gray-500 hover:bg-gray-100"
+                            class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm rounded-lg transition-all duration-300 text-accent/500 hover:bg-accent/100"
                             data-tab="tab2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
+                            <i class="fa-solid fa-user mr-2"></i>
                             Orang Hilang
                         </button>
                         <button
-                            class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm rounded-lg transition-all duration-300 text-gray-500 hover:bg-gray-100"
+                            class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm rounded-lg transition-all duration-300 text-accent/500 hover:bg-accent/100"
                             data-tab="tab3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                            </svg>
+                            <i class="fa-solid fa-paw mr-2"></i>
                             Hewan Hilang
                         </button>
                     </div>
@@ -54,7 +42,7 @@
                     <!-- Barang Hilang Tab -->
                     <div id="tab1" class="tab-pane active">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Barang Hilang</h3>
+                            <h3 class="text-xl font-semibold text-accent/800">Barang Hilang</h3>
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {{ $missingItems->count() }} item
                             </span>
@@ -63,17 +51,17 @@
                         <div class="space-y-4">
                             @forelse ($missingItems as $item)
                                 <div
-                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300">
+                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-accent/50 rounded-lg border border-accent/200 hover:shadow-md transition-all duration-300">
                                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
                                         <div class="flex-shrink-0">
                                             <img src="{{ asset('storage/' . ($item->foto[0] ?? 'default.jpg')) }}"
                                                 alt="Barang"
-                                                class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                                                class="w-16 h-16 object-cover rounded-lg border border-accent/200">
                                         </div>
                                         <div>
-                                            <h4 class="font-semibold text-gray-800 text-lg">{{ $item->nama_barang }}</h4>
+                                            <h4 class="font-semibold text-accent/800 text-lg">{{ $item->nama_barang }}</h4>
                                             <div class="flex flex-wrap gap-2 mt-1">
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -84,7 +72,7 @@
                                                     </svg>
                                                     {{ $item->lokasi_terakhir_dilihat }}
                                                 </span>
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -155,15 +143,15 @@
                                 </div>
                             @empty
                                 <div class="text-center py-12">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-accent/400"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                                     </svg>
-                                    <h3 class="mt-4 text-lg font-medium text-gray-900">Belum ada laporan barang hilang</h3>
-                                    <p class="mt-1 text-gray-500">Anda belum membuat laporan barang hilang.</p>
+                                    <h3 class="mt-4 text-lg font-medium text-accent/900">Belum ada laporan barang hilang</h3>
+                                    <p class="mt-1 text-accent/500">Anda belum membuat laporan barang hilang.</p>
                                     <div class="mt-6">
-                                        <a href=""
+                                        <a href="{{ route('form-barang-hilang') }}"
                                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                             Buat Laporan Baru
                                         </a>
@@ -182,7 +170,7 @@
                     <!-- Orang Hilang Tab -->
                     <div id="tab2" class="tab-pane hidden">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Orang Hilang</h3>
+                            <h3 class="text-xl font-semibold text-accent/800">Orang Hilang</h3>
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {{ $missingPersons->count() }} item
                             </span>
@@ -191,18 +179,18 @@
                         <div class="space-y-4">
                             @forelse ($missingPersons as $missingPerson)
                                 <div
-                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300">
+                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-accent/50 rounded-lg border border-accent/200 hover:shadow-md transition-all duration-300">
                                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
                                         <div class="flex-shrink-0">
                                             <img src="{{ asset('storage/' . ($missingPerson->foto[0] ?? 'default.jpg')) }}"
                                                 alt="Orang"
-                                                class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                                                class="w-16 h-16 object-cover rounded-lg border border-accent/200">
                                         </div>
                                         <div>
-                                            <h4 class="font-semibold text-gray-800 text-lg">
+                                            <h4 class="font-semibold text-accent/800 text-lg">
                                                 {{ $missingPerson->nama_orang }}</h4>
                                             <div class="flex flex-wrap gap-2 mt-1">
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -213,7 +201,7 @@
                                                     </svg>
                                                     {{ $missingPerson->lokasi_terakhir_dilihat }}
                                                 </span>
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -293,15 +281,15 @@
                                 </div>
                             @empty
                                 <div class="text-center py-12">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-accent/400"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                     </svg>
-                                    <h3 class="mt-4 text-lg font-medium text-gray-900">Belum ada laporan orang hilang</h3>
-                                    <p class="mt-1 text-gray-500">Anda belum membuat laporan orang hilang.</p>
+                                    <h3 class="mt-4 text-lg font-medium text-accent/900">Belum ada laporan orang hilang</h3>
+                                    <p class="mt-1 text-accent/500">Anda belum membuat laporan orang hilang.</p>
                                     <div class="mt-6">
-                                        <a href=""
+                                        <a href="{{ route('form-orang-hilang') }}"
                                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                             Buat Laporan Baru
                                         </a>
@@ -320,7 +308,7 @@
                     <!-- Hewan Hilang Tab -->
                     <div id="tab3" class="tab-pane hidden">
                         <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-xl font-semibold text-gray-800">Hewan Hilang</h3>
+                            <h3 class="text-xl font-semibold text-accent/800">Hewan Hilang</h3>
                             <span class="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                                 {{ $missingAnimals->count() }} item
                             </span>
@@ -329,18 +317,18 @@
                         <div class="space-y-4">
                             @forelse ($missingAnimals as $missingAnimal)
                                 <div
-                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-200 hover:shadow-md transition-all duration-300">
+                                    class="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-accent/50 rounded-lg border border-accent/200 hover:shadow-md transition-all duration-300">
                                     <div class="flex items-center space-x-4 mb-4 sm:mb-0">
                                         <div class="flex-shrink-0">
                                             <img src="{{ asset('storage/' . ($missingAnimal->foto[0] ?? 'default.jpg')) }}"
                                                 alt="Hewan"
-                                                class="w-16 h-16 object-cover rounded-lg border border-gray-200">
+                                                class="w-16 h-16 object-cover rounded-lg border border-accent/200">
                                         </div>
                                         <div>
-                                            <h4 class="font-semibold text-gray-800 text-lg">
+                                            <h4 class="font-semibold text-accent/800 text-lg">
                                                 {{ $missingAnimal->nama_hewan }}</h4>
                                             <div class="flex flex-wrap gap-2 mt-1">
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -351,7 +339,7 @@
                                                     </svg>
                                                     {{ $missingAnimal->lokasi_terakhir_dilihat }}
                                                 </span>
-                                                <span class="inline-flex items-center text-sm text-gray-600">
+                                                <span class="inline-flex items-center text-sm text-accent/600">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1"
                                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -431,15 +419,15 @@
                                 </div>
                             @empty
                                 <div class="text-center py-12">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-gray-400"
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-accent/400"
                                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
                                     </svg>
-                                    <h3 class="mt-4 text-lg font-medium text-gray-900">Belum ada laporan hewan hilang</h3>
-                                    <p class="mt-1 text-gray-500">Anda belum membuat laporan hewan hilang.</p>
+                                    <h3 class="mt-4 text-lg font-medium text-accent/900">Belum ada laporan hewan hilang</h3>
+                                    <p class="mt-1 text-accent/500">Anda belum membuat laporan hewan hilang.</p>
                                     <div class="mt-6">
-                                        <a href=""
+                                        <a href="{{ route('form-hewan-hilang') }}"
                                             class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
                                             Buat Laporan Baru
                                         </a>
@@ -492,12 +480,12 @@
                 // Remove active class from all buttons
                 document.querySelectorAll('.tab-button').forEach(btn => {
                     btn.classList.remove('active', 'bg-primary/10', 'text-primary');
-                    btn.classList.add('text-gray-500');
+                    btn.classList.add('text-accent/500');
                 });
 
                 // Add active class to clicked button
                 button.classList.add('active', 'bg-primary/10', 'text-primary');
-                button.classList.remove('text-gray-500');
+                button.classList.remove('text-accent/500');
 
                 // Hide all tab panes
                 document.querySelectorAll('.tab-pane').forEach(pane => {

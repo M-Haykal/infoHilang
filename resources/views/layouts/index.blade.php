@@ -257,7 +257,6 @@
     <script src="{{ asset('js/all.min.js') }}"></script>
 
     @livewireScripts
-
 </body>
 
 </html>
