@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 </head>
 
 <body class="min-h-screen flex flex-col bg-accent font-sans">
