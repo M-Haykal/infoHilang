@@ -2,24 +2,83 @@
 @push('script')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        title: 'Form Tidak Valid',
+                        icon: 'error',
+                        html: `
+                <ul class="text-left list-disc pl-5 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            `,
+                        confirmButtonText: 'Perbaiki',
+                        confirmButtonColor: '#ef4444'
+                    });
+                });
+            @endif
+
+            if (umur && isNaN(umur.value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Input Tidak Valid',
+                    text: 'Umur harus berupa angka.'
+                });
+                umur.focus();
+                return;
+            }
+
             // 🔸 Konfirmasi Hapus
-            document.querySelectorAll('[data-confirm-delete]').forEach(form => {
+            document.querySelectorAll('[data-confirm-save]').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
+
+                    const requiredFields = form.querySelectorAll('[required]');
+                    let emptyFields = [];
+
+                    requiredFields.forEach(field => {
+                        if (!field.value || field.value.trim() === '') {
+                            emptyFields.push(field);
+                            field.classList.add('border-danger');
+                        } else {
+                            field.classList.remove('border-danger');
+                        }
+                    });
+
+                    if (emptyFields.length > 0) {
+                        Swal.fire({
+                            title: 'Form Belum Lengkap',
+                            text: 'Mohon lengkapi semua field yang wajib diisi.',
+                            icon: 'warning',
+                            confirmButtonText: 'Oke',
+                            confirmButtonColor: '#f59e0b'
+                        });
+
+                        emptyFields[0].scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        emptyFields[0].focus();
+                        return;
+                    }
+
                     Swal.fire({
-                        title: 'Hapus Laporan?',
-                        text: "Data ini akan dihapus permanen dan tidak bisa dikembalikan!",
-                        icon: 'warning',
+                        title: 'Simpan Data?',
+                        text: "Apakah Anda yakin ingin menyimpan data ini?",
+                        icon: 'question',
                         showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya, Hapus!',
+                        confirmButtonColor: '#10b981',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, Simpan!',
                         cancelButtonText: 'Batal'
                     }).then((result) => {
-                        if (result.isConfirmed) this.submit();
+                        if (result.isConfirmed) form.submit();
                     });
                 });
             });
+
 
             // 🔸 Konfirmasi Simpan
             document.querySelectorAll('[data-confirm-save]').forEach(form => {

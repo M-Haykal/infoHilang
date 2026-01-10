@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     element: "#dashboard",
                     intro: "Ini adalah halaman dashboard utama Anda. Dengan berbagai menu dan informasi penting.",
                 },
+                { 
+                    title: "Memperluas Tampilan",
+                    element: "#fullscreen-button",
+                    intro: "Klik tombol ini untuk memperluas tampilan dashboard ke layar penuh.",
+                },
                 {
                     title: "Keterangan Barang Hilang",
                     element: "#missing-stuff-card",

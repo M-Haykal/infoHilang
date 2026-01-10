@@ -9,11 +9,19 @@ use Illuminate\Validation\ValidationException;
 
 class MissingAnimalController extends Controller
 {
+    protected $missingAnimalService;
+
+    public function __construct(MissingAnimalService $missingAnimalService)
+    {
+        $this->missingAnimalService = $missingAnimalService;
+    }
+
     public function index()
     {
         $jenisPath = public_path('json/animals.json');
         $rasPath = public_path('json/race_animal.json');
         $firstAidPath = public_path('json/firstAidSteps.json');
+        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Instagram', 'Facebook', 'Twitter'];
 
         if (!file_exists($jenisPath) || !file_exists($rasPath) || !file_exists($firstAidPath)) {
             return view('dashboard.pages.form-animal-missing', [
@@ -39,7 +47,7 @@ class MissingAnimalController extends Controller
 
         sort($jenisHewan);
 
-        return view('dashboard.pages.form-animal-missing', compact('jenisHewan', 'rasHewan', 'firstAidSteps'));
+        return view('dashboard.pages.form-animal-missing', compact('jenisHewan', 'rasHewan', 'firstAidSteps', 'contacts'));
     }
 
     // Di controller
@@ -108,12 +116,12 @@ class MissingAnimalController extends Controller
         return response()->json(['success' => true]);
     }
 
-    public function store(Request $request, MissingAnimalService $service)
+    public function store(Request $request)
     {
 
-        dd($request->all());
+        // dd($request->all());
         try {
-            $this->missingAnimalService = $service->store($request);
+            $this->missingAnimalService->store($request);
             return redirect()->back()
                 ->with('success', 'Laporan hewan hilang berhasil dibuat!');
         } catch (ValidationException $e) {

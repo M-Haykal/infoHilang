@@ -7,8 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.default.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.css') }}">
     <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
@@ -20,16 +18,22 @@
     @include('components.loading')
     <div class="flex min-h-screen">
         <!-- Sidebar -->
-        <aside class="bg-secondary shadow-lg w-20 md:w-64 h-screen sticky top-0 flex flex-col">
+        <aside id="sidebar"
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-secondary shadow-lg
+            transform -translate-x-full transition-transform duration-300
+            md:static md:translate-x-0 md:w-64 md:z-auto">
             <div class="p-4 flex items-center justify-between border-b">
                 <a href="{{ route('start') }}">
-                    <h1 class="text-xl font-bold text-primary md:block hidden">Info<span
-                            class="text-highlight">Hilang</span>
+                    <h1 class=" text-xl font-bold text-primary md:block hidden">Info<span class="text-highlight">Hilang</span>
                     </h1>
                 </a>
-                <button class="md:hidden p-2 rounded-full hover:bg-gray-200" onclick="toggleSidebar()">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
+                <div class="button-action">
+                    <button class="p-2 rounded-full hover:bg-gray-200 md:block hidden" onclick="toggleFullScreen()" id="fullscreen-button" title="Memperluas Tampilan"><i
+                            class="fa-solid fa-expand"></i></button>
+                    <button class="md:hidden p-2 rounded-full hover:bg-gray-200" onclick="toggleSidebar()">
+                        <i class="fa-solid fa-angle-left"></i>
+                    </button>
+                </div>
             </div>
             <nav class="py-4 overflow-y-auto flex-1">
                 <ul class="space-y-2 px-2">
@@ -37,28 +41,28 @@
                         <a href="{{ route('dashboard') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
                             <i class="fa-regular fa-house"></i>
-                            <span class="text-gray-700 md:block hidden">Dashboard</span>
+                            <span class="text-gray-700">Dashboard</span>
                         </a>
                     </li>
                     <li>
                         <a href="{{ route('missing') }}"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <span class="text-gray-700 md:block hidden">Hilang</span>
+                            <span class="text-gray-700">Hilang</span>
                         </a>
                     </li>
                     <li>
                         <a href="#!"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
                             <i class="fa-regular fa-flag"></i>
-                            <span class="text-gray-700 md:block hidden">Penemu</span>
+                            <span class="text-gray-700">Penemu</span>
                         </a>
                     </li>
                     <li>
                         <a href="#!"
                             class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
                             <i class="fa-regular fa-newspaper"></i>
-                            <span class="text-gray-700 md:block hidden">Blog</span>
+                            <span class="text-gray-700">Blog</span>
                         </a>
                     </li>
                 </ul>
@@ -68,11 +72,18 @@
         <!-- Main Content -->
         <main class="flex-1 p-4 overflow-y-auto">
             <!-- Mobile Menu Toggle -->
-            <div class="md:hidden flex justify-between items-center mb-4 bg-secondary shadow">
-                <h1 class="text-xl font-bold text-gray-800">InfoHilang</h1>
-                <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-200">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
+            <div class="md:hidden flex justify-between items-center mb-4 bg-secondary shadow p-2 rounded-lg">
+                <a href="{{ route('start') }}">
+                    <h1 class="text-xl font-bold text-primary">Info<span class="text-highlight">Hilang</span>
+                    </h1>
+                </a>
+                <div class="button-action">
+                    <button class="p-2 rounded-full hover:bg-gray-200 md:block hidden" onclick="toggleFullScreen()"><i
+                            class="fa-solid fa-expand"></i></button>
+                    <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-200">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
             </div>
 
             <section class="m-4">
@@ -99,11 +110,8 @@
 
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
-
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="{{ asset('js/all.js') }}"></script>
     <script src="{{ asset('js/all.min.js') }}"></script>

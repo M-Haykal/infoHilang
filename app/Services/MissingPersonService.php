@@ -24,16 +24,16 @@ class MissingPersonService
         $validated = $this->validateRequest($request);
 
         // Cek duplikat dulu
-        $duplicateCheck = $this->duplicateDetection
-            ->check($type, $request->all());
+        // $duplicateCheck = $this->duplicateDetection
+        //     ->check($type, $request->all());
 
-        if ($duplicateCheck['isDuplicate']) {
-            throw ValidationException::withMessages([
-                'duplicate' => 'Laporan ini terdeteksi sebagai duplikat! '
-                    . 'Kemiripan: ' . $duplicateCheck['similarity'] . '% → '
-                    . $duplicateCheck['reason']
-            ]);
-        }
+        // if ($duplicateCheck['isDuplicate']) {
+        //     throw ValidationException::withMessages([
+        //         'duplicate' => 'Laporan ini terdeteksi sebagai duplikat! '
+        //             . 'Kemiripan: ' . $duplicateCheck['similarity'] . '% → '
+        //             . $duplicateCheck['reason']
+        //     ]);
+        // }
 
         return $this->saveData($request, new OrangHilang(), $validated);
     }

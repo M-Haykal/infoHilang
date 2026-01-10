@@ -1,6 +1,6 @@
 <!-- Kontak Darurat Dinamis -->
 <div class="mb-6" data-contacts>
-    <label class="block text-sm font-semibold text-gray-700 mb-3">Kontak Darurat</label>
+    <label class="block text-sm font-semibold text-gray-700 mb-3">Kontak Darurat Tambahan</label>
     <div id="kontakContainer" class="space-y-3">
         @if (!empty($kontak))
             @foreach ($kontak as $key => $value)

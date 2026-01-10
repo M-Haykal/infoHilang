@@ -1,6 +1,6 @@
 <!-- Ciri-Ciri Khusus Dinamis -->
 <div class="my-6" data-characteristics>
-    <label class="block text-sm font-semibold text-gray-700 mb-3">Ciri-Ciri Khusus</label>
+    <label class="block text-sm font-semibold text-gray-700 mb-3">Ciri-Ciri Khusus Tambahan</label>
     <div id="ciriCiriContainer" class="space-y-3">
         @if (!empty($ciriCiri))
             @foreach ($ciriCiri as $key => $value)

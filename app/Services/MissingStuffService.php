@@ -21,17 +21,17 @@ class MissingStuffService
         $validated = $this->validateRequest($request);
 
         // CEK DUPLIKAT DULU!
-         $duplicateCheck = $this->duplicateDetection
-            ->check($type, $request->all());
+        //  $duplicateCheck = $this->duplicateDetection
+        //     ->check($type, $request->all());
 
-        if ($duplicateCheck['isDuplicate']) {
-            // Bisa return array atau throw exception
-            throw ValidationException::withMessages([
-                'duplicate' => 'Laporan barang ini terdeteksi sebagai duplikat! '
-                    . 'Kemiripan: ' . $duplicateCheck['similarity'] . '%. '
-                    . $duplicateCheck['reason']
-            ]);
-        }
+        // if ($duplicateCheck['isDuplicate']) {
+        //     // Bisa return array atau throw exception
+        //     throw ValidationException::withMessages([
+        //         'duplicate' => 'Laporan barang ini terdeteksi sebagai duplikat! '
+        //             . 'Kemiripan: ' . $duplicateCheck['similarity'] . '%. '
+        //             . $duplicateCheck['reason']
+        //     ]);
+        // }
 
         return $this->saveData($request, new BarangHilang(), $validated);
     }

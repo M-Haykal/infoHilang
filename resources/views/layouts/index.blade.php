@@ -89,7 +89,7 @@
                 @else
                     <div class="space-x-3">
                         <a href="{{ route('showLogin') }}"
-                            class="bg-highlight text-primary px-4 py-2 rounded-lg font-semibold hover:bg-yellow-400 transition">
+                            class="bg-highlight text-primary px-4 py-2 rounded-lg font-semibold hover:bg-highlight/500 transition border-primary border">
                             Masuk
                         </a>
                         <a href="{{ route('showRegister') }}"

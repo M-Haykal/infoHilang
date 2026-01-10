@@ -1,27 +1,62 @@
 <div id="wilayah-selector" class="hidden space-y-4">
     <div>
         <label class="block text-sm font-medium text-gray-700">Provinsi</label>
-        <select id="provinsi" class="w-full px-3 py-2 border rounded">
-            <option value="">Pilih Provinsi</option>
-        </select>
+        <div class="relative">
+            <select id="provinsi"
+                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer">
+                <option value="">Pilih Provinsi</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-3.5 right-2.5 text-slate-700">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+            </svg>
+        </div>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700">Kabupaten / Kota</label>
-        <select id="kabupaten" class="w-full px-3 py-2 border rounded" disabled>
-            <option value="">Pilih Kabupaten/Kota</option>
-        </select>
+        <div class="relative">
+            <select id="kabupaten"
+                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+                disabled>
+                <option value="">Pilih Kabupaten/Kota</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-3.5 right-2.5 text-slate-700">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+            </svg>
+        </div>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700">Kecamatan</label>
-        <select id="kecamatan" class="w-full px-3 py-2 border rounded" disabled>
-            <option value="">Pilih Kecamatan</option>
-        </select>
+        <div class="relative">
+            <select id="kecamatan"
+                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+                disabled>
+                <option value="">Pilih Kecamatan</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-3.5 right-2.5 text-slate-700">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+            </svg>
+        </div>
     </div>
     <div>
         <label class="block text-sm font-medium text-gray-700">Kelurahan / Desa</label>
-        <select id="kelurahan" class="w-full px-3 py-2 border rounded" disabled>
-            <option value="">Pilih Kelurahan/Desa</option>
-        </select>
+        <div class="relative">
+            <select id="kelurahan"
+                class="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded pl-3 pr-8 py-3 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-400 shadow-sm focus:shadow-md appearance-none cursor-pointer"
+                disabled>
+                <option value="">Pilih Kelurahan/Desa</option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.2"
+                stroke="currentColor" class="h-5 w-5 ml-1 absolute top-3.5 right-2.5 text-slate-700">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+            </svg>
+        </div>
     </div>
     <button type="button" id="use-wilayah"
         class="mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50" disabled>

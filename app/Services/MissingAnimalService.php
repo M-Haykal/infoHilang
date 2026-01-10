@@ -24,17 +24,17 @@ class MissingAnimalService
     {
         $validated = $this->validateRequest($request);
 
-        // Cek duplikat dulu
-        $duplicateCheck = $this->duplicateDetection
-            ->check($type, $request->all());
+        // // Cek duplikat dulu
+        // $duplicateCheck = $this->duplicateDetection
+        //     ->check($type, $request->all());
 
-        if ($duplicateCheck['isDuplicate']) {
-            throw ValidationException::withMessages([
-                'duplicate' =>
-                    'Laporan mirip dengan data sebelumnya (' .
-                    $duplicateCheck['similarity'] . '%)'
-            ]);
-        }
+        // if ($duplicateCheck['isDuplicate']) {
+        //     throw ValidationException::withMessages([
+        //         'duplicate' =>
+        //             'Laporan mirip dengan data sebelumnya (' .
+        //             $duplicateCheck['similarity'] . '%)'
+        //     ]);
+        // }
 
         return $this->saveData($request, new HewanHilang(), $validated);
     }
