@@ -76,7 +76,6 @@ class MissingAnimalService
             'status' => 'required|in:Hilang,Ditemukan,Ditutup',
             'foto' => 'nullable|array|max:5',
             'foto.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
-            'user_id' => 'required|exists:users,id',
         ]);
     }
 
@@ -133,7 +132,7 @@ class MissingAnimalService
         }
 
         // Ambil foto lama
-        $fotoPaths = $orangHilang->foto ?? [];
+        $fotoPaths = $hewanHilang->foto ?? [];
 
         // Hapus yang di-delete
         if ($request->filled('deleted_foto')) {
@@ -147,7 +146,7 @@ class MissingAnimalService
         // Tambah foto baru
         if ($request->hasFile('foto')) {
             foreach ($request->file('foto') as $file) {
-                $fotoPaths[] = $file->store('orang', 'public');
+                $fotoPaths[] = $file->store('hewan', 'public');
             }
         }
 

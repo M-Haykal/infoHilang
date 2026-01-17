@@ -6,6 +6,7 @@ use App\Models\BarangHilang;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
+use Illuminate\Support\Facades\Auth;
 
 class MissingStuffService
 {
@@ -87,7 +88,6 @@ class MissingStuffService
             'foto.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
             'document_pendukung' => 'nullable|array|max:3',
             'document_pendukung.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // max 5MB
-            'user_id' => 'required|exists:users,id',
         ]);
     }
 
@@ -182,6 +182,8 @@ class MissingStuffService
 
         $cleanDescription = Purifier::clean($validated['deskripsi_barang']);
         $cleanLokasi = Purifier::clean($validated['lokasi_terakhir_dilihat']);
+
+        $userId = Auth::id();
 
         $barangHilang->fill([
             'nama_barang' => $validated['nama_barang'],

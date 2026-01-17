@@ -1,26 +1,41 @@
 {{-- resources/views/components/alerts.blade.php --}}
 @push('script')
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil 🎉',
+                    text: "{{ session('success') }}",
+                    confirmButtonText: 'Oke',
+                    confirmButtonColor: '#10b981',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            });
+        </script>
+    @endif
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             @if ($errors->any())
-                document.addEventListener('DOMContentLoaded', function() {
-                    Swal.fire({
-                        title: 'Form Tidak Valid',
-                        icon: 'error',
-                        html: `
+                Swal.fire({
+                    title: 'Form Tidak Valid',
+                    icon: 'error',
+                    html: `
                 <ul class="text-left list-disc pl-5 space-y-1">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
             `,
-                        confirmButtonText: 'Perbaiki',
-                        confirmButtonColor: '#ef4444'
-                    });
+                    confirmButtonText: 'Perbaiki',
+                    confirmButtonColor: '#ef4444'
                 });
             @endif
 
-            if (umur && isNaN(umur.value)) {
+            const umur = document.querySelector('[name="umur"]');
+            if (umur && umur.value && isNaN(umur.value)) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Input Tidak Valid',
@@ -30,13 +45,13 @@
                 return;
             }
 
-            // 🔸 Konfirmasi Hapus
+            // 🔸 Konfirmasi Simpan
             document.querySelectorAll('[data-confirm-save]').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
 
                     const requiredFields = form.querySelectorAll('[required]');
-                    let emptyFields = [];
+                    const emptyFields = [];
 
                     requiredFields.forEach(field => {
                         if (!field.value || field.value.trim() === '') {
@@ -52,7 +67,6 @@
                             title: 'Form Belum Lengkap',
                             text: 'Mohon lengkapi semua field yang wajib diisi.',
                             icon: 'warning',
-                            confirmButtonText: 'Oke',
                             confirmButtonColor: '#f59e0b'
                         });
 
@@ -66,35 +80,15 @@
 
                     Swal.fire({
                         title: 'Simpan Data?',
-                        text: "Apakah Anda yakin ingin menyimpan data ini?",
+                        text: 'Apakah Anda yakin ingin menyimpan data ini?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#10b981',
                         cancelButtonColor: '#6b7280',
                         confirmButtonText: 'Ya, Simpan!',
                         cancelButtonText: 'Batal'
-                    }).then((result) => {
+                    }).then(result => {
                         if (result.isConfirmed) form.submit();
-                    });
-                });
-            });
-
-
-            // 🔸 Konfirmasi Simpan
-            document.querySelectorAll('[data-confirm-save]').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    Swal.fire({
-                        title: 'Simpan Data?',
-                        text: "Apakah Anda yakin ingin menyimpan data ini?",
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#10b981',
-                        cancelButtonColor: '#6b7280',
-                        confirmButtonText: 'Ya, Simpan!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) this.submit();
                     });
                 });
             });

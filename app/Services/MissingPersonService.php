@@ -9,6 +9,7 @@ use App\Services\GeminiConnectService;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 use App\Services\DuplicateDetectionService;
+use Illuminate\Support\Facades\Auth;
 
 class MissingPersonService
 {
@@ -72,7 +73,6 @@ class MissingPersonService
             'status' => 'required|in:Hilang,Ditemukan,Ditutup',
             'foto' => 'nullable|array|max:5',
             'foto.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
-            'user_id' => 'required|exists:users,id',
         ]);
     }
 
@@ -158,6 +158,8 @@ class MissingPersonService
 
         $orangHilang->foto = $fotoPaths;
 
+        $userId = Auth::id();
+
         $orangHilang->fill([
             'nama_orang' => $validated['nama_orang'],
             'deskripsi_orang' => $cleanDescription,
@@ -171,7 +173,7 @@ class MissingPersonService
             'tanggal_terakhir_dilihat' => $validated['tanggal_terakhir_dilihat'] ?? null,
             'status' => $validated['status'],
             'foto' => $fotoPaths,
-            'user_id' => $validated['user_id'],
+            'user_id' => $userId,
         ])->save();
 
         return $orangHilang;
