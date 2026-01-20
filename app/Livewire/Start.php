@@ -13,13 +13,13 @@ class Start extends Component
     {
         $barangHilang = BarangHilang::latest()->take(3)->get();
         $hewanHilang = HewanHilang::latest()->take(3)->get();
-        $orangHilang = OrangHilang::latest()->take(3)->get();
+        $orangHilang = OrangHilang::latest()->take(4)->get();
 
         return view('livewire.start', [
             'barangHilang' => $barangHilang,
             'hewanHilang' => $hewanHilang,
             'orangHilang' => $orangHilang,
-        ])->layout('layouts.index')->title('InfoHilang - Platform Lapor & Temukan Orang, Hewan, Barang Hilang');
+        ])->layout('layouts.index')->title('InfoHilang - Temukan Kembali yang Berharga');
     }
 }
 

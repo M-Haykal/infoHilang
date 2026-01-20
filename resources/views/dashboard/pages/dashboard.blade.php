@@ -31,7 +31,7 @@
                 <a href="{{ route('form-barang-hilang') }}"
                     class="block bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
                     data-aos="zoom-in" data-aos-delay="200" id="add-stuff-missing">
-                    <img src="{{ asset('img/item.png') }}" alt="Gambar Menu Barang" class="w-full h-48 object-cover">
+                    <img src="{{ asset('img/item.png') }}" alt="Gambar Menu Barang" class="w-full h-48 object-cover bg-blue-50">
                     <div class="p-5">
                         <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Barang Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan barang yang hilang dengan detail dan lokasi.</p>
@@ -41,7 +41,7 @@
                 <a href="{{ route('form-orang-hilang') }}"
                     class="block bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
                     data-aos="zoom-in" data-aos-delay="300" id="add-person-missing">
-                    <img src="{{ asset('img/people.png') }}" alt="Gambar Menu Orang" class="w-full h-48 object-cover">
+                    <img src="{{ asset('img/people.png') }}" alt="Gambar Menu Orang" class="w-full h-48 object-cover bg-blue-50">
                     <div class="p-5">
                         <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Orang Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan orang hilang dengan informasi lengkap.</p>
@@ -51,7 +51,7 @@
                 <a href="{{ route('form-hewan-hilang') }}"
                     class="block bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
                     data-aos="zoom-in" data-aos-delay="400" id="add-animal-missing">
-                    <img src="{{ asset('img/animal.png') }}" alt="Gambar Menu Hewan" class="w-full h-48 object-cover">
+                    <img src="{{ asset('img/animal.png') }}" alt="Gambar Menu Hewan" class="w-full h-48 object-cover bg-blue-50">
                     <div class="p-5">
                         <h3 class="text-lg font-semibold text-gray-800">Tambah Laporan Hewan Hilang</h3>
                         <p class="text-gray-500 text-sm mt-2">Laporkan hewan peliharaan yang hilang.</p>

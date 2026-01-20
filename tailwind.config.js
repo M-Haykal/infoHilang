@@ -8,9 +8,9 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: "#6082B6", // Biru Kepercayaan
+                primary: "#2563eb", // Biru Kepercayaan
                 secondary: "#FFFEFE", // Putih Bersih
-                accent: "#F5F7FA", // Abu Netral
+                accent: "#f8fafc", // Abu Netral
                 highlight: "#f8fe06", // Kuning Hangat
                 danger: "#8C2F39", // Merah Emosional
                 success: "#02c57a", // Hijau Harapan

@@ -1,23 +1,27 @@
-AOS.init();
-// Toggle mobile menu
-document
-    .getElementById("mobile-menu-button")
-    .addEventListener("click", function () {
-        const mobileMenu = document.getElementById("mobile-menu");
-        const menuIcon = this.querySelector(".menu-icon");
-        const closeIcon = this.querySelector(".close-icon");
-        mobileMenu.classList.toggle("hidden");
-        menuIcon.classList.toggle("hidden");
-        closeIcon.classList.toggle("hidden");
-    });
+AOS.init({
+    once: true,
+    duration: 800,
+    easing: 'ease-in-out',
+});
 
-document
-    .getElementById("mobile-profile-button")
-    .addEventListener("click", function () {
-        const profileDropdown = document.getElementById(
-            "mobile-profile-dropdown"
-        );
-        const profileIcon = document.getElementById("mobile-profile-icon");
-        profileDropdown.classList.toggle("hidden");
-        profileIcon.classList.toggle("rotate-180");
-    });
+// Toggle mobile menu
+document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("user-menu-button");
+    const dropdown = document.getElementById("user-dropdown");
+    const icon = document.getElementById("dropdown-icon");
+
+    if (btn && dropdown) {
+        btn.addEventListener("click", function (event) {
+            event.stopPropagation();
+            // Toggle Class Hidden
+            dropdown.classList.toggle("hidden");
+        });
+
+        // Klik di luar dropdown untuk menutup
+        window.addEventListener("click", function (e) {
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+    }
+});
