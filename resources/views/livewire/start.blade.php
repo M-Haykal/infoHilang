@@ -1,173 +1,136 @@
-<div class="layout-content-container flex flex-col max-w-6xl flex-1">
+<main>
     <!-- Hero Section -->
-    <section class="py-16 md:py-24" data-aos="fade-up">
-        <div class="flex flex-col-reverse lg:flex-row gap-12 items-center">
-            <div class="flex flex-col gap-6 text-center lg:text-left lg:w-1/2">
-                <div class="flex flex-col gap-4">
-                    <h1
-                        class="text-text-light dark:text-text-dark text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
-                        Menyatukan Kembali yang Hilang
-                    </h1>
-                    <h2
-                        class="text-subtext-light dark:text-subtext-dark text-base md:text-lg font-normal leading-normal max-w-xl mx-auto lg:mx-0">
-                        Platform komunitas untuk melaporkan dan menemukan barang, hewan, atau orang yang hilang. Mari
-                        bantu satu sama lain.
-                    </h2>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
-                    <a href="{{ route('dashboard') }}"
-                        class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-opacity">
-                        <span class="truncate">Lapor Kehilangan</span>
-                    </a>
-                    <button
-                        class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 bg-primary/10 dark:bg-primary/20 text-primary text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
-                        <span class="truncate">Cari Temuan</span>
-                    </button>
-                </div>
-            </div>
-            <div class="w-full lg:w-1/2">
-                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl shadow-2xl"
-                    style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDu3cXyLw15eaX2bvfH77alu0dVJpN75BHOqc-IkTEBUNddlulyfTmRKPluaX8JMU4GHQkFXstoW1o_Uqwk1YCegJmBiHfs7CIPQIxff2DjuSqdbuPFcaEqRgVzz5jWeNaGHAR6twiY3G2ii1nM6hXr3PLjwMapP89IyREvts86ZL4uayQuen7hUviK_g29Wfk24ZK9tJLRi-jzNe27fwY_37QLn3Bu3tf5JbeMLCEgTpayMFmMi3u0AslT9BUfKbL1jiAQGkC5AiA');">
-                </div>
+    <header class="bg-blue-600 py-20 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight" data-aos="fade-up">
+                Menyatukan Kembali yang Hilang
+            </h1>
+            <p class="text-blue-100 text-lg mb-8 max-w-2xl mx-auto" data-aos="fade-up">
+                Platform komunitas untuk melaporkan dan menemukan barang, hewan, atau orang tercinta. Mari saling membantu.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up">
+                <a href="" class="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold hover:bg-blue-50 transition">Cari Sesuatu</a>
+
+                <a href="{{ route('list-missing') }}" class="bg-blue-800 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-900 transition border border-blue-400">Lihat Semua Laporan</a>
             </div>
         </div>
-    </section>
+    </header>
 
-    <section class="py-16 md:py-24">
-        <h2
-            class="text-text-light dark:text-text-dark text-[28px] font-bold leading-tight tracking-[-0.015em] px-4 pb-6 text-center">
-            Laporan Terbaru</h2>
-        <div
-            class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
-            <div class="flex items-stretch p-4 gap-4 w-full">
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-lg bg-secondary dark:bg-background-dark dark:border dark:border-border-dark shadow-sm min-w-64">
-                    <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-t-lg flex flex-col"
-                        data-alt="A photo of a ginger cat looking curious"
-                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAOiGUC_vvUvNOjYPMDj7QPdnLKiIXQnmGOt5pIrSZo2OkydijHKxihtzpAqjRMVunMGfq7KNVIx3AVZPpZDbznj5-pYo22q3iFo6TvsmkocOtj-g227leOKuS-FVF0PtIHNpRqh8r0zPdZGKLRCQWHK353Wjw9t-tQ5TaOcBgx2L16vkQwdZ9FMEuOZSsus-R8Um77ez7bClWbfEDlK2s9IKmCqzuSii-6Ws8BLa_qO9FzgIKcJY488olv41i759CBF_f0lUiPGwU');">
+    {{-- Laporan Terbaru --}}
+
+    <section id="laporan" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 gap-4">
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Laporan Terbaru</h2>
+                    <p class="text-slate-600 mt-2">Bantu tetangga kita menemukan apa yang hilang</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center md:justify-end gap-2">
+                    <button class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">Semua</button>
+                    <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Orang</button>
+                    <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Hewan</button>
+                    <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Barang</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                @forelse($orangHilang as $orang)
+                <div class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-slate-200 group">
+                    <div class="relative overflow-hidden">
+                        @php
+                        $fotoUrl = $orang->foto && count($orang->foto) > 0
+                        ? $orang->foto[0]
+                        : 'https://ui-avatars.com/api/?name=' . urlencode($orang->nama_orang) . '&background=random';
+                        @endphp
+                        <img src="{{ $fotoUrl }}" alt="{{ $orang->nama_orang }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+
+                        <span class="absolute top-3 left-3 {{ $orang->status == 'Hilang' ? 'bg-red-600' : 'bg-green-600' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                            {{ $orang->status }}
+                        </span>
                     </div>
-                    <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
-                        <div>
-                            <span
-                                class="inline-block bg-danger/10 text-danger text-xs font-semibold px-2 py-1 rounded-full mb-2">Hilang</span>
-                            <p class="text-text-light dark:text-text-dark text-base font-bold leading-normal">Kucing
-                                Oren Hilang</p>
-                            <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">
-                                Lokasi: Jakarta Selatan</p>
+
+                    <div class="p-5">
+                        <div class="flex justify-between items-center mb-2">
+                            <h3 class="font-bold text-lg text-slate-800 truncate" title="{{ $orang->nama_orang }}">
+                                {{ $orang->nama_orang }}
+                            </h3>
+                            <span class="text-[10px] text-slate-400 font-medium whitespace-nowrap ml-2">
+                                {{ $orang->created_at->diffForHumans() }}
+                            </span>
                         </div>
-                        <button
-                            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary/10 dark:bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
-                            <span class="truncate">Lihat Detail</span>
-                        </button>
+
+                        <p class="text-slate-500 text-sm mb-4 line-clamp-2 h-10">
+                            {{ $orang->deskripsi_orang ?? 'Tidak ada deskripsi tambahan.' }}
+                        </p>
+
+                        <div class="flex items-center text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                            <i class="fa-solid fa-location-dot mr-2 text-red-500"></i>
+                            <span class="truncate">{{ $orang->lokasi_terakhir_dilihat }}</span>
+                        </div>
+
+                        <a href="/laporan/{{ $orang->slug }}" class="block w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded-lg transition-colors">
+                            Detail Laporan
+                        </a>
                     </div>
                 </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-lg bg-secondary dark:bg-background-dark dark:border dark:border-border-dark shadow-sm min-w-64">
-                    <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-t-lg flex flex-col"
-                        data-alt="A brown leather wallet on a wooden table"
-                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmIKbLomd6heDfCmr7DC5OHND-iTMWF-HavdHVyrz7xfop8nSebbCOVDZbTdRzr1DvRyUvhC5bDBr_3yQgSX0hrMoD1ADAefWm3N36jqyqCqLlOGW-GiG-tjx6AsTDgyP99JMUj6oIyR3k9VVoB5ifEKgxuo5Ha62N-EpfOa3epgkqX-dfLYRxYM9m73WIYTLsO4GlmPvJmIjfbZrHCNFEMge1JPy_Fo7JhOezXt66LDbqEMfG0BILKQttf1AGQ30jQ3oX9S_WNGg');">
+                @empty
+                <div class="col-span-full py-10 text-center">
+                    <div class="text-slate-300 mb-3">
+                        <i class="fa-solid fa-folder-open text-5xl"></i>
                     </div>
-                    <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
-                        <div>
-                            <span
-                                class="inline-block bg-success/10 text-success text-xs font-semibold px-2 py-1 rounded-full mb-2">Ditemukan</span>
-                            <p class="text-text-light dark:text-text-dark text-base font-bold leading-normal">Dompet
-                                Coklat Ditemukan</p>
-                            <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">
-                                Lokasi: Bandung</p>
-                        </div>
-                        <button
-                            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary/10 dark:bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
-                            <span class="truncate">Lihat Detail</span>
-                        </button>
-                    </div>
+                    <p class="text-slate-500 font-medium">Belum ada laporan orang hilang saat ini.</p>
                 </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-lg bg-secondary dark:bg-background-dark dark:border dark:border-border-dark shadow-sm min-w-64">
-                    <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-t-lg flex flex-col"
-                        data-alt="A set of keys with a colorful keychain"
-                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBg2oUTjEy5g2uWBDS2Lsafqzq2vXpu165viRpv_Jx4so6V-Z4CjlyI7Bi1eDyyxcJTXyWWM2Anqs1lkfCaxektGQ3mhZ1BPT6ndvC4Ssm3bnhqdGeko3ByXfgROwQ2c0YbxhIk-WgJwvuUfbpPf2_lVX009fSaB7mFkD1imAzZUgq6jk5OMc8iW8FXwvitctKD4GpA3WHiFJLaLOJOWxRYNKK-h5CIQtn3WyYOmYgn4CdPwvJjyDpLT2Di6BW3ey9OUMkts20C3D4');">
-                    </div>
-                    <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
-                        <div>
-                            <span
-                                class="inline-block bg-danger/10 text-danger text-xs font-semibold px-2 py-1 rounded-full mb-2">Hilang</span>
-                            <p class="text-text-light dark:text-text-dark text-base font-bold leading-normal">Kunci
-                                Mobil &amp; Rumah</p>
-                            <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">
-                                Lokasi: Surabaya</p>
-                        </div>
-                        <button
-                            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary/10 dark:bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
-                            <span class="truncate">Lihat Detail</span>
-                        </button>
-                    </div>
-                </div>
-                <div
-                    class="flex h-full flex-1 flex-col gap-4 rounded-lg bg-secondary dark:bg-background-dark dark:border dark:border-border-dark shadow-sm min-w-64">
-                    <div class="w-full bg-center bg-no-repeat aspect-[4/3] bg-cover rounded-t-lg flex flex-col"
-                        data-alt="A golden retriever puppy sitting on grass"
-                        style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAmeefhYBJaTWiphgk2yFaEMfDrMfUnDzgAYaoAtpTucrlm-gE2kkEwXjGwMKhor7qUMYSRE_55NYlJUKMCSituxfMhmHt4tAft96ziBSgEcoTaP6q4oGVyxguunvB8d7UUDFHWDh6SgeoMWa5hF0_wUyzWiK1INIghEzk1OlqRX23YEkwXVWznyPdlBuW90Ufb8l4712Pzfqq3sc5SjW5tArAn6MyV8eqkNrHlHgl-KC5crUUjOuc_VBF5W5muux7hZzU3XowJWkc');">
-                    </div>
-                    <div class="flex flex-col flex-1 justify-between p-4 pt-0 gap-4">
-                        <div>
-                            <span
-                                class="inline-block bg-success/10 text-success text-xs font-semibold px-2 py-1 rounded-full mb-2">Ditemukan</span>
-                            <p class="text-text-light dark:text-text-dark text-base font-bold leading-normal">Anjing
-                                Golden Ditemukan</p>
-                            <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">
-                                Lokasi: Yogyakarta</p>
-                        </div>
-                        <button
-                            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary/10 dark:bg-primary/20 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/20 dark:hover:bg-primary/30 transition-colors">
-                            <span class="truncate">Lihat Detail</span>
-                        </button>
-                    </div>
-                </div>
+                @endforelse
+            </div>
+
+            <div class="text-center mt-12">
+                <a href="{{ route('list-missing') }}" class="font-bold text-blue-600 hover:text-blue-700 transition-all border-b-2 border-transparent hover:border-blue-600">Lihat Semua 150+ Laporan <i class="fa-solid fa-arrow-right ml-1"></i></a>
             </div>
         </div>
     </section>
 
     <!-- Jenis Laporan -->
-    <section id="jenis-laporan" class="py-20 bg-accent" data-aos="fade-up">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4" data-aos="fade-up">Apa yang Bisa
-                Dilaporkan?</h2>
-            <p class="text-gray-600 text-center mb-16 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
-                InfoHilang mendukung berbagai jenis laporan kehilangan — semua dengan privasi dan keamanan terjamin.
-            </p>
+    <section id="jenis-laporan" class="py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-slate-800">
+                    Apa yang Bisa Dilaporkan?
+                </h2>
+                <p class="text-slate-600 max-w-2xl mx-auto leading-relaxed mt-2">
+                    InfoHilang mendukung berbagai jenis laporan kehilangan
+                </p>
+                <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mt-4"></div>
+            </div>
 
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Barang Hilang -->
-                <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-highlight/50"
-                    data-aos="zoom-in" data-aos-delay="200">
-                    <img src="{{ asset('img/item.png') }}" alt="Barang Hilang" srcset="" class="object-fill"
-                        loading="lazy">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Barang Hilang</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Dompet, ponsel, dokumen penting, kunci, atau barang berharga lainnya.
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-aos="fade-up">
+                <div class="group bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:-translate-y-2" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="mb-6 overflow-hidden rounded-2xl bg-blue-50 flex justify-center items-center h-48">
+                        <img src="{{ asset('img/item.png') }}" alt="Barang Hilang" class="w-3/4 h-auto object-contain transform group-hover:scale-110 transition duration-500" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3 transition">Barang Berharga</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">
+                        Dompet, ponsel, dokumen penting (KTP/STNK), kunci, atau barang elektronik lainnya.
                     </p>
                 </div>
 
-                <!-- Orang Hilang -->
-                <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-success/50"
-                    data-aos="zoom-in" data-aos-delay="300">
-                    <img src="{{ asset('img/people.png') }}" alt="Orang Hilang" srcset="" class="object-fill"
-                        loading="lazy">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Orang Hilang</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Anak, lansia, atau anggota keluarga yang belum kembali ke rumah.
+                <div class="group bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:-translate-y-2" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="mb-6 overflow-hidden rounded-2xl bg-blue-50 flex justify-center items-center h-48">
+                        <img src="{{ asset('img/people.png') }}" alt="Orang Hilang" class="w-3/4 h-auto object-contain transform group-hover:scale-110 transition duration-500" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3 transition">Orang Hilang</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">
+                        Anak-anak, lansia dengan demensia, atau anggota keluarga yang belum kembali ke rumah.
                     </p>
                 </div>
 
-                <!-- Hewan Hilang -->
-                <div class="bg-white p-7 rounded-2xl shadow-sm hover:shadow-md transition border border-transparent hover:border-danger/50"
-                    data-aos="zoom-in" data-aos-delay="400">
-                    <img src="{{ asset('img/animal.png') }}" alt="Hewan Hilang" srcset="" class="object-fill"
-                        loading="lazy">
-                    <h3 class="text-xl font-bold text-gray-800 mb-3">Hewan Peliharaan</h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        Kucing, anjing, burung, atau hewan kesayangan yang hilang dari rumah.
+                <div class="group bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200 hover:-translate-y-2" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="mb-6 overflow-hidden rounded-2xl bg-blue-50 flex justify-center items-center h-48">
+                        <img src="{{ asset('img/animal.png') }}" alt="Hewan Hilang" class="w-3/4 h-auto object-contain transform group-hover:scale-110 transition duration-500" loading="lazy">
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3 transition">Hewan Peliharaan</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">
+                        Kucing, anjing, burung kesayangan, atau hewan ternak yang terlepas dari pengawasan.
                     </p>
                 </div>
             </div>
@@ -175,110 +138,90 @@
     </section>
 
     <!-- Cara Kerja -->
-    <section class="flex flex-col gap-10 px-4 py-16 md:py-24">
-        <div class="flex flex-col gap-4 text-center">
-            <h1
-                class="text-text-light dark:text-text-dark tracking-light text-[28px] md:text-4xl font-bold leading-tight max-w-3xl mx-auto">
-                Bagaimana InfoHilang Bekerja?</h1>
-            <p
-                class="text-subtext-light dark:text-subtext-dark text-base md:text-lg font-normal leading-normal max-w-3xl mx-auto">
-                Hanya dengan beberapa langkah mudah, Anda dapat menyebarkan informasi dan membantu menemukan kembali
-                yang hilang.</p>
+    <section id="cara-kerja" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10" data-aos="fade-up">
+            <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-slate-800">Bagaimana InfoHilang Bekerja?</h2>
+            <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mt-4"></div>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div
-                class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-file-pen"></i></div>
-                <div class="flex flex-col gap-1">
-                    <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">1. Buat Laporan
-                    </h2>
-                    <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Isi detail
-                        lengkap tentang apa yang hilang atau ditemukan dengan mudah.</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div class="p-6 flex flex-col items-center group" data-aos="zoom-in" data-aos-delay="100">
+                <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-6 text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-pen-to-square"></i>
                 </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">1. Buat Laporan</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Unggah detail, foto, dan lokasi terakhir saat kehilangan terjadi.</p>
             </div>
-            <div
-                class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-bullhorn"></i></div>
-                <div class="flex flex-col gap-1">
-                    <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">2. Sebarkan Info
-                    </h2>
-                    <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Laporan
-                        Anda akan langsung disebarkan ke komunitas kami yang peduli.</p>
+
+            <div class="p-6 flex flex-col items-center group" data-aos="zoom-in" data-aos-delay="200">
+                <div class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mb-6 text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-share-nodes"></i>
                 </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">2. Sebarkan</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Komunitas kami akan membantu menyebarkan informasi ke berbagai kanal.</p>
             </div>
-            <div
-                class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-bell"></i></div>
-                <div class="flex flex-col gap-1">
-                    <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">3. Dapatkan
-                        Notifikasi</h2>
-                    <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Terima
-                        pembaruan waktu nyata saat ada petunjuk atau laporan yang cocok.</p>
+
+            <div class="p-6 flex flex-col items-center group" data-aos="zoom-in" data-aos-delay="300">
+                <div class="w-16 h-16 bg-purple-200 text-purple-700 rounded-full flex items-center justify-center mb-6 text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-bell"></i>
                 </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">3. Notifikasi</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Terima pembaruan waktu nyata saat ada petunjuk yang cocok.</p>
             </div>
-            <div
-                class="flex flex-1 gap-4 rounded-lg border border-border-light dark:border-border-dark bg-secondary dark:bg-background-dark p-6 flex-col text-center items-center">
-                <div class="text-primary bg-primary/10 p-3 rounded-full"><i class="fa-solid fa-heart"></i></div>
-                <div class="flex flex-col gap-1">
-                    <h2 class="text-text-light dark:text-text-dark text-lg font-bold leading-tight">4. Temukan Kembali
-                    </h2>
-                    <p class="text-subtext-light dark:text-subtext-dark text-sm font-normal leading-normal">Bersatu
-                        kembali dengan barang berharga, hewan peliharaan, atau orang yang Anda sayangi.</p>
+
+            <div class="p-6 flex flex-col items-center group" data-aos="zoom-in" data-aos-delay="400">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-6 text-2xl shrink-0 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
                 </div>
+                <h3 class="text-xl font-bold mb-3 text-slate-800">4. Temukan</h3>
+                <p class="text-slate-600 text-sm leading-relaxed">Hubungkan penemu dengan pemilik asli secara aman dan cepat.</p>
             </div>
+        </div>
+
         </div>
     </section>
 
     <!-- Testimonial Section -->
-    <section class="py-16 md:py-24 px-4 bg-secondary dark:bg-background-dark/50 rounded-xl">
-        <div class="flex flex-col gap-10 items-center">
-            <div class="flex flex-col gap-4 text-center">
-                <h2
-                    class="text-text-light dark:text-text-dark text-[28px] font-bold leading-tight tracking-[-0.015em]">
-                    Kisah Sukses dari Komunitas Kami</h2>
-                <p class="text-subtext-light dark:text-subtext-dark text-base md:text-lg max-w-2xl">Lihat bagaimana
-                    InfoHilang telah membantu menyatukan kembali banyak hal berharga.</p>
+    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-background-dark/50 rounded-xl">
+        <div class="flex flex-col items-center" data-aos="fade-up">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-slate-800">Kisah Sukses dari Komunitas Kami</h2>
+                <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mt-4"></div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-                <div
-                    class="flex flex-col gap-4 p-6 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
-                    <p class="text-text-light dark:text-text-dark font-medium italic">"Saya panik saat kucing saya,
+                <div class="flex flex-col gap-4 p-6 rounded-xl border border-slate-200 shadow-md hover:shadow-xl bg-white" data-aos="zoom-in" data-aos-delay="100">
+                    <p class="italic">"Saya panik saat kucing saya,
                         Miko, hilang. Berkat laporan di InfoHilang, tetangga beberapa blok dari rumah menemukan dan
                         menghubungi saya. Terima kasih banyak!"</p>
                     <div class="flex items-center gap-4 mt-2">
-                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Sarah L."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXnNLy154HP3LSxudxvFADlHA73BxiJX0D-Rokecon-VQzjRAyTHz3JwQ5w0isXGLrPMDO2HFKJpiKgoZau-bNJh9FhTRiBFyqve05Jchsv8MVnlXnWRhxn3XeanftVLDFewP2UBQZYHF71zbbPE94O0TKkQXMIcy4UpB99knfYkQj2-HeR1KT33NbNZC48yVZxTQPwcjlwupLU76mzxjiGo2vxJQFDbVxo-uJnhcXrCN9R-LK5dPhBIudbgjnk9xdwssWRpWMOes" />
+                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Sarah L." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXnNLy154HP3LSxudxvFADlHA73BxiJX0D-Rokecon-VQzjRAyTHz3JwQ5w0isXGLrPMDO2HFKJpiKgoZau-bNJh9FhTRiBFyqve05Jchsv8MVnlXnWRhxn3XeanftVLDFewP2UBQZYHF71zbbPE94O0TKkQXMIcy4UpB99knfYkQj2-HeR1KT33NbNZC48yVZxTQPwcjlwupLU76mzxjiGo2vxJQFDbVxo-uJnhcXrCN9R-LK5dPhBIudbgjnk9xdwssWRpWMOes" />
                         <div>
-                            <p class="font-bold text-text-light dark:text-text-dark">Sarah L.</p>
-                            <p class="text-sm text-subtext-light dark:text-subtext-dark">Pemilik Miko</p>
+                            <p class="font-bold text-blue-600">Sarah L.</p>
+                            <p class="text-sm text-slate-600">Pemilik Miko</p>
                         </div>
                     </div>
                 </div>
-                <div
-                    class="flex flex-col gap-4 p-6 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
-                    <p class="text-text-light dark:text-text-dark font-medium italic">"Saya menemukan dompet di stasiun
+                <div class="flex flex-col gap-4 p-6 rounded-xl border border-slate-200 shadow-md hover:shadow-xl bg-white" data-aos="zoom-in" data-aos-delay="200">
+                    <p class="italic">"Saya menemukan dompet di stasiun
                         kereta. Saya bingung harus bagaimana, lalu teman menyarankan lapor di sini. Dalam beberapa jam,
                         pemiliknya sudah menghubungi saya. Platform ini sangat efisien."</p>
                     <div class="flex items-center gap-4 mt-2">
-                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Budi S."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYY4Nd830QbuAgsPtMTeeWToGS25rVcV9WIpueu5IUQjDNyJv6V677oWt_C8ACh1WtjQYQWn9DRD3Dz0YPnjrPldmIQjiHqOvNkvrnYAejSBybbPrNr1c2UR9uur67UoqSgD1kULIy9ONc7XuqxqSoejRuzpH5HSRyETMagDW2I-_Zicj6ae-PBOk3J76MBcm67M-hieJqVQ1TO8Ubd71Ntg4RAHSGEzH0dREe7p59-wMaaEHKqj7fhLeD3vyCpHJA8uskzwhTu2Y" />
+                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Budi S." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYY4Nd830QbuAgsPtMTeeWToGS25rVcV9WIpueu5IUQjDNyJv6V677oWt_C8ACh1WtjQYQWn9DRD3Dz0YPnjrPldmIQjiHqOvNkvrnYAejSBybbPrNr1c2UR9uur67UoqSgD1kULIy9ONc7XuqxqSoejRuzpH5HSRyETMagDW2I-_Zicj6ae-PBOk3J76MBcm67M-hieJqVQ1TO8Ubd71Ntg4RAHSGEzH0dREe7p59-wMaaEHKqj7fhLeD3vyCpHJA8uskzwhTu2Y" />
                         <div>
-                            <p class="font-bold text-text-light dark:text-text-dark">Budi S.</p>
-                            <p class="text-sm text-subtext-light dark:text-subtext-dark">Penemu Dompet</p>
+                            <p class="font-bold text-blue-600">Budi S.</p>
+                            <p class="text-sm text-slate-600">Penemu Dompet</p>
                         </div>
                     </div>
                 </div>
-                <div
-                    class="flex flex-col gap-4 p-6 rounded-lg border border-border-light dark:border-border-dark bg-background-light dark:bg-background-dark">
-                    <p class="text-text-light dark:text-text-dark font-medium italic">"Kunci motor saya jatuh entah di
+                <div class="flex flex-col gap-4 p-6 rounded-xl border border-slate-200 shadow-md hover:shadow-xl bg-white" data-aos="zoom-in" data-aos-delay="300">
+                    <p class="italic">"Kunci motor saya jatuh entah di
                         mana. Saya sudah pasrah, tapi iseng membuat laporan. Ternyata ada yang menemukannya dan
                         mengunggahnya ke InfoHilang. Sangat membantu!"</p>
                     <div class="flex items-center gap-4 mt-2">
-                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Rina A."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVhs6uSvV8MzWxD3eCnA9SBsbpbst4ctdJZH9rL4aeqbN50wvflpzDlv-WUF6ffR5jbB7r1cCXQwhZiooag452niDzCPACiEaZ2j90vj3D_HrnaAoHDIBZypWofCUnv8rZCgHCLcUNdegjUohlngD9UJt5jyfp1nVbXcYM7Y8oFwT51IYdG0wUAFnVv4DZ-kAzqIQPFA_5IKIWnoaCjLGE6hRf97YbbtRB6QAQfZq62iRXU5jdK-HJGZ4cWYsaeR_dzPwANxA88Rs" />
+                        <img class="size-12 rounded-full object-cover" data-alt="Photo of Rina A." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVhs6uSvV8MzWxD3eCnA9SBsbpbst4ctdJZH9rL4aeqbN50wvflpzDlv-WUF6ffR5jbB7r1cCXQwhZiooag452niDzCPACiEaZ2j90vj3D_HrnaAoHDIBZypWofCUnv8rZCgHCLcUNdegjUohlngD9UJt5jyfp1nVbXcYM7Y8oFwT51IYdG0wUAFnVv4DZ-kAzqIQPFA_5IKIWnoaCjLGE6hRf97YbbtRB6QAQfZq62iRXU5jdK-HJGZ4cWYsaeR_dzPwANxA88Rs" />
                         <div>
-                            <p class="font-bold text-text-light dark:text-text-dark">Rina A.</p>
-                            <p class="text-sm text-subtext-light dark:text-subtext-dark">Pemilik Kunci</p>
+                            <p class="font-bold text-blue-600">Rina A.</p>
+                            <p class="text-sm text-slate-600">Pemilik Kunci</p>
                         </div>
                     </div>
                 </div>
@@ -286,127 +229,25 @@
         </div>
     </section>
 
-    <section class="py-10 bg-gray-50 sm:py-16 lg:py-24">
+    {{-- FAQ --}}
+    <section class="py-16 bg-slate-50 sm:py-24" id="faq" data-aos="fade-up">
         <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
-                    FAQ - Pertanyaan Umum
+            <div class="max-w-2xl mx-auto text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-slate-800">
+                    FAQ <span class="text-blue-600">-</span> Pertanyaan Umum
                 </h2>
+                <div class="w-20 h-1.5 bg-orange-600 mx-auto rounded-full mt-4"></div>
             </div>
-            <div class="max-w-3xl mx-auto mt-8 space-y-4 md:mt-16">
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question1" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Apa itu InfoHilang?</span>
-                        <svg id="arrow1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer1" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>InfoHilang adalah platform untuk membantu menemukan orang, hewan, atau barang yang hilang
-                            dengan bantuan komunitas dan peta lokasi.</p>
-                    </div>
-                </div>
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question2" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Apakah saya harus login untuk membuat
-                            laporan?</span>
-                        <svg id="arrow2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer2" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>Tidak wajib. Namun, akun membantu agar kamu bisa:
-                        <ul class="list-disc list-inside">
-                            <li>Mengedit Laporan</li>
-                            <li>Menerima Pesan</li>
-                            <li>Mendapat notifikasi jika ada perkembangan</li>
-                        </ul>
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question3" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Lokasi yang dimasukkan harus akurat?</span>
-                        <svg id="arrow3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer3" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>Tidak harus. Kamu bisa:
-                        <ul class="list-disc list-inside">
-                            <li>Mengisi perkiraan lokasi terakhir</li>
-                            <li>Menggambar rute di peta (jika hilang saat perjalanan)</li>
-                        </ul>
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question4" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Apakah identitas saya aman?</span>
-                        <svg id="arrow4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer4" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>Ya. Nomor HP dan email tidak ditampilkan ke publik.
-                            Komunikasi dilakukan melalui fitur chat di dalam platform.</p>
-                    </div>
-                </div>
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question4" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Apakah InfoHilang menarik biaya?</span>
-                        <svg id="arrow5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer5" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>Tidak. InfoHilang gratis untuk pelaporan dan pencarian.</p>
-                    </div>
-                </div>
-                <div
-                    class="transition-all duration-200 bg-white border border-gray-200 shadow-lg cursor-pointer hover:bg-gray-50">
-                    <button type="button" id="question4" data-state="closed"
-                        class="flex items-center justify-between w-full px-4 py-5 sm:p-6">
-                        <span class="flex text-lg font-semibold text-black">Saya menemukan sesuatu, bagaimana cara
-                            melapor?</span>
-                        <svg id="arrow6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" class="w-6 h-6 text-gray-400">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <div id="answer6" style="display:none" class="px-4 pb-5 sm:px-6 sm:pb-6">
-                        <p>Klik tombol <b>"Saya Menemukan"</b>, lalu isi informasi yang kamu tahu.
-                            Pemilik akan dihubungi tanpa kamu perlu membagikan kontak pribadi.</p>
-                    </div>
-                </div>
+
+            <div id="faq-list" class="max-w-3xl mx-auto space-y-4">
+                <div class="animate-pulse bg-white h-16 rounded-2xl border border-slate-200"></div>
             </div>
-            <p class="text-center text-gray-600 textbase mt-9">
-                Still have questions?
-                <span
-                    class="cursor-pointer font-medium text-tertiary transition-all duration-200 hover:text-tertiary focus:text-tertiary hover-underline">Contact
-                    our support
-                </span>
+
+            <p class="text-center text-slate-500 mt-12">
+                Masih punya pertanyaan lain?
+                <a href="#" class="font-bold text-blue-600 hover:text-blue-700 transition-all border-b-2 border-transparent hover:border-blue-600">
+                    Hubungi Admin Kami
+                </a>
             </p>
         </div>
     </section>
@@ -421,35 +262,95 @@
                     kesayangan mereka.
                 </p>
                 <a href="{{ route('showRegister') }}"
-                    class="inline-block bg-white text-primary font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-                    Buat Akun Sekarang
-                </a>
-            </div>
-        </section>
+    class="inline-block bg-white text-primary font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
+    Buat Akun Sekarang
+    </a>
+    </div>
+    </section>
     @endif --}}
-</div>
+</main>
 
 @push('style')
-    <style>
+<style>
 
-    </style>
+</style>
 @endpush
 
 @push('script')
-    <script>
-        document.querySelectorAll('[id^="question"]').forEach(function(button, index) {
-            button.addEventListener('click', function() {
-                var answer = document.getElementById('answer' + (index + 1));
-                var arrow = document.getElementById('arrow' + (index + 1));
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqs = [{
+                question: "Apa itu InfoHilang?"
+                , answer: "InfoHilang adalah platform komunitas untuk membantu menemukan orang, hewan, atau barang yang hilang melalui sistem laporan publik dan peta lokasi."
+            }
+            , {
+                question: "Apakah saya harus login untuk membuat laporan?"
+                , answer: "Tidak wajib, namun dengan akun Anda bisa mengedit laporan, menerima pesan langsung dari penemu, dan mendapatkan notifikasi perkembangan terbaru secara real-time."
+            }
+            , {
+                question: "Apakah identitas saya aman?"
+                , answer: "Sangat aman. Nomor HP dan email Anda tidak ditampilkan ke publik. Komunikasi dilakukan melalui sistem chat internal di dalam platform kami."
+            }
+            , {
+                question: "Bagaimana cara melaporkan temuan?"
+                , answer: "Klik tombol 'Buat Laporan' lalu pilih kategori 'Ditemukan'. Kami akan mencocokkan data Anda dengan laporan kehilangan yang ada di sistem kami."
+            }
+            , {
+                question: "Apakah InfoHilang menarik biaya?"
+                , answer: "Tidak ada biaya sama sekali (Gratis). Platform ini dibangun sebagai bentuk gotong royong antar sesama anggota masyarakat."
+            }
+        ];
 
-                if (answer.style.display === 'none' || answer.style.display === '') {
-                    answer.style.display = 'block';
-                    arrow.style.transform = 'rotate(0deg)';
-                } else {
-                    answer.style.display = 'none';
-                    arrow.style.transform = 'rotate(-180deg)';
+        const faqList = document.getElementById('faq-list');
+
+        faqList.innerHTML = faqs.map((faq, index) => `
+            <div class="faq-item group transition-all duration-300 bg-white border brounded-2xl overflow-hidden hover:shadow-md">
+                <button type="button"
+                        class="faq-btn flex items-center justify-between w-full px-6 py-5 text-left outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-inset transition-all duration-300">
+                    <span class="text-lg font-bold text-slate-700 group-hover:text-orange-600 transition-colors duration-300 tracking-tight">
+                        ${faq.question}
+                    </span>
+                    <i class="fa-solid fa-chevron-down text-slate-400 transition-transform duration-300 text-sm"></i>
+                </button>
+                <div class="faq-answer hidden px-6 pb-6 text-slate-600 leading-relaxed">
+                    <div class="pt-4 border-t border-slate-100">
+                        ${faq.answer}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        const buttons = document.querySelectorAll('.faq-btn');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const answer = btn.nextElementSibling;
+                const parent = btn.parentElement;
+                const questionText = btn.querySelector('span');
+
+                // Cek apakah item ini sudah terbuka
+                const isAlreadyOpen = !answer.classList.contains('hidden');
+
+                // Tutup SEMUA FAQ yang lagi terbuka
+                document.querySelectorAll('.faq-answer').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.faq-btn span').forEach(span => {
+                    span.classList.remove('text-orange-600');
+                    span.classList.add('text-slate-700');
+                });
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('border-orange-500', 'ring-1', 'ring-orange-500/20', 'shadow-md');
+                });
+
+                // Jika sebelumnya tertutup, buka yang diklik
+                if (!isAlreadyOpen) {
+                    answer.classList.remove('hidden');
+                    parent.classList.add('border-orange-500', 'ring-1', 'ring-orange-500/20', 'shadow-md');
+                    questionText.classList.remove('text-slate-700');
+                    questionText.classList.add('text-orange-600');
                 }
             });
         });
-    </script>
+    });
+
+</script>
 @endpush

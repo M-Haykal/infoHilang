@@ -29,6 +29,7 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 |
 */
 
+// Route::view('/', 'home');
 Route::get('/', Start::class)->name('start');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
 

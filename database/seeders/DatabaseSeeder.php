@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,5 +20,18 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        $admin = User::create([
+            'firstname' => 'Admin',
+            'lastname' => 'InfoHilang',
+            'username' => 'infohilang',
+            'email' => 'admin@infohilang.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password123'),
+        ]);
+
+        \App\Models\OrangHilang::factory(10)->create([
+        'user_id' => $admin->id,
+    ]);
     }
 }
