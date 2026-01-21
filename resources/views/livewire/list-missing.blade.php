@@ -144,7 +144,7 @@
                         class="flex flex-col overflow-hidden rounded-xl border {{ $report->status == 'Hilang' ? 'border-danger/200' : 'border-success/200' }} bg-white dark:bg-gray-800 shadow-sm transition-all hover:shadow-lg hover:-translate-y-1">
                         <div class="relative">
                             <img class="aspect-square w-full object-cover"
-                                src="{{ asset('storage/' . $report->foto[0] ?? 'default.jpg') }}"
+                                {{-- src="{{ asset('storage/' . $report->foto[0] ?? 'default.jpg') }}" --}}
                                 alt="{{ $report->report_name }}" />
 
                             <span
