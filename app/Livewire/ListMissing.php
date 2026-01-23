@@ -18,11 +18,14 @@ class ListMissing extends Component
     public $radius = 5;
     public $mapReports = [];
 
+    public $viewMode = 'grid';
     public string $search = '';
     public string $status = 'Hilang';
     public string $kategori = '';
     public string $lokasi = '';
     public string $date = '';
+
+    protected $paginationTheme = 'tailwind';
 
     protected $listeners = ['setUserLocation'];
 
@@ -34,6 +37,11 @@ class ListMissing extends Component
         'date' => ['except' => ''],
         'page' => ['except' => 1],
     ];
+
+    public function setView($mode)
+    {
+        $this->viewMode = $mode;
+    }
 
     public function updatingSearch()
     {
@@ -86,21 +94,24 @@ class ListMissing extends Component
 
         // Manual pagination
         $perPage = 9;
-        $currentPage = max(1, request()->get('page', 1));
-        $paginated = $all->slice(($currentPage - 1) * $perPage, $perPage)->values();
-
+        $currentPage = $this->getPage();
+        $paginatedItems = $all->forPage($currentPage, $perPage)->values();
         $reports = new LengthAwarePaginator(
-            $paginated,
-            $all->count(),
-            $perPage,
-            $currentPage,
-            ['path' => request()->url(), 'query' => request()->query()]
-        );
+        $paginatedItems,
+        $all->count(),
+        $perPage,
+        $currentPage,
+        [
+            'path' => request()->url(),
+            'as' => 'page',
+        ]
+    );
 
-        $this->loadMapReports();
-        return view('livewire.list-missing', compact('reports'))
-            ->layout('layouts.index')
-            ->title('Daftar Hilang | InfoHilang');
+        return view('livewire.list-missing', [
+            'reports' => $reports
+        ])
+        ->layout('layouts.index')
+        ->title('Daftar Hilang | InfoHilang');
     }
 
     private function getBarangQuery()

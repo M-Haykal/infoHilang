@@ -19,7 +19,7 @@
     {{-- Laporan Terbaru --}}
 
     <section id="laporan" class="py-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 gap-4">
                 <div class="text-center md:text-left">
                     <h2 class="text-3xl font-extrabold text-slate-800 mb-2">Laporan Terbaru</h2>
@@ -27,49 +27,51 @@
                 </div>
 
                 <div class="flex flex-wrap justify-center md:justify-end gap-2">
-                    <button class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">Semua</button>
+                    @foreach(['Semua', 'Orang', 'Hewan', 'Barang'] as $item)
+                    <button wire:click="setKategori('{{ $item }}')" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm border {{ $kategori === $item ? 'bg-orange-600 text-white border-orange-600' : 'bg-white text-slate-600 hover:border-orange-500' }}">
+                        {{ $item }}
+                    </button>
+                    @endforeach
+                    {{-- <button class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium shadow-sm">Semua</button>
                     <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Orang</button>
                     <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Hewan</button>
-                    <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Barang</button>
+                    <button class="bg-white text-slate-600 px-4 py-2 rounded-full text-sm font-medium border hover:border-orange-500 transition shadow-sm">Barang</button> --}}
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                @forelse($orangHilang as $orang)
-                <div class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-slate-200 group">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                @forelse($reports as $report)
+                <div wire:key="report-{{ $report->tipe }}-{{ $report->id }}" class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-slate-200 group">
                     <div class="relative overflow-hidden">
-                        @php
-                        $fotoUrl = $orang->foto && count($orang->foto) > 0
-                        ? $orang->foto[0]
-                        : 'https://ui-avatars.com/api/?name=' . urlencode($orang->nama_orang) . '&background=random';
-                        @endphp
-                        <img src="{{ $fotoUrl }}" alt="{{ $orang->nama_orang }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                        <img src="{{ asset($report->foto[0] ?? 'default.jpg') }}" alt="{{ $report->display_name }}" class="w-full max-h-70 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500">
 
-                        <span class="absolute top-3 left-3 {{ $orang->status == 'Hilang' ? 'bg-red-600' : 'bg-green-600' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                            {{ $orang->status }}
+                        <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-red-600' : 'bg-green-600' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+
+                            {{ $report->status }}
+
                         </span>
                     </div>
 
                     <div class="p-5">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="font-bold text-lg text-slate-800 truncate" title="{{ $orang->nama_orang }}">
-                                {{ $orang->nama_orang }}
+                            <h3 class="text-lg font-bold text-gray-800 truncate" title="{{ $report->display_name }}">
+                                {{ $report->display_name }}
                             </h3>
                             <span class="text-[10px] text-slate-400 font-medium whitespace-nowrap ml-2">
-                                {{ $orang->created_at->diffForHumans() }}
+                                {{ $report->created_at->diffForHumans() }}
                             </span>
                         </div>
 
-                        <p class="text-slate-500 text-sm mb-4 line-clamp-2 h-10">
-                            {{ $orang->deskripsi_orang ?? 'Tidak ada deskripsi tambahan.' }}
+                        <p class="text-slate-500 text-sm mb-2 line-clamp-2 h-10">
+                            {{ $report->display_desc ?? 'Tidak ada deskripsi tambahan.' }}
                         </p>
 
                         <div class="flex items-center text-xs text-slate-600 mb-4 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                            <i class="fa-solid fa-location-dot mr-2 text-red-500"></i>
-                            <span class="truncate">{{ $orang->lokasi_terakhir_dilihat }}</span>
+                            <i class="fa-solid fa-location-dot mr-2 text-green-600"></i>
+                            <span class="truncate">{{ $report->lokasi_terakhir_dilihat ?? $report->lokasi }}</span>
                         </div>
 
-                        <a href="/laporan/{{ $orang->slug }}" class="block w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-bold py-2 rounded-lg transition-colors">
+                        <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm py-2 rounded-lg transition-colors">
                             Detail Laporan
                         </a>
                     </div>
@@ -77,15 +79,15 @@
                 @empty
                 <div class="col-span-full py-10 text-center">
                     <div class="text-slate-300 mb-3">
-                        <i class="fa-solid fa-folder-open text-5xl"></i>
+                        <i class="fa-solid fa-search text-4xl"></i>
                     </div>
-                    <p class="text-slate-500 font-medium">Belum ada laporan orang hilang saat ini.</p>
+                    <p class="text-slate-500 font-medium">Belum ada laporan {{ $kategori !== 'Semua' ? strtolower($kategori) : '' }} ditemukan.</p>
                 </div>
                 @endforelse
             </div>
 
             <div class="text-center mt-12">
-                <a href="{{ route('list-missing') }}" class="font-bold text-blue-600 hover:text-blue-700 transition-all border-b-2 border-transparent hover:border-blue-600">Lihat Semua 150+ Laporan <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                <a href="{{ route('list-missing') }}" class="font-bold text-blue-600 hover:text-blue-700 transition-all border-b-2 border-transparent hover:border-blue-600">Lihat Semua {{ $totalLaporan-5 }}+ Laporan <i class="fa-solid fa-arrow-right ml-1"></i></a>
             </div>
         </div>
     </section>

@@ -14,13 +14,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
         $admin = User::create([
             'firstname' => 'Admin',
             'lastname' => 'InfoHilang',
@@ -31,7 +24,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\OrangHilang::factory(10)->create([
-        'user_id' => $admin->id,
-    ]);
+            'user_id' => $admin->id,
+        ]);
+
+        $this->call([
+            BarangHilangSeeder::class,
+            HewanHilangSeeder::class,
+        ]);
     }
 }
