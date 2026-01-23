@@ -39,7 +39,7 @@ class OrangHilangFactory extends Factory
             'latitude' => $this->faker->latitude(-6.3, -6.1),
             'longitude' => $this->faker->longitude(106.7, 106.9),
             'tanggal_terakhir_dilihat' => $this->faker->dateTimeBetween('-1 month', 'now'),
-            'status' => 'Hilang',
+            'status' => $this->faker->randomElement(['Hilang', 'Ditemukan']),
             'user_id' => \App\Models\User::factory(),
             'slug' => Str::slug($nama) . '-' . Str::random(5),
         ];

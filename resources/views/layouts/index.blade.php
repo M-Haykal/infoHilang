@@ -22,7 +22,7 @@
 
 <body class="bg-slate-50 font-sans">
     @include('components.loading')
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+    <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
 
             <a href="{{ route('start') }}" class="flex items-center gap-2 group">
