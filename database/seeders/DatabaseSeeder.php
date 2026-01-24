@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password123'),
         ]);
 
-        \App\Models\OrangHilang::factory(10)->create([
+        \App\Models\OrangHilang::factory(15)->create([
             'user_id' => $admin->id,
         ]);
 

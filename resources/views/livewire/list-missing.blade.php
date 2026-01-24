@@ -11,200 +11,215 @@
         <div class="max-w-7xl mx-auto">
             <label class="flex flex-col min-w-40 h-14 w-full">
                 <div
-                    class="flex w-full flex-1 items-stretch rounded-2xl h-full shadow-lg bg-white dark:bg-secondary border border-slate-200">
-                    <div class="text-slate-400 flex items-center justify-center pl-5">
+                    class="flex w-full flex-1 items-stretch rounded-2xl h-full shadow-lg bg-white border border-slate-200">
+                    <div class="text-gray-500 flex items-center justify-center pl-5">
                         <i class="fa-solid fa-magnifying-glass text-xl"></i>
                     </div>
                     <input wire:model.live.debounce.500ms="search"
-                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-2xl text-slate-800
-           border-none bg-transparent h-full px-4 pl-3 text-base font-medium
-           placeholder:text-slate-400
-           /* Hilangkan Semua Outline/Border/Ring saat Active */
-           focus:outline-none focus:ring-0 focus:border-none focus:shadow-none"
+                        wire:key="search-input-{{ $search === '' ? 'empty' : 'active' }}"
+                        class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-2xl text-slate-800 border-none bg-transparent h-full px-4 pl-3 text-base font-medium placeholder:text-gray-500 focus:outline-none focus:ring-0 focus:border-none focus:shadow-none"
                         placeholder="Cari barang, hewan, atau orang..." type="text" />
                 </div>
             </label>
         </div>
     </div>
 
-    <div class="flex flex-col gap-8 lg:flex-row">
+    <div class="flex flex-col gap-8 lg:flex-row items-stretch">
         <!-- Filters Sidebar -->
         <aside class="w-full lg:w-1/4 xl:w-1/5 py-4">
             <div class="sticky top-[160px] z-30 bg-white rounded-xl shadow-md p-5 border border-gray-200">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-lg font-bold leading-tight tracking-[-0.015em] text-gray-800 dark:text-black">Filter
-                    </h3>
+                    <h3 class="text-lg font-bold leading-tight tracking-[-0.015em] text-slate-800">Filter</h3>
                     <button wire:click="resetFilters"
                         class="text-sm font-medium text-primary hover:underline transition-colors">
                         Reset
                     </button>
                 </div>
 
-                <div class="flex flex-col gap-6">
+                <div class="grid grid-cols-1 lg:flex lg:flex-col gap-6">
+
                     <!-- Status Filter -->
-                    <div>
-                        <h4 class="text-base font-bold mb-3 text-black-700 dark:text-black-300">Status</h4>
-                        <div class="flex flex-col gap-2">
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="status" value="Hilang" name="status"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Hilang</p>
-                            </label>
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="status" value="Ditemukan" name="status"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Ditemukan</p>
-                            </label>
+                    <div class="col-span-1" wire:key="filter-status-container">
+                        <h4 class="text-sm font-bold mb-3 text-slate-800">Status</h4>
+
+                        <div class="lg:hidden">
+                            <select wire:model.live="status"
+                                wire:key="select-status-{{ $status === '' ? 'reset' : 'active' }}"
+                                class="w-full rounded-lg border border-gray-200 text-sm font-medium p-3 transition-all text-gray-500 focus:border-primary focus:ring-primary focus:outline-none">
+                                <option value="">Semua Status</option>
+                                <option value="Hilang">Hilang</option>
+                                <option value="Ditemukan">Ditemukan</option>
+                            </select>
+                        </div>
+
+                        <div class="hidden lg:flex flex-col gap-2">
+                            @foreach (['' => 'Semua Status', 'Hilang' => 'Hilang', 'Ditemukan' => 'Ditemukan'] as $val => $label)
+                                <label wire:key="wrapper-status-{{ $val }}"
+                                    class="flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors {{ $status === $val ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/50' }}">
+
+                                    <input wire:model.live="status"
+                                        wire:key="radio-status-{{ $val }}-{{ $status === $val ? 'active' : 'inactive' }}"
+                                        type="radio" name="status_group_desktop" value="{{ $val }}"
+                                        class="h-4 w-4 text-primary focus:ring-primary cursor-pointer" />
+
+                                    <p
+                                        class="text-sm font-medium {{ $status === $val ? 'text-primary' : 'text-gray-500' }}">
+                                        {{ $label }}
+                                    </p>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
                     <!-- Category Filter -->
-                    <div>
-                        <h4 class="text-base font-bold mb-3 text-black-700 dark:text-black-300">Kategori</h4>
-                        <div class="flex flex-col gap-2">
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="kategori" value="Barang" name="kategori"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Barang</p>
-                            </label>
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="kategori" value="Hewan" name="kategori"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Hewan</p>
-                            </label>
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="kategori" value="Orang" name="kategori"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Orang</p>
-                            </label>
-                            <label
-                                class="flex items-center gap-3 rounded-lg border border-gray-200 dark:border-gray-600 p-3 cursor-pointer hover:border-primary/50 transition-colors">
-                                <input wire:model.live="kategori" value="" name="kategori"
-                                    class="h-4 w-4 text-primary focus:ring-primary" type="radio" />
-                                <p class="text-sm font-medium text-gray-700 dark:text-gray-600">Semua Kategori</p>
-                            </label>
+                    <div class="col-span-1" wire:key="filter-kategori-container">
+                        <h4 class="text-sm font-bold mb-3 text-slate-800">Kategori</h4>
+
+                        <div class="lg:hidden">
+                            <select wire:model.live="kategori"
+                                wire:key="select-kategori-{{ $kategori === '' ? 'reset' : 'active' }}"
+                                class="w-full rounded-lg border border-gray-200 text-sm font-medium p-3 transition-all text-gray-500 focus:border-primary focus:ring-primary focus:outline-none">
+                                <option value="">Semua Kategori</option>
+                                <option value="Barang">Barang</option>
+                                <option value="Hewan">Hewan</option>
+                                <option value="Orang">Orang</option>
+                            </select>
+                        </div>
+
+                        <div class="hidden lg:flex flex-col gap-2">
+                            @foreach (['' => 'Semua Kategori', 'Barang' => 'Barang', 'Hewan' => 'Hewan', 'Orang' => 'Orang'] as $val => $label)
+                                <label wire:key="wrapper-kategori-{{ $val }}"
+                                    class="flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors {{ $kategori === $val ? 'border-primary bg-primary/5 shadow-sm' : 'border-gray-200 hover:border-primary/50' }}">
+
+                                    <input wire:model.live="kategori"
+                                        wire:key="input-kategori-{{ $val }}-{{ $kategori === $val ? 'on' : 'off' }}"
+                                        value="{{ $val }}" name="kategori_radio_group" type="radio"
+                                        class="h-4 w-4 text-primary focus:ring-primary cursor-pointer" />
+
+                                    <p
+                                        class="text-sm font-medium {{ $kategori === $val ? 'text-primary' : 'text-gray-500' }}">
+                                        {{ $label }}
+                                    </p>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
 
                     <!-- Location Filter -->
-                    <div>
-                        <h4 class="text-base font-bold mb-3 text-black-700 dark:text-black-300">Lokasi</h4>
+                    <div class="col-span-1">
+                        <h4 class="text-sm font-bold mb-3 text-slate-800">Lokasi</h4>
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <i class="fa-solid fa-location-dot text-gray-400"></i>
                             </div>
                             <input wire:model.live.debounce.500ms="lokasi"
-                                class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-100 focus:border-primary focus:ring-primary/50 pl-10 py-2 text-sm"
-                                placeholder="e.g. Jakarta Selatan" type="text" />
+                                wire:key="filter-lokasi-{{ $lokasi ? 'active' : 'empty' }}"
+                                class="form-input w-full rounded-lg border-gray-300 text-sm font-medium text-gray-500 focus:border-primary focus:ring-primary pl-10 py-2 bg-slate-100"
+                                placeholder="Jakarta Selatan" type="text" />
                         </div>
                     </div>
 
                     <!-- Date Filter -->
-                    <div>
-                        <h4 class="text-base font-bold mb-3 text-black-700 dark:text-black-300">Tanggal Dilaporkan</h4>
+                    <div class="col-span-1">
+                        <h4 class="text-sm font-bold mb-3 text-slate-800">Tanggal Dilaporkan</h4>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <div onclick="document.getElementById('filter-date').showPicker()"
+                                class="absolute inset-y-0 left-0 flex items-center pl-3">
                                 <i class="fa-solid fa-calendar text-gray-400"></i>
                             </div>
-                            <input wire:model.live="date"
-                                class="form-input w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-100 focus:border-primary focus:ring-primary/50 pl-10 py-2 text-sm"
-                                type="date" />
+                            <input id="filter-date" wire:model.live="date"
+                                wire:key="filter-date-{{ $date ? 'active' : 'empty' }}"
+                                class="form-input w-full rounded-lg border-gray-300 text-sm font-medium text-gray-500 focus:border-primary focus:ring-primary pl-10 py-2 bg-slate-100"
+                                type="date" onclick="this.showPicker()" />
                         </div>
                     </div>
                 </div>
             </div>
         </aside>
 
-        <div class="w-full lg:w-3/4 xl:w-4/5">
-            {{-- <div class="flex items-center justify-between py-2 bg-slate-50 backdrop-blur-md sticky top-[152px] z-30">
-                <p class="text-sm text-slate-500 font-medium">Menampilkan <span class="text-slate-900">{{ $reports->count() }}</span> dari {{ $reports->total() }} hasil</p>
-                <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
-                    <button wire:click="setView('grid')" class="p-2 rounded-lg transition-all {{ $viewMode === 'grid' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600' }}">
-                        <i class="fa-solid fa-grip text-lg"></i>
-                    </button>
-                    <button wire:click="setView('list')" class="p-2 rounded-lg transition-all {{ $viewMode === 'list' ? 'bg-white shadow-sm text-blue-600' : 'text-slate-400 hover:text-slate-600' }}">
-                        <i class="fa-solid fa-list text-lg"></i>
-                    </button>
-                </div>
-            </div> --}}
+        <div class="w-full lg:w-3/4 xl:w-4/5 flex flex-col">
             <div class="flex items-center justify-end py-2 sticky top-[152px] z-30 pt-3">
                 <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl">
                     <button wire:click="setView('grid')"
-                        class="p-2 rounded-lg transition-all {{ $viewMode === 'grid' ? 'bg-white shadow-sm text-orange-600' : 'text-slate-400 hover:text-slate-600' }}">
+                        class="p-2 rounded-lg transition-all {{ $viewMode === 'grid' ? 'bg-white shadow-sm text-orange-600' : 'text-slate-400 hover:text-gray-500' }}">
                         <i class="fa-solid fa-grip text-lg"></i>
                     </button>
                     <button wire:click="setView('list')"
-                        class="p-2 rounded-lg transition-all {{ $viewMode === 'list' ? 'bg-white shadow-sm text-orange-600' : 'text-slate-400 hover:text-slate-600' }}">
+                        class="p-2 rounded-lg transition-all {{ $viewMode === 'list' ? 'bg-white shadow-sm text-orange-600' : 'text-slate-400 hover:text-gray-500' }}">
                         <i class="fa-solid fa-list text-lg"></i>
                     </button>
                 </div>
             </div>
-
-            <div
-                class="py-4 {{ $viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-3 xl:grid-cols-3 gap-6' : 'flex flex-col gap-4' }}">
-                @forelse ($reports as $report)
+            <div class="flex-1 flex flex-col mt-4">
+                @if ($reports->count() > 0)
                     <div
-                        class="group flex {{ $viewMode === 'grid' ? 'flex-col' : 'flex-row' }} overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                        class="{{ $viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-3 gap-6' : 'flex flex-col gap-4' }}">
+                        @foreach ($reports as $report)
+                            <div
+                                class="group flex {{ $viewMode === 'grid' ? 'flex-col' : 'flex-row' }} overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all duration-300">
 
-                        <div
-                            class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 flex-shrink-0' }}">
-                            <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                                src="{{ asset($report->foto[0] ?? 'default.jpg') }}" alt="{{ $report->report_name }}" />
+                                <div
+                                    class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 flex-shrink-0' }}">
+                                    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                                        src="{{ asset($report->foto[0] ?? 'default.jpg') }}"
+                                        alt="{{ $report->report_name }}" />
 
-                            <span
-                                class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-red-600' : 'bg-green-600' }} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                {{ strtoupper($report->status) }}
-                            </span>
-                        </div>
-
-                        <div
-                            class="{{ $viewMode === 'grid' ? 'w-full' : 'w-2/3 md:w-48' }} flex flex-1 flex-col p-5 justify-between">
-                            <div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <h3 class="text-lg font-bold text-gray-800">{{ $report->report_name }}</h3>
-                                    @if ($viewMode === 'list')
-                                        <span
-                                            class="hidden md:block text-[10px] text-slate-400 font-medium tracking-widest">{{ $report->created_at->diffForHumans() }}</span>
-                                    @endif
+                                    <span
+                                        class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-red-600' : 'bg-green-600' }} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                        {{ strtoupper($report->status) }}
+                                    </span>
                                 </div>
 
-                                <div class="space-y-2">
-                                    <p class="text-sm text-slate-500 line-clamp-2 mb-2">
-                                        {{ $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' }}
-                                    </p>
-                                    <div
-                                        class="flex items-center text-xs text-slate-600 bg-slate-50 p-2 rounded-lg border border-slate-100">
-                                        <i class="fa-solid fa-location-dot mr-2 text-green-600"></i>
-                                        <span class="truncate">{{ $report->lokasi_terakhir_dilihat }}</span>
+                                <div
+                                    class="{{ $viewMode === 'grid' ? 'w-full' : 'w-2/3 md:w-48' }} flex flex-1 flex-col p-5 justify-between">
+                                    <div>
+                                        <div class="flex justify-between items-center mb-2">
+                                            <h3 class="text-lg font-bold text-gray-800">{{ $report->report_name }}
+                                            </h3>
+                                            @if ($viewMode === 'list')
+                                                <span
+                                                    class="hidden md:block text-[10px] text-slate-400 font-medium tracking-widest">{{ $report->created_at->diffForHumans() }}</span>
+                                            @endif
+                                        </div>
+
+                                        <div class="space-y-2">
+                                            <p class="text-sm text-gray-500 line-clamp-2 mb-2">
+                                                {{ $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' }}
+                                            </p>
+                                            <div
+                                                class="flex items-center text-xs text-gray-500 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                                <i class="fa-solid fa-location-dot mr-2 text-green-600"></i>
+                                                <span class="truncate">{{ $report->lokasi_terakhir_dilihat }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
+                                        <a href=""
+                                            class="flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
+                                            Laporan</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
-                                <a href=""
-                                    class="flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
-                                    Laporan</a>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
-                @empty
+                @else
                     <div
-                        class="col-span-full text-center py-20 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
+                        class="flex-1 flex flex-col items-center justify-center bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200 p-10 text-center min-h-[460px]">
                         <i class="fa-solid fa-magnifying-glass text-5xl text-slate-300 mb-4"></i>
-                        <p class="text-slate-500 font-bold text-xl">Tidak ada hasil ditemukan</p>
-                        <p class="text-slate-400">Coba ubah kata kunci atau reset filter Anda.</p>
+                        <p class="text-gray-500 font-bold text-xl">Tidak ada hasil ditemukan</p>
+                        <p class="text-slate-400 mb-6">Coba ubah kata kunci atau gunakan tombol reset untuk mencari
+                            ulang.</p>
+                        <button wire:click="resetFilters" class="text-primary font-semibold hover:underline">
+                            Reset Filter
+                        </button>
                     </div>
-                @endforelse
-            </div>
-
-            <div class="mt-8 p-4">
-                {{ $reports->links('vendor.pagination.tailwind') }}
+                @endif
+                <div class="mt-8 p-4">
+                    {{ $reports->links('vendor.pagination.tailwind') }}
+                </div>
             </div>
         </div>
+
     </div>
     <!-- MAP SECTION -->
     <div class="px-4 mt-6">
