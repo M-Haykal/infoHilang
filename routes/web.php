@@ -38,6 +38,7 @@ Route::middleware('guest.redirect')->group(function () {
     Route::get('/oauth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
     Route::get('/oauth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
+    Route::view('/login', 'auth/masuk');
     Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
     Route::post('/masuk', [AuthController::class, 'login'])->name('login');
 
