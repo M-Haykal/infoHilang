@@ -8,6 +8,8 @@
     <title>Masuk | InfoHilang</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     <style>
         .bg-gradient-custom {
             background: linear-gradient(135deg, var(--primary) 0%, #4dabf7 100%);
@@ -46,7 +48,7 @@
         <!-- Header -->
         <div class="text-center mb-6">
             <h1 class="text-3xl font-bold text-primary">Info<span class="text-highlight">Hilang</span></h1>
-            <p class="text-gray-600 mt-2 text-sm sm:text-base">Masuk untuk melaporkan atau menemukan sesuatu</p>
+            <p class="text-netral-500 mt-2 text-sm sm:text-base">Masuk untuk melaporkan atau menemukan sesuatu</p>
         </div>
 
         <!-- Login Form -->
@@ -75,7 +77,7 @@
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-2">
                 <label class="flex items-center space-x-2">
                     <input type="checkbox" name="remember" class="text-primary focus:ring-primary rounded">
-                    <span class="text-gray-600">Ingat saya</span>
+                    <span class="text-netral-500">Ingat saya</span>
                 </label>
                 <a href="{{ route('password.request') }}" class="text-primary hover:underline">Lupa kata sandi?</a>
             </div>
@@ -103,7 +105,7 @@
         </div>
 
         <!-- Footer -->
-        <p class="text-center text-sm text-gray-600 mt-6">
+        <p class="text-center text-sm text-netral-500 mt-6">
             Belum punya akun?
             <a href="{{ route('showRegister') }}" class="text-primary hover:underline">Daftar Sekarang</a>
         </p>

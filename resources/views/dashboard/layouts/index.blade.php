@@ -14,12 +14,12 @@
     @stack('style')
 </head>
 
-<body class="bg-accent font-sans min-h-screen">
+<body class="bg-netral-50 font-sans min-h-screen">
     @include('components.loading')
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-secondary shadow-lg
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg
             transform -translate-x-full transition-transform duration-300
             md:static md:translate-x-0 md:w-64 md:z-auto">
             <div class="p-4 flex items-center justify-between border-b">
