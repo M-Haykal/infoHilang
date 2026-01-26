@@ -47,10 +47,10 @@
                         <i class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200" id="dropdown-icon"></i>
                     </button>
 
-                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                    <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
                         <div class="px-5 py-4 bg-netral-50/50 border-b border-netral-100">
                             <p class="text-xs text-netral-400 uppercase tracking-wider">Akun Saya</p>
-                            <p class="font-black text-dark truncate">{{ Auth::user()->username }}</p>
+                            <p class="font-black text-dark truncate">{{ Auth::user()->firstname }}</p>
                         </div>
                         <div class="p-2">
                             <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 text-netral-500 hover:primary-light hover:text-primary rounded-xl transition font-medium">

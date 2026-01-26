@@ -5,121 +5,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Masuk | InfoHilang</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/all.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
-    <style>
-        .bg-gradient-custom {
-            background: linear-gradient(135deg, var(--primary) 0%, #4dabf7 100%);
-        }
-
-        .input-focus {
-            transition: all 0.3s ease;
-        }
-
-        .input-focus:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
-        }
-
-        .btn-social {
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-social:hover {
-            background-color: var(--accent);
-        }
-    </style>
+    <title>Masuk | InfoHilang</title>
+    @stack('style')
     @livewireStyles
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
 </head>
 
-<body class="min-h-screen flex items-center justify-center font-sans bg-gradient-custom relative overflow-hidden">
-    <!-- Background Decorations -->
-    <div class="absolute top-[-80px] left-[-80px] w-64 h-64 bg-highlight opacity-20 rounded-full blur-3xl md:w-80 md:h-80"
-        data-aos="fade-in" data-aos-delay="100"></div>
-    <div class="absolute bottom-[-100px] right-[-100px] w-72 h-72 bg-success opacity-20 rounded-full blur-3xl md:w-96 md:h-96"
-        data-aos="fade-in" data-aos-delay="200"></div>
+<body class="min-h-screen flex items-center justify-center relative overflow-hidden bg-netral-50 font-sans">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 sm:p-10 mx-4 z-10" data-aos="zoom-in" data-aos-duration="600">
 
-    <!-- Login Card -->
-    <div class="w-full max-w-md bg-secondary rounded-2xl shadow-xl p-6 sm:p-8 mx-4" data-aos="zoom-in"
-        data-aos-duration="800">
-        <!-- Header -->
-        <div class="text-center mb-6">
-            <h1 class="text-3xl font-bold text-primary">Info<span class="text-highlight">Hilang</span></h1>
-            <p class="text-netral-500 mt-2 text-sm sm:text-base">Masuk untuk melaporkan atau menemukan sesuatu</p>
-        </div>
-
-        <!-- Login Form -->
-        <form action="{{ route('login') }}" method="POST" class="space-y-5">
-            @csrf
-            <div>
-                <label for="login" class="block text-sm font-medium text-gray-700 mb-1">Email atau Username</label>
-                <input type="text" id="login" name="login" required value="{{ old('login') }}"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Email atau Username" />
-                @error('login')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi</label>
-                <input type="password" id="password" name="password" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan kata sandi" />
-                @error('password')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-sm gap-2">
-                <label class="flex items-center space-x-2">
-                    <input type="checkbox" name="remember" class="text-primary focus:ring-primary rounded">
-                    <span class="text-netral-500">Ingat saya</span>
-                </label>
-                <a href="{{ route('password.request') }}" class="text-primary hover:underline">Lupa kata sandi?</a>
-            </div>
-
-            <button type="submit"
-                class="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
-                Masuk
-            </button>
-        </form>
-
-        <!-- Divider -->
-        <div class="my-6 flex items-center">
-            <hr class="flex-1 border-gray-300">
-            <span class="px-3 text-gray-500 text-sm">atau</span>
-            <hr class="flex-1 border-gray-300">
-        </div>
-
-        <!-- Social Login -->
-        <div class="space-y-3">
-            <a href="{{ route('google.redirect') }}"
-                class="w-full flex items-center justify-center gap-2 border border-gray-300 py-2 rounded-lg btn-social">
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
-                <span class="font-medium text-gray-700">Masuk dengan Google</span>
+        <div class="flex justify-center mb-6">
+            <a href="{{ route('start') }}" class="flex items-center gap-2 group">
+                <div class="bg-primary p-2 rounded-xl group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fa-solid fa-magnifying-glass text-white"></i>
+                </div>
+                <span class="text-2xl font-black text-dark tracking-tight">Info<span class="text-primary">Hilang</span></span>
             </a>
         </div>
 
-        <!-- Footer -->
-        <p class="text-center text-sm text-netral-500 mt-6">
-            Belum punya akun?
-            <a href="{{ route('showRegister') }}" class="text-primary hover:underline">Daftar Sekarang</a>
+        <form action="{{ route('login') }}" method="POST" class="space-y-5">
+            @csrf
+
+            <div class="space-y-1">
+                <label for="login" class="block text-sm font-bold text-dark ml-1">Username atau Email</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-netral-400">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+                    <input type="text" id="login" name="login" required value="{{ old('login') }}" class="w-full pl-10 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none" placeholder="Username atau email" />
+                </div>
+                @error('login')
+                <p class="text-red-500 text-xs mt-1 font-medium italic"><i class="fa-solid fa-circle-exclamation mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-bold text-dark ml-1">Kata Sandi</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-netral-400">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input type="password" id="password" name="password" required class="w-full pl-10 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none" placeholder="••••••••" />
+                </div>
+                @error('password')
+                <p class="text-red-500 text-xs mt-1 font-medium italic"><i class="fa-solid fa-circle-exclamation mr-1"></i>{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="flex items-center justify-between text-xs sm:text-sm">
+                <label class="flex items-center group cursor-pointer">
+                    <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 bg-primary focus:ring-primary cursor-pointer transition-all">
+                    <span class="ml-2 text-slate-600 group-hover:text-dark transition-colors">Ingat saya</span>
+                </label>
+                <a href="{{ route('password.request') }}" class="font-bold text-primary hover:text-primary-dark transition-colors">Lupa Password?</a>
+            </div>
+
+            <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+                Masuk Sekarang
+            </button>
+        </form>
+
+        <div class="my-6 flex items-center">
+            <div class="flex-1 h-px bg-netral-300"></div>
+            <span class="px-4 text-netral-400 text-xs font-bold uppercase tracking-widest">Atau</span>
+            <div class="flex-1 h-px bg-netral-300"></div>
+        </div>
+
+        <a href="{{ route('google.redirect') }}" class="w-full flex items-center justify-center gap-3 border py-3 rounded-xl bg-netral-100 hover:bg-netral-200 transition-all group">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5 group-hover:scale-110 transition-transform">
+            <span class="font-bold text-dark text-sm">Masuk dengan Google</span>
+        </a>
+
+        <p class="text-center text-sm text-netral-500 mt-6 font-medium">
+            Belum bergabung?
+            <a href="{{ route('showRegister') }}" class="text-primary hover:text-primary-dark transition-all border-b-2 border-transparent hover:border-primary">Buat Akun Baru</a>
         </p>
     </div>
 
-    @livewireScripts
+    {{-- Font Awesome --}}
+    <script src="{{ asset('js/all.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
-            duration: 800,
-            easing: 'ease-out',
             once: true
         });
     </script>
+    @livewireScripts
 </body>
-
 </html>

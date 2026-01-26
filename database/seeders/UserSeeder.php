@@ -17,15 +17,30 @@ class UserSeeder extends Seeder
         User::create([
             'firstname' => 'Admin',
             'lastname' => 'InfoHilang',
-            'username' => 'Admin InfoHilang',
-            'email' => 'InfoHilang@gmail.com', 
-            'password' => Hash::make('adminInfoHilang'),
+            'username' => 'infoHilang',
+            'email' => 'infoHilang@gmail.com',
+            'password' => Hash::make('password'),
             'role' => 'admin',
             'provinsi' => 'Jawa Barat',
             'kota' => 'Bandung',
             'kecamatan' => 'Bandung Kota',
             'kelurahan' => 'Bojongloa',
             'alamat' => 'Bojongloa Kidul, Bandung Kota, Jawa Barat',
+            'no_hp' => '081234567890',
+        ]);
+
+        User::create([
+            'firstname' => 'Kusuma',
+            'lastname' => 'Wecitra',
+            'username' => 'citra493',
+            'email' => 'citranotes@gmail.com',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+            'provinsi' => 'Jawa Barat',
+            'kota' => 'Depok',
+            'kecamatan' => 'Cimanggis',
+            'kelurahan' => 'Mekarsari',
+            'alamat' => 'RT. 005/001',
             'no_hp' => '081234567890',
         ]);
     }

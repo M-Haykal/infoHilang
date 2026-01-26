@@ -30,6 +30,31 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 */
 
 // Route::view('/', 'home');
+// Route::get('/test-401', function () {
+//     return view('errors.401');
+// });
+// Route::get('/test-402', function () {
+//     return view('errors.402');
+// });
+// Route::get('/test-403', function () {
+//     return view('errors.403');
+// });
+// Route::get('/test-404', function () {
+//     return view('errors.404');
+// });
+// Route::get('/test-419', function () {
+//     return view('errors.419');
+// });
+// Route::get('/test-429', function () {
+//     return view('errors.429');
+// });
+// Route::get('/test-500', function () {
+//     return view('errors.500');
+// });
+// Route::get('/test-503', function () {
+//     return view('errors.503');
+// });
+
 Route::get('/', Start::class)->name('start');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
 
@@ -38,10 +63,11 @@ Route::middleware('guest.redirect')->group(function () {
     Route::get('/oauth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.redirect');
     Route::get('/oauth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
-    Route::view('/login', 'auth/masuk');
+    // Route::view('/login', 'auth/masuk');
     Route::get('/masuk', [AuthController::class, 'showLogin'])->name('showLogin');
     Route::post('/masuk', [AuthController::class, 'login'])->name('login');
 
+    // Route::view('/signup', 'auth/signup');
     Route::get('/daftar', [AuthController::class, 'showRegister'])->name('showRegister');
     Route::post('/daftar', [AuthController::class, 'register'])->name('register');
 

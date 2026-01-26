@@ -8,115 +8,107 @@
     <title>Daftar | InfoHilang</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <style>
-        .bg-gradient-custom {
-            background: linear-gradient(135deg, var(--primary) 0%, #4dabf7 100%);
-        }
-
-        .input-focus {
-            transition: all 0.3s ease;
-        }
-
-        .input-focus:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.2);
-        }
-
-        .btn-social {
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-social:hover {
-            background-color: var(--accent);
-        }
-    </style>
+    {{-- Font Awesome --}}
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
     @livewireStyles
 </head>
 
-<body class="min-h-screen flex items-center justify-center font-sans bg-gradient-custom relative overflow-hidden">
-    <!-- Background Decorations -->
-    <div class="absolute top-[-80px] left-[-80px] w-64 h-64 bg-highlight opacity-20 rounded-full blur-3xl md:w-80 md:h-80"
-        data-aos="fade-in" data-aos-delay="100"></div>
-    <div class="absolute bottom-[-100px] right-[-100px] w-72 h-72 bg-success opacity-20 rounded-full blur-3xl md:w-96 md:h-96"
-        data-aos="fade-in" data-aos-delay="200"></div>
-
+<body class="min-h-screen flex items-center justify-center relative bg-netral-50 font-sans">
     <!-- Register Card -->
-    <div class="w-full max-w-md bg-secondary rounded-2xl shadow-xl p-6 sm:p-8 mx-4" data-aos="zoom-in"
-        data-aos-duration="800">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 sm:p-10 mx-4 z-10" data-aos="zoom-in" data-aos-duration="600">
+
         <!-- Header -->
-        <div class="text-center mb-6">
-            <h1 class="text-3xl font-bold text-primary">Daftar <span class="text-highlight">InfoHilang</span></h1>
-            <p class="text-gray-600 mt-2 text-sm sm:text-base">Buat akun untuk melaporkan atau menemukan sesuatu</p>
+        <div class="flex justify-center mb-6">
+            <a href="{{ route('start') }}" class="flex items-center gap-2 group">
+                <div class="bg-primary p-2 rounded-xl group-hover:rotate-12 transition-transform duration-300">
+                    <i class="fa-solid fa-magnifying-glass text-white"></i>
+                </div>
+                <span class="text-2xl font-black text-dark tracking-tight">Info<span class="text-primary">Hilang</span></span>
+            </a>
         </div>
 
         <!-- Register Form -->
         <form action="" method="POST" class="space-y-5">
             @csrf
-            <div>
-                <label for="firstname" class="block text-sm font-medium text-gray-700 mb-1">Nama Depan</label>
-                <input type="text" id="firstname" name="firstname" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan nama depan Anda" />
-                @error('firstname')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
-                @enderror
+
+            {{-- Nama Depan & Belakang --}}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <div class="space-y-1">
+                    <label for="firstname" class="block text-sm font-bold text-dark ml-1">Nama Depan</label>
+                    <input type="text" id="firstname" name="firstname" value="{{ old('firstname') }}" required
+                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                        placeholder="John" />
+                    @error('firstname')
+                        <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="space-y-1">
+                    <label for="lastname" class="block text-sm font-bold text-dark ml-1">Nama Belakang</label>
+                    <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required
+                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                        placeholder="Doe" />
+                    @error('lastname')
+                        <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
+                    @enderror
+                </div>
             </div>
 
-            <div>
-                <label for="lastname" class="block text-sm font-medium text-gray-700 mb-1">Nama Belakang</label>
-                <input type="text" id="lastname" name="lastname" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan nama belakang Anda" />
-                @error('lastname')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" id="email" name="email" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan email Anda" />
+            {{-- Email --}}
+            <div class="space-y-1">
+                <label for="email" class="block text-sm font-bold text-dark ml-1">Email</label>
+                <div class="relative">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required
+                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                        placeholder="nama@email.com" />
+                </div>
                 @error('email')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
+                    <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi</label>
-                <input type="password" id="password" name="password" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Masukkan kata sandi" />
+            {{-- Password --}}
+            <div class="space-y-1">
+                <label for="password" class="block text-sm font-bold text-dark ml-1">Kata Sandi</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required
+                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                        placeholder="Masukkan kata sandi" />
+                </div>
                 @error('password')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
+                    <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
                 @enderror
             </div>
 
-            <div>
-                <label for="password_confirmation" class="block text-sm font-medium text-gray-700 mb-1">Konfirmasi Kata
-                    Sandi</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" required
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus"
-                    placeholder="Konfirmasi kata sandi" />
+            {{-- Konfirmasi Password --}}
+            <div class="space-y-1">
+                <label for="password_confirmation" class="block text-sm font-bold text-dark ml-1">Konfirmasi Kata Sandi</label>
+                <div class="relative">
+                    <input type="password" id="password_confirmation" name="password_confirmation" required
+                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                        placeholder="Konfirmasi kata sandi" />
+                </div>
                 @error('password_confirmation')
-                    <p class="text-danger text-xs mt-1">{{ $message }}</p>
+                    <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
                 @enderror
             </div>
 
-            <button type="submit"
-                class="w-full bg-primary text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+            <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
                 Daftar
             </button>
         </form>
 
         <!-- Footer -->
-        <p class="text-center text-sm text-gray-600 mt-6">
+        <p class="text-center text-sm text-netral-500 mt-6 font-medium">
             Sudah punya akun?
-            <a href="{{ route('showLogin') }}" class="text-primary hover:underline">Masuk Sekarang</a>
+            <a href="{{ route('showLogin') }}" class="text-primary hover:text-primary-dark transition-all border-b-2 border-transparent hover:border-primary">Masuk Sekarang</a>
         </p>
     </div>
 
     @livewireScripts
+    {{-- Font Awesome --}}
+    <script src="{{ asset('js/all.min.js') }}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({
