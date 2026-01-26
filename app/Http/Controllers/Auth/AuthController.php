@@ -7,9 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
+    private function generateUniqueUsername($firstname, $lastname)
+    {
+        $baseUsername = Str::slug($firstname . ' ' . $lastname); // muhammad-haykal
+        $username = $baseUsername;
+        $counter = 1;
+
+        while (User::where('username', $username)->exists()) {
+            $username = $baseUsername . '-' . $counter;
+            $counter++;
+        }
+
+        return $username;
+    }
+
     public function showLogin()
     {
         return view('auth.login');
@@ -18,24 +33,29 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
+            'login' => 'required|string',
+            'password' => 'required|string',
         ]);
 
-        $credentials = $request->only('email', 'password');
+        $login = $request->login;
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        $user = User::where($field, $login)->first();
 
-        if (Auth::attempt($credentials)) {
+        if ($user && $user->google_id && !$user->password) {
+            return back()->withErrors([
+                'login' => 'Akun ini terdaftar menggunakan Google.'
+            ])->onlyInput('login');
+        }
+
+        if (Auth::attempt([$field => $login, 'password' => $request->password])) {
             $request->session()->regenerate();
-
             return redirect()->intended('/')->with('success', 'Berhasil login!');
         }
 
         return back()->withErrors([
-            'email' => 'Email salah.',
-            'password'=> 'Password salah.'
-        ])->onlyInput('email');
+            'login' => 'Email / Username atau password salah.'
+        ])->onlyInput('login');
     }
-
 
     public function showRegister()
     {
@@ -51,7 +71,7 @@ class AuthController extends Controller
             'password' => 'required|string|min:6|confirmed',
         ]);
 
-        $username = trim($request->firstname . ' ' . $request->lastname);
+        $username = $this->generateUniqueUsername($request->firstname, $request->lastname);
 
         $user = User::create([
             'firstname' => $request->firstname,
