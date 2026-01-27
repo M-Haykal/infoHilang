@@ -14,20 +14,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $admin = User::create([
-            'firstname' => 'Admin',
-            'lastname' => 'InfoHilang',
-            'username' => 'infohilang',
-            'email' => 'admin@infohilang.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password123'),
+        $this->call([
+            UserSeeder::class,
         ]);
+
+        $admin = \App\Models\User::where('username', 'citra493')->first();
 
         \App\Models\OrangHilang::factory(15)->create([
             'user_id' => $admin->id,
         ]);
 
         $this->call([
+            UserSeeder::class,
             BarangHilangSeeder::class,
             HewanHilangSeeder::class,
         ]);

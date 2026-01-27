@@ -78,7 +78,7 @@
                     <div class="text-netral-300 mb-3">
                         <i class="fa-solid fa-search text-4xl"></i>
                     </div>
-                    <p class="text-netral-500 font-medium">Belum ada laporan {{ $kategori !== 'Semua' ? strtolower($kategori) : '' }} ditemukan.</p>
+                    <p class="text-netral-500 font-medium">Belum ada laporan {{ $kategori !== 'Semua' ? strtolower($kategori) : '' }} hilang ditemukan.</p>
                 </div>
                 @endforelse
             </div>

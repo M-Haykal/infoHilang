@@ -14,34 +14,37 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'firstname' => 'Admin',
-            'lastname' => 'InfoHilang',
-            'username' => 'infoHilang',
-            'email' => 'infoHilang@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-            'provinsi' => 'Jawa Barat',
-            'kota' => 'Bandung',
-            'kecamatan' => 'Bandung Kota',
-            'kelurahan' => 'Bojongloa',
-            'alamat' => 'Bojongloa Kidul, Bandung Kota, Jawa Barat',
-            'no_hp' => '081234567890',
-        ]);
+        \App\Models\User::updateOrCreate(
+            ['username' => 'infoHilang'],
+            [
+                'fullname' => 'Admin InfoHilang',
+                'email' => 'infoHilang@gmail.com',
+                'password' => \Illuminate\Support\Facades\Hash::make('password'),
+                'role' => 'admin',
+                'provinsi' => 'Jawa Barat',
+                'kota' => 'Bandung',
+                'kecamatan' => 'Bandung Kota',
+                'kelurahan' => 'Bojongloa',
+                'alamat' => 'Bojongloa Kidul, Bandung Kota, Jawa Barat',
+                'no_hp' => '081234567890',
+            ]
+        );
 
-        User::create([
-            'firstname' => 'Kusuma',
-            'lastname' => 'Wecitra',
-            'username' => 'citra493',
-            'email' => 'citranotes@gmail.com',
-            'password' => Hash::make('password'),
-            'role' => 'user',
-            'provinsi' => 'Jawa Barat',
-            'kota' => 'Depok',
-            'kecamatan' => 'Cimanggis',
-            'kelurahan' => 'Mekarsari',
-            'alamat' => 'RT. 005/001',
-            'no_hp' => '081234567890',
-        ]);
+        \App\Models\User::updateOrCreate(
+            ['username' => 'citra493'],
+            [
+                'fullname' => 'Kusuma Wecitra',
+                'username' => 'citra493',
+                'email' => 'citranotes@gmail.com',
+                'password' => Hash::make('password'),
+                'role' => 'user',
+                'provinsi' => 'Jawa Barat',
+                'kota' => 'Depok',
+                'kecamatan' => 'Cimanggis',
+                'kelurahan' => 'Mekarsari',
+                'alamat' => 'RT. 005/001',
+                'no_hp' => '081234567890',
+            ]
+        );
     }
 }

@@ -20,6 +20,7 @@ module.exports = {
 
                 danger: {
                     DEFAULT: 'oklch(57.7% 0.245 27.325)', // red-600
+                    dark: 'oklch(50.5% 0.213 27.518)', // red-700
                     light: 'oklch(97.1% 0.013 17.38)', // red-50
                 },
 

@@ -16,77 +16,57 @@
 
 <body class="bg-netral-50 font-sans min-h-screen">
     @include('components.loading')
-    <div class="flex min-h-screen">
+    <div class="flex min-h-screen relative">
+        <div class="lg:hidden fixed inset-x-0 top-0 z-40 p-4">
+            <button onclick="toggleSidebar()" class="flex items-center justify-center w-12 h-12 bg-white backdrop-blur shadow-2xl rounded-2xl text-primary border border-slate-100 active:scale-95 transition-all">
+                <i class="fa-solid fa-bars-staggered text-xl"></i>
+            </button>
+        </div>
+
         <!-- Sidebar -->
-        <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg
-            transform -translate-x-full transition-transform duration-300
-            md:static md:translate-x-0 md:w-64 md:z-auto">
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto">
             <div class="p-4 flex items-center justify-between border-b">
-                <a href="{{ route('start') }}">
-                    <h1 class=" text-xl font-bold text-primary md:block hidden">Info<span class="text-highlight">Hilang</span>
-                    </h1>
+                <a href="{{ route('start') }}" class="flex items-center gap-2 group">
+                    <div class="bg-primary p-2 rounded-xl">
+                        <i class="fa-solid fa-magnifying-glass text-white"></i>
+                    </div>
+                    <span class="text-2xl font-black text-dark tracking-tight">Info<span class="text-primary">Hilang</span></span>
                 </a>
                 <div class="button-action">
-                    <button class="p-2 rounded-full hover:bg-gray-200 md:block hidden" onclick="toggleFullScreen()" id="fullscreen-button" title="Memperluas Tampilan"><i
-                            class="fa-solid fa-expand"></i></button>
-                    <button class="md:hidden p-2 rounded-full hover:bg-gray-200" onclick="toggleSidebar()">
-                        <i class="fa-solid fa-angle-left"></i>
+                    <button class="p-2 rounded-full hover:bg-netral-200 lg:block hidden" onclick="toggleFullScreen()" id="fullscreen-button" title="Memperluas Tampilan"><i class="fa-solid fa-expand text-dark"></i></button>
+                    <button class="lg:hidden p-2 rounded-full hover:bg-netral-200" onclick="toggleSidebar()">
+                        <i class="fa-solid fa-angle-left text-dark"></i>
                     </button>
                 </div>
             </div>
             <nav class="py-4 overflow-y-auto flex-1">
                 <ul class="space-y-2 px-2">
+                    @php
+                    $menus = [
+                    ['route' => 'dashboard', 'icon' => 'fa-regular fa-house', 'label' => 'Dashboard'],
+                    ['route' => 'missing', 'icon' => 'fa-solid fa-magnifying-glass', 'label' => 'Hilang'],
+                    ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
+                    ['route' => 'blog', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Blog'],
+                    ];
+                    @endphp
+                    @foreach($menus as $menu)
                     <li>
-                        <a href="{{ route('dashboard') }}"
-                            class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <i class="fa-regular fa-house"></i>
-                            <span class="text-gray-700">Dashboard</span>
+                        <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ request()->routeIs($menu['route']) ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
+
+                            <i class="{{ $menu['icon'] }} text-lg transition-colors {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                            </i>
+
+                            <span class="tracking-wide">{{ $menu['label'] }}</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('missing') }}"
-                            class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                            <span class="text-gray-700">Hilang</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#!"
-                            class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <i class="fa-regular fa-flag"></i>
-                            <span class="text-gray-700">Penemu</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#!"
-                            class="flex items-center space-x-3 px-4 py-2 hover:bg-accent rounded-lg transition-colors ">
-                            <i class="fa-regular fa-newspaper"></i>
-                            <span class="text-gray-700">Blog</span>
-                        </a>
-                    </li>
+                    @endforeach
                 </ul>
             </nav>
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 p-4 overflow-y-auto">
-            <!-- Mobile Menu Toggle -->
-            <div class="md:hidden flex justify-between items-center mb-4 bg-secondary shadow p-2 rounded-lg">
-                <a href="{{ route('start') }}">
-                    <h1 class="text-xl font-bold text-primary">Info<span class="text-highlight">Hilang</span>
-                    </h1>
-                </a>
-                <div class="button-action">
-                    <button class="p-2 rounded-full hover:bg-gray-200 md:block hidden" onclick="toggleFullScreen()"><i
-                            class="fa-solid fa-expand"></i></button>
-                    <button onclick="toggleSidebar()" class="p-2 rounded-full hover:bg-gray-200">
-                        <i class="fa-solid fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-
-            <section class="m-4">
+        <main class="flex-1 h-screen overflow-y-auto" id="main-content">
+            <section class="p-6 pt-7">
                 @yield('content')
             </section>
         </main>
@@ -102,16 +82,14 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/qmsq1hga0tygul287yejg9t6gpfa5npa36c0ezchh4zom7x1/tinymce/5/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/qmsq1hga0tygul287yejg9t6gpfa5npa36c0ezchh4zom7x1/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script defer src="{{ asset('js/dashboard.js') }}"></script>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <script src="{{ asset('js/all.js') }}"></script>
     <script src="{{ asset('js/all.min.js') }}"></script>
@@ -119,7 +97,7 @@
     @stack('script')
 
     <script>
-        document.getElementById('check-duplicate-btn')?.addEventListener('click', async function() {
+        document.getElementById('check-duplicate-btn') ? .addEventListener('click', async function() {
             const btn = this;
             const type = btn.dataset.type; // orang | hewan | barang
             const resultDiv = document.getElementById('duplicate-result');
@@ -134,12 +112,12 @@
 
             try {
                 const response = await fetch(`/user/check-duplicate/${type}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
+                    method: 'POST'
+                    , body: formData
+                    , headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                        , 'X-Requested-With': 'XMLHttpRequest'
+                        , 'Accept': 'application/json'
                     }
                 });
 
@@ -175,6 +153,7 @@
                 btn.innerHTML = 'Cek Duplikat dengan AI';
             }
         });
+
     </script>
 </body>
 

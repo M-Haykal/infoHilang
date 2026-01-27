@@ -31,7 +31,7 @@ class HewanHilangSeeder extends Seeder
                 'longitude' => $faker->longitude(106.7, 106.9),
                 'tanggal_terakhir_dilihat' => $faker->date(),
                 'status' => $faker->randomElement(['Hilang', 'Ditemukan']),
-                'user_id' => 1,
+                'user_id' => 2,
                 'slug' => Str::slug($nama) . '-' . Str::random(5),
             ]);
         }
