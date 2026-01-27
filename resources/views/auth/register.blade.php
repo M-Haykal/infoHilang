@@ -15,7 +15,8 @@
 
 <body class="min-h-screen flex items-center justify-center relative bg-netral-50 font-sans">
     <!-- Register Card -->
-    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 sm:p-10 mx-4 z-10" data-aos="zoom-in" data-aos-duration="600">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 sm:p-10 mx-4 z-10" data-aos="zoom-in"
+        data-aos-duration="600">
 
         <!-- Header -->
         <div class="flex justify-center mb-6">
@@ -23,7 +24,8 @@
                 <div class="bg-primary p-2 rounded-xl group-hover:rotate-12 transition-transform duration-300">
                     <i class="fa-solid fa-magnifying-glass text-white"></i>
                 </div>
-                <span class="text-2xl font-black text-dark tracking-tight">Info<span class="text-primary">Hilang</span></span>
+                <span class="text-2xl font-black text-dark tracking-tight">Info<span
+                        class="text-primary">Hilang</span></span>
             </a>
         </div>
 
@@ -31,28 +33,26 @@
         <form action="" method="POST" class="space-y-5">
             @csrf
 
-            {{-- Nama Depan & Belakang --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {{-- Nama Lengkap --}}
+            <div class="space-y-1">
+                <label for="fullname" class="block text-sm font-bold text-dark ml-1">Nama Lengkap</label>
+                <input type="text" id="fullname" name="fullname" value="{{ old('fullname') }}" required
+                    class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                    placeholder="John Doe" />
+                @error('fullname')
+                    <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
+                @enderror
+            </div>
 
-                <div class="space-y-1">
-                    <label for="firstname" class="block text-sm font-bold text-dark ml-1">Nama Depan</label>
-                    <input type="text" id="firstname" name="firstname" value="{{ old('firstname') }}" required
-                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
-                        placeholder="John" />
-                    @error('firstname')
-                        <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="space-y-1">
-                    <label for="lastname" class="block text-sm font-bold text-dark ml-1">Nama Belakang</label>
-                    <input type="text" id="lastname" name="lastname" value="{{ old('lastname') }}" required
-                        class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
-                        placeholder="Doe" />
-                    @error('lastname')
-                        <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
-                    @enderror
-                </div>
+            {{-- Username --}}
+            <div class="space-y-1">
+                <label for="username" class="block text-sm font-bold text-dark ml-1">Username</label>
+                <input type="text" id="username" name="username" value="{{ old('username') }}" required
+                    class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                    placeholder="john_doe" />
+                @error('username')
+                    <p class="text-danger text-xs mt-1 font-medium italic">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- Email --}}
@@ -83,7 +83,8 @@
 
             {{-- Konfirmasi Password --}}
             <div class="space-y-1">
-                <label for="password_confirmation" class="block text-sm font-bold text-dark ml-1">Konfirmasi Kata Sandi</label>
+                <label for="password_confirmation" class="block text-sm font-bold text-dark ml-1">Konfirmasi Kata
+                    Sandi</label>
                 <div class="relative">
                     <input type="password" id="password_confirmation" name="password_confirmation" required
                         class="w-full pl-4 pr-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
@@ -94,7 +95,8 @@
                 @enderror
             </div>
 
-            <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
+            <button type="submit"
+                class="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
                 Daftar
             </button>
         </form>
@@ -102,7 +104,9 @@
         <!-- Footer -->
         <p class="text-center text-sm text-netral-500 mt-6 font-medium">
             Sudah punya akun?
-            <a href="{{ route('showLogin') }}" class="text-primary hover:text-primary-dark transition-all border-b-2 border-transparent hover:border-primary">Masuk Sekarang</a>
+            <a href="{{ route('showLogin') }}"
+                class="text-primary hover:text-primary-dark transition-all border-b-2 border-transparent hover:border-primary">Masuk
+                Sekarang</a>
         </p>
     </div>
 
