@@ -115,10 +115,10 @@
             <div class="w-full lg:w-3/4 xl:w-4/5 flex flex-col">
                 <div class="flex items-center justify-end py-2 sticky top-[152px] z-30 pt-3">
                     <div class="flex items-center gap-1 bg-netral-100 p-1 rounded-xl">
-                        <button wire:click="setView('grid')" class="p-2 rounded-lg transition-all {{ $viewMode === 'grid' ? 'bg-white shadow-sm text-accent' : 'text-netral-400 hover:text-netral-500' }}">
+                        <button wire:click="setView('grid')" class="p-2 rounded-lg transition-all {{ $viewMode === 'grid' ? 'bg-white shadow-sm text-primary' : 'text-netral-400 hover:text-netral-500' }}">
                             <i class="fa-solid fa-grip text-lg"></i>
                         </button>
-                        <button wire:click="setView('list')" class="p-2 rounded-lg transition-all {{ $viewMode === 'list' ? 'bg-white shadow-sm text-accent' : 'text-netral-400 hover:text-netral-500' }}">
+                        <button wire:click="setView('list')" class="p-2 rounded-lg transition-all {{ $viewMode === 'list' ? 'bg-white shadow-sm text-primary' : 'text-netral-400 hover:text-netral-500' }}">
                             <i class="fa-solid fa-list text-lg"></i>
                         </button>
                     </div>
@@ -152,7 +152,7 @@
                                             {{ $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' }}
                                         </p>
                                         <div class="flex items-center text-xs text-netral-500 bg-netral-50 p-2 rounded-lg border border-netral-100">
-                                            <i class="fa-solid fa-location-dot mr-2 text-success"></i>
+                                            <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
                                             <span class="truncate">{{ $report->lokasi_terakhir_dilihat }}</span>
                                         </div>
                                     </div>

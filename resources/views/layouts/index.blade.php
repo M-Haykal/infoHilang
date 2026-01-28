@@ -42,7 +42,7 @@
                 @auth
                 <div class="relative group">
                     <button id="user-menu-button" class="flex items-center space-x-3 bg-netral-50 p-1 pr-3 rounded-full hover:bg-netral-100 transition border border-netral-200">
-                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->username) . '&background=ea580c&color=fff' }}" class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
+                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}" class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
                         <span class="text-sm font-bold text-dark hidden sm:inline-block">{{ Str::before(Auth::user()->fullname, ' ') }}</span>
                         <i class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200" id="dropdown-icon"></i>
                     </button>
@@ -53,14 +53,14 @@
                             <p class="font-black text-dark truncate">{{ Auth::user()->fullname }}</p>
                         </div>
                         <div class="p-2">
-                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 text-netral-500 hover:primary-light hover:text-primary rounded-xl transition font-medium">
+                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
                                 <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard
                             </a>
-                            <a href="#" class="flex items-center gap-3 px-3 py-2 text-netral-500 hover:primary-light hover:text-primary rounded-xl transition font-medium">
+                            <a href="#" class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
                                 <i class="fa-solid fa-gear text-sm"></i> Pengaturan
                             </a>
                         </div>
-                        <div class="p-2 border-t border-netral-50">
+                        <div class="p-2 border-t border-netral-100">
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="flex items-center gap-3 w-full text-left px-3 py-2 text-danger hover:bg-danger-light rounded-xl transition font-bold">

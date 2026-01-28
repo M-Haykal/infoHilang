@@ -40,7 +40,7 @@
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-xl font-semibold text-dark">Barang Hilang</h3>
                         <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
-                            {{ $missingItems->count() }} item
+                            {{ $missingItems->count() }} barang
                         </span>
                     </div>
 
@@ -78,11 +78,11 @@
                                     {{-- Lokasi dan Tanggal--}}
                                     <div class="flex flex-wrap gap-2 mt-3">
                                         <span class="inline-flex text-xs">
-                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-success"></i>
+                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
                                             <span class="text-netral-500">{{ date('d M Y H:i', strtotime($item->tanggal_terakhir_dilihat)) }}</span>
                                         </span>
                                         <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
-                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-success sm:flex-shrink-0"></i>
+                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                             <span class="text-netral-500">{{ $item->lokasi_terakhir_dilihat }}</span>
                                         </span>
                                     </div>
@@ -109,23 +109,23 @@
                             </div>
                         </div>
                         @empty
-                            <div class="text-center py-12">
-                                <i class="fa-solid fa-box text-5xl text-netral-300 mb-4"></i>
-                                <h3 class="mt-4 text-lg font-medium text-netral-500">Belum ada laporan barang hilang</h3>
-                                <p class="mt-1 text-netral-400">Anda belum membuat laporan barang hilang.</p>
-                                <div class="mt-6">
-                                    <a href="{{ route('form-barang-hilang') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark">
-                                        Buat Laporan Baru
-                                    </a>
-                                </div>
+                        <div class="text-center py-12">
+                            <i class="fa-solid fa-box text-5xl text-netral-300 mb-4"></i>
+                            <h3 class="mt-4 text-lg font-medium text-netral-500">Belum ada laporan barang hilang</h3>
+                            <p class="mt-1 text-netral-400">Anda belum membuat laporan barang hilang.</p>
+                            <div class="mt-6">
+                                <a href="{{ route('form-barang-hilang') }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark">
+                                    Buat Laporan Baru
+                                </a>
                             </div>
+                        </div>
                         @endforelse
                     </div>
 
                     @if ($missingItems->count() > 0)
-                        <div class="mt-8 flex justify-center">
-                            {{ $missingItems->links() }}
-                        </div>
+                    <div class="mt-8 flex justify-center">
+                        {{ $missingItems->appends(request()->except('page_item'))->links('vendor.pagination.dashboard') }}
+                    </div>
                     @endif
                 </div>
 
@@ -171,11 +171,11 @@
                                     {{-- Lokasi dan Tanggal--}}
                                     <div class="flex flex-wrap gap-2 mt-3">
                                         <span class="inline-flex text-xs">
-                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-success"></i>
+                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
                                             <span class="text-netral-500">{{ date('d M Y H:i', strtotime($missingPerson->tanggal_terakhir_dilihat)) }}</span>
                                         </span>
                                         <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
-                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-success sm:flex-shrink-0"></i>
+                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                             <span class="text-netral-500">{{ $missingPerson->lokasi_terakhir_dilihat }}</span>
                                         </span>
                                     </div>
@@ -224,7 +224,7 @@
 
                     @if ($missingPersons->count() > 0)
                     <div class="mt-8 flex justify-center">
-                        {{ $missingPersons->links() }}
+                        {{ $missingPersons->appends(request()->except('page_person'))->fragment('tab-content')->links('vendor.pagination.dashboard') }}
                     </div>
                     @endif
                 </div>
@@ -270,11 +270,11 @@
                                     {{-- Lokasi dan Tanggal--}}
                                     <div class="flex flex-wrap gap-2 mt-3">
                                         <span class="inline-flex text-xs">
-                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-success"></i>
+                                            <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
                                             <span class="text-netral-500">{{ date('d M Y H:i', strtotime($missingAnimal->tanggal_terakhir_dilihat)) }}</span>
                                         </span>
                                         <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
-                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-success sm:flex-shrink-0"></i>
+                                            <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                             <span class="text-netral-500">{{ $missingAnimal->lokasi_terakhir_dilihat }}</span>
                                         </span>
                                     </div>
@@ -324,7 +324,7 @@
 
                     @if ($missingAnimals->count() > 0)
                     <div class="mt-8 flex justify-center">
-                        {{ $missingAnimals->links() }}
+                        {{ $missingAnimals->appends(request()->except('page_animal'))->fragment('tab-content')->links('vendor.pagination.dashboard') }}
                     </div>
                     @endif
                 </div>
@@ -384,6 +384,31 @@
             document.getElementById(tabId).classList.remove('hidden');
         });
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Deteksi parameter pagination di URL
+        if (urlParams.has('page_person')) {
+            switchTab('tab-orang');
+        } else if (urlParams.has('page_animal')) {
+            switchTab('tab-hewan');
+        } else if (urlParams.has('page_item')) {
+            switchTab('tab-barang');
+        }
+    });
+
+    function switchTab(tabId) {
+        // Sembunyikan semua pane
+        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+        // Tampilkan pane yang dipilih
+        document.getElementById(tabId).classList.remove('hidden');
+
+        // Update styling tombol tab (Opsional: sesuaikan dengan class tombolmu)
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active', 'bg-primary/10', 'text-primary'));
+        const activeBtn = document.querySelector(`[data-tab="${tabId}"]`);
+        if (activeBtn) activeBtn.classList.add('active', 'bg-primary/10', 'text-primary');
+    }
 
 </script>
 @endpush

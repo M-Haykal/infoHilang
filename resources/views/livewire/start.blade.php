@@ -28,7 +28,7 @@
 
                 <div class="flex flex-wrap justify-center md:justify-end gap-2">
                     @foreach(['Semua', 'Orang', 'Hewan', 'Barang'] as $item)
-                    <button wire:click="setKategori('{{ $item }}')" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm border {{ $kategori === $item ? 'bg-accent text-white border-accent' : 'bg-white text-netral-500 hover:border-accent-hover' }}">
+                    <button wire:click="setKategori('{{ $item }}')" class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm border {{ $kategori === $item ? 'bg-primary text-white border-primary' : 'bg-white text-netral-500 hover:border-primary' }}">
                         {{ $item }}
                     </button>
                     @endforeach
@@ -64,7 +64,7 @@
                         </p>
 
                         <div class="flex items-center text-xs text-netral-500 mb-4 bg-netral-50 p-2 rounded-lg border border-netral-100">
-                            <i class="fa-solid fa-location-dot mr-2 text-success"></i>
+                            <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
                             <span class="truncate">{{ $report->lokasi_terakhir_dilihat ?? $report->lokasi }}</span>
                         </div>
 
