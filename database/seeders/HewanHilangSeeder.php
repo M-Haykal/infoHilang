@@ -13,7 +13,7 @@ class HewanHilangSeeder extends Seeder
         $faker = \Faker\Factory::create('id_ID');
         $gambarHewan = ['laporan/semut.jpg', 'laporan/burung.jpg'];
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $nama = $faker->firstName;
             HewanHilang::create([
                 'nama_hewan' => $nama,

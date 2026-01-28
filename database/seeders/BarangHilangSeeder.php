@@ -13,7 +13,7 @@ class BarangHilangSeeder extends Seeder
         $faker = \Faker\Factory::create('id_ID');
         $gambarBarang = ['laporan/dompet.jpg', 'laporan/tas.jpg'];
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 12; $i++) {
             $nama = $faker->randomElement(['Dompet Kulit', 'Tas Ransel', 'Kunci Motor', 'Handphone']);
             BarangHilang::create([
                 'nama_barang' => $nama,
