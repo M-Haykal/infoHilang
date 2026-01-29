@@ -24,15 +24,15 @@
 
                             <div class="inline-flex">
                                 @if ($item->status == 'Hilang')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger-light text-danger border border-red-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger text-white">
                                     {{ $item->status }}
                                 </span>
                                 @elseif($item->status == 'Ditemukan')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success-light text-success border border-green-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success text-white">
                                     {{ $item->status }}
                                 </span>
                                 @else
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-100 text-accent border border-yellow-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-600 text-white">
                                     {{ $item->status }}
                                 </span>
                                 @endif
@@ -46,7 +46,7 @@
                                 <span class="text-netral-500">{{ date('d M Y H:i',
                                     strtotime($item->tanggal_terakhir_dilihat)) }}</span>
                             </span>
-                            <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
+                            <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                 <span class="text-netral-500">{{ $item->lokasi_terakhir_dilihat }}</span>
                             </span>
@@ -118,15 +118,15 @@
 
                             <div class="inline-flex">
                                 @if ($missingPerson->status == 'Hilang')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger-light text-danger border border-red-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger text-white">
                                     {{ $missingPerson->status }}
                                 </span>
                                 @elseif($missingPerson->status == 'Ditemukan')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success-light text-success border border-green-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success text-white">
                                     {{ $missingPerson->status }}
                                 </span>
                                 @else
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-100 text-accent border border-yellow-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-600 text-white">
                                     {{ $missingPerson->status }}
                                 </span>
                                 @endif
@@ -140,7 +140,7 @@
                                 <span class="text-netral-500">{{ date('d M Y H:i',
                                     strtotime($missingPerson->tanggal_terakhir_dilihat)) }}</span>
                             </span>
-                            <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
+                            <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                 <span class="text-netral-500">{{ $missingPerson->lokasi_terakhir_dilihat }}</span>
                             </span>
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="flex flex-wrap gap-2 sm:ml-auto sm:self-center justify-end">
-                    <a href="{{ route('form-orang-hilang.print-pdf', ['orangHilang' => $missingPerson->slug]) }}" class="inline-flex items-center px-3 py-2 text-sm bg-success text-white rounded-lg hover:bg-success-dark transition">
+                    <a href="{{ route('form-orang-hilang.print-pdf', ['orangHilang' => $missingPerson->slug]) }}" class="inline-flex items-center px-3 py-2 text-sm bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition">
                         <i class="fa-solid fa-print mr-1"></i>
                         Cetak Poster
                     </a>
@@ -218,15 +218,15 @@
 
                             <div class="inline-flex">
                                 @if ($missingAnimal->status == 'Hilang')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger-light text-danger border border-red-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-danger text-white">
                                     {{ $missingAnimal->status }}
                                 </span>
                                 @elseif($missingAnimal->status == 'Ditemukan')
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success-light text-success border border-green-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-success text-white">
                                     {{ $missingAnimal->status }}
                                 </span>
                                 @else
-                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-100 text-accent border border-yellow-200">
+                                <span class="inline-flex items-center px-2 py-0.3 rounded-full text-[10px] font-bold bg-yellow-600 text-white">
                                     {{ $missingAnimal->status }}
                                 </span>
                                 @endif
@@ -240,7 +240,7 @@
                                 <span class="text-netral-500">{{ date('d M Y H:i',
                                     strtotime($missingAnimal->tanggal_terakhir_dilihat)) }}</span>
                             </span>
-                            <span class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
+                            <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
                                 <span class="text-netral-500">{{ $missingAnimal->lokasi_terakhir_dilihat }}</span>
                             </span>
@@ -250,7 +250,7 @@
 
                 <div class="flex flex-wrap gap-2 sm:ml-auto sm:self-center justify-end">
 
-                    <a href="" class="inline-flex items-center px-3 py-2 text-sm bg-success text-white rounded-lg hover:bg-success-dark transition">
+                    <a href="" class="inline-flex items-center px-3 py-2 text-sm bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition">
                         <i class="fa-solid fa-print mr-1"></i>
                         Cetak Poster
                     </a>

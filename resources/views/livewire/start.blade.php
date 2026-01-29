@@ -9,9 +9,9 @@
                 Platform komunitas untuk melaporkan dan menemukan barang, hewan, atau orang tercinta. Mari saling membantu.
             </p>
             <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up">
-                <a href="" class="bg-white text-primary px-8 py-3 rounded-lg font-bold hover:bg-primary-light transition">Cari Sesuatu</a>
+                <a href="" class="bg-white text-primary px-8 py-3 rounded-xl font-bold htransition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(255,255,255,0.2)]">Cari Sesuatu</a>
 
-                <a href="{{ route('list-missing') }}" class="bg-primary-dark text-white px-8 py-3 rounded-lg font-bold hover:bg-primary-darker transition border border-blue-400">Lihat Semua Laporan</a>
+                <a href="{{ route('list-missing') }}" class="bg-primary-dark text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-darker transition border border-blue-400">Lihat Semua Laporan</a>
             </div>
         </div>
     </header>
@@ -252,21 +252,50 @@
     </section>
 
     <!-- CTA Section (Opsional) -->
-    {{-- @if (!auth()->check() && !session()->has('registered'))
-        <section class="py-16 bg-gradient-to-r from-primary to-primary text-white text-center" data-aos="fade-up">
-            <div class="container mx-auto px-4">
-                <h3 class="text-2xl md:text-3xl font-bold mb-4">Siap Menemukan yang Hilang?</h3>
-                <p class="max-w-2xl mx-auto mb-8 opacity-90">
-                    Bergabunglah dengan ribuan pengguna yang telah berhasil menemukan kembali barang, orang, atau hewan
-                    kesayangan mereka.
+    @if (!auth()->check() && !session()->has('registered'))
+    <section class="relative py-20 overflow-hidden" data-aos="fade-up">
+        <div class="absolute inset-0 bg-primary"></div>
+
+        <div class="absolute top-0 left-0 w-72 h-72 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 bg-black/10 rounded-full translate-x-1/4 translate-y-1/4 blur-3xl"></div>
+
+        <div class="container relative mx-auto px-4 text-center text-white">
+            <div class="max-w-3xl mx-auto">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 backdrop-blur-md rounded-2xl mb-6 border border-white/30 shadow-xl">
+                    <i class="fa-solid fa-users-rays text-2xl"></i>
+                </div>
+
+                <h3 class="text-3xl md:text-4xl lg:text-5xl font-black mb-6 tracking-tight leading-tight">
+                    Mari Saling Membantu <br class="hidden md:block"> Menemukan Kembali.
+                </h3>
+
+                <p class="text-lg md:text-xl mb-10 text-white/90 leading-relaxed">
+                    Bergabunglah dengan komunitas <span class="text-white font-bold border-b-2 border-white/40">InfoHilang</span>. Ribuan orang telah terbantu menemukan kembali apa yang paling berharga bagi mereka.
                 </p>
-                <a href="{{ route('showRegister') }}"
-    class="inline-block bg-white text-primary font-bold px-8 py-3 rounded-full hover:bg-gray-100 transition shadow-lg">
-    Buat Akun Sekarang
-    </a>
-    </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="{{ route('showRegister') }}" class="group relative inline-flex items-center justify-center bg-white text-primary font-bold px-10 py-4 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_20px_40px_rgba(255,255,255,0.2)]">
+                        <span class="mr-2">Mulai Buat Laporan</span>
+                        <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+                    </a>
+
+                    <a href="{{ route('start') }}#cara-kerja" class="inline-flex items-center justify-center backdrop-blur-sm text-white font-bold px-8 py-4 rounded-xl bg-primary-dark hover:bg-primary-darker transition border border-blue-400">
+                        Pelajari Prosedur
+                    </a>
+                </div>
+
+                <div class="mt-12 pt-8 border-t border-white/20 flex flex-wrap justify-center items-center gap-6 opacity-80 text-sm font-medium">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-check-circle"></i> 100% Gratis
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-shield-halved"></i> Privasi Terjaga
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-    @endif --}}
+    @endif
 </main>
 
 @push('style')

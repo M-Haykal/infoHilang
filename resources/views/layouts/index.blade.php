@@ -109,7 +109,7 @@
                 </a>
             </div>
 
-            <div class="w-full mt-2 pt-8 border-t border-dark-soft text-xs uppercase tracking-widest">
+            <div class="w-full mt-2 pt-8 border-t border-white/20 text-xs uppercase tracking-widest">
                 <p>&copy; 2026 <span class="text-white font-semibold">InfoHilang</span>. Built with Love.</p>
             </div>
 

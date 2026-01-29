@@ -151,7 +151,7 @@
                                         <p class="text-sm text-netral-500 line-clamp-2 mb-2">
                                             {{ $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' }}
                                         </p>
-                                        <div class="flex items-center text-xs text-netral-500 bg-netral-50 p-2 rounded-lg border border-netral-100">
+                                        <div title="Lokasi terakhir dilihat" class="flex items-center text-xs text-netral-500 bg-netral-50 p-2 rounded-lg border border-netral-100">
                                             <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
                                             <span class="truncate">{{ $report->lokasi_terakhir_dilihat }}</span>
                                         </div>
