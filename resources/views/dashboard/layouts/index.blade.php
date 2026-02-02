@@ -24,7 +24,7 @@
         </div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto">
+        <aside id="sidebar" class="flex flex-col overflow-visible fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto">
             <div class="p-4 flex items-center justify-between border-b">
                 <a href="{{ route('start') }}" class="flex items-center gap-2 group">
                     <div class="bg-primary p-2 rounded-xl">
@@ -43,17 +43,18 @@
                 <ul class="space-y-2 px-2">
                     @php
                     $menus = [
-                    ['route' => 'dashboard', 'icon' => 'fa-regular fa-house', 'label' => 'Dashboard'],
+                    ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
                     ['route' => 'missing', 'icon' => 'fa-solid fa-magnifying-glass', 'label' => 'Hilang'],
                     ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
                     ['route' => 'blog', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Blog'],
+                    ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
                     ];
                     @endphp
                     @foreach($menus as $menu)
                     <li>
                         <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ request()->routeIs($menu['route']) ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
 
-                            <i class="{{ $menu['icon'] }} text-lg transition-colors {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                            <i class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
                             </i>
 
                             <span class="tracking-wide">{{ $menu['label'] }}</span>
@@ -62,6 +63,36 @@
                     @endforeach
                 </ul>
             </nav>
+            <div class="p-4 border-t border-netral-100 relative" x-data="{ open: false }">
+                <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="fixed z-[9999] w-56 overflow-hidden bg-white rounded-2xl shadow-xl border border-netral-100" :style="`left: ${$el.parentElement.getBoundingClientRect().left + 16}px;
+                 bottom: ${window.innerHeight - $el.parentElement.getBoundingClientRect().top + 8}px;`" x-cloak>
+
+                    <a href="{{ route('start') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-dark hover:bg-primary-light hover:text-primary transition-all duration-200">
+                        <i class="fa-solid fa-house"></i>
+                        Back to Landing
+                    </a>
+
+                    <div class="border-t border-netral-100"></div>
+
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="flex items-center w-full gap-3 px-4 py-3 text-sm text-danger hover:bg-danger-light transition-all duration-200">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            Keluar
+                        </button>
+                    </form>
+                </div>
+
+                <button @click="open = !open" class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
+
+                    <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
+                    <div class="flex-1 text-left min-w-0">
+                        <p class="text-sm font-bold text-dark truncate">{{  Auth::user()->fullname }}</p>
+                        <p class="text-[10px] text-netral-400 font-medium uppercase">{{  Auth::user()->role }}</p>
+                    </div>
+                    <i class="fa-solid fa-chevron-up text-[10px] text-netral-400 transition-transform"></i>
+                </button>
+            </div>
         </aside>
 
         <!-- Main Content -->
