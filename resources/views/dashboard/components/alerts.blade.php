@@ -23,12 +23,12 @@
                     title: 'Form Tidak Valid',
                     icon: 'error',
                     html: `
-                <ul class="text-left list-disc pl-5 space-y-1">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            `,
+                        <ul class="text-left list-disc pl-5 space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    `,
                     confirmButtonText: 'Perbaiki',
                     confirmButtonColor: '#ef4444'
                 });

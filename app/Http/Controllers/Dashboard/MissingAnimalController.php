@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\HewanHilang;
 use Illuminate\Http\Request;
 use App\Services\MissingAnimalService;
 use Illuminate\Validation\ValidationException;
@@ -48,6 +49,15 @@ class MissingAnimalController extends Controller
         sort($jenisHewan);
 
         return view('dashboard.pages.form-animal-missing', compact('jenisHewan', 'rasHewan', 'firstAidSteps', 'contacts'));
+    }
+
+    public function show(HewanHilang $hewanHilang)
+    {
+        $hewanHilang->load([
+            'comentars.user',
+            'comentars.replies.user'
+        ]);
+        return view('dashboard.pages.detail-animal-missing', compact('hewanHilang'));
     }
 
     // Di controller
@@ -129,5 +139,39 @@ class MissingAnimalController extends Controller
                 ->withErrors($e->errors())
                 ->withInput();
         }
+    }
+
+    public function edit(HewanHilang $hewanHilang)
+    {
+        $jenisPath = public_path('json/animals.json');
+        $rasPath = public_path('json/race_animal.json');
+        $firstAidPath = public_path('json/firstAidSteps.json');
+        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Instagram', 'Facebook', 'Twitter'];
+
+        $jenisHewan = json_decode(file_get_contents($jenisPath), true);
+        $rasHewan = json_decode(file_get_contents($rasPath), true);
+        $firstAidSteps = json_decode(file_get_contents($firstAidPath), true);
+
+        return view('dashboard.pages.form-edit-animal-missing', compact('hewanHilang', 'jenisHewan', 'rasHewan', 'firstAidSteps', 'contacts'));
+    }
+
+    public function update(Request $request, HewanHilang $hewanHilang)
+    {
+        // dd($request->all());
+        try {
+            $this->missingAnimalService->update($request, $hewanHilang);
+            return redirect()->back()
+                ->with('success', 'Laporan hewan hilang berhasil diperbarui!');
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->errors())
+                ->withInput();
+        }
+    }
+
+    public function destroy(HewanHilang $hewanHilang)
+    {
+        $this->missingAnimalService->destroy($hewanHilang);
+        return redirect()->back()->with('success', 'Laporan hewan hilang berhasil dihapus!');
     }
 }

@@ -288,17 +288,17 @@
                                     Cetak Poster
                                 </a>
 
-                                <a href="" class="inline-flex items-center px-3 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary-dark transition">
+                                <a href="{{ route('form-hewan-hilang.detail', $missingAnimal->slug) }}" class="inline-flex items-center px-3 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary-dark transition">
                                     <i class="fa-solid fa-eye mr-1"></i>
                                     Detail
                                 </a>
 
-                                <a href="" class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition" data-confirm-edit>
+                                <a href="{{ route('form-hewan-hilang.edit', $missingAnimal->slug) }}" class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition" data-confirm-edit>
                                     <i class="fa-solid fa-pencil mr-1"></i>
                                     Edit
                                 </a>
 
-                                <form action="" method="POST" data-confirm-delete class="inline">
+                                <form action="{{ route('form-hewan-hilang.destroy', $missingAnimal->slug) }}" method="POST" data-confirm-delete class="inline">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="inline-flex items-center px-3 py-2 text-sm bg-danger text-white rounded-lg hover:bg-danger-dark transition">

@@ -111,11 +111,15 @@ Route::middleware('auth')->group(function () {
         // Form laporan hewan hilang
         Route::get('/getAnimal', [MissingAnimalController::class, 'getAnimal'])->name('get-hewan-hilang');
         Route::get('/form-hewan-hilang', [MissingAnimalController::class, 'index'])->name('form-hewan-hilang');
+        Route::post('/form-hewan-hilang', [MissingAnimalController::class, 'store'])->name('form-hewan-hilang.store');
         Route::post('/hewan/tambah-jenis', [MissingAnimalController::class, 'tambahJenis'])
             ->name('hewan.tambah-jenis');
         Route::post('/hewan/tambah-ras', [MissingAnimalController::class, 'tambahRas'])
             ->name('hewan.tambah-ras');
-        Route::post('/form-hewan-hilang', [MissingAnimalController::class, 'store'])->name('form-hewan-hilang.store');
+        Route::get('/detail-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'show'])->name('form-hewan-hilang.detail');
+        Route::get('/edit-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'edit'])->name('form-hewan-hilang.edit');
+        Route::put('/edit-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'update'])->name('form-hewan-hilang.update');
+        Route::delete('/hewan-hilang/{hewanHilang}', [MissingAnimalController::class, 'destroy'])->name('form-hewan-hilang.destroy');
 
         // Komentar routes
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
