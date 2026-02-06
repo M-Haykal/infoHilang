@@ -24,7 +24,7 @@ class MissingPersonController extends Controller
     {
         $userId = Auth::user()->id;
         $characteristics = ['Tinggi Badan', 'Berat Badan', 'Warna Rambut', 'Warna Kulit', 'Bentuk Wajah', 'Tanda Lahir'];
-        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Instagram', 'Facebook', 'Twitter'];
+        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Username Instagram', 'Username Facebook', 'Username Twitter'];
 
         return view('dashboard.pages.form-person-missing', compact('userId', 'characteristics', 'contacts'));
     }
