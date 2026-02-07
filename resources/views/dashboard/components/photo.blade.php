@@ -16,6 +16,7 @@
             </button>
         </div>
         @endforeach
+        <span class="text-[10px]">{{ asset('storage/' . $path) }}</span>
         @endif
     </div>
 
@@ -38,18 +39,38 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const imageInput = document.getElementById('imageInput');
-        if (!imageInput) return;
-
         const previewContainer = document.getElementById('previewContainer');
-        const form = imageInput.closest('form');
-        const existingCount = {
-            {
-                count($foto ? ? [])
-            }
-        };
-        let newFiles = [];
+        if (!imageInput || !previewContainer) return;
 
+        const form = imageInput.closest('form');
+        let newFiles = []; // Nampung file baru
+
+        // Untuk render ulang preview khusus file baru
+        function renderNewFilesPreview() {
+            // Hapus semua preview baru yang lama supaya ga duplikat
+            document.querySelectorAll('.preview-new').forEach(el => el.remove());
+
+            newFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const div = document.createElement('div');
+                    div.className = 'preview-new relative rounded-lg overflow-hidden shadow-sm mb-3';
+                    div.innerHTML = `
+                    <img src="${e.target.result}" class="w-full h-16 object-cover" />
+                    <button type="button" data-index="${index}"
+                        class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs remove-new-btn">
+                        ×
+                    </button>
+                `;
+                    previewContainer.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Event Listener untuk tombol hapus (Delegation)
         previewContainer.addEventListener('click', function(e) {
+            // Hapus loto Lama (Existing)
             if (e.target.closest('.delete-existing-btn')) {
                 const previewDiv = e.target.closest('.preview-existing');
                 const path = previewDiv.dataset.path;
@@ -63,49 +84,35 @@
                 previewDiv.remove();
             }
 
+            // Hapus foto baru (yang baru di-upload)
             if (e.target.closest('.remove-new-btn')) {
-                const index = e.target.closest('.remove-new-btn').dataset.index;
-                newFiles.splice(index, 1);
-                updatePreview();
+                const btn = e.target.closest('.remove-new-btn');
+                const index = btn.dataset.index;
+                newFiles.splice(index, 1); // Hapus dari array
+                renderNewFilesPreview(); // Render ulang
             }
         });
 
-        function updatePreview() {
-            document.querySelectorAll('.preview-new').forEach(el => el.remove());
-
-            newFiles.forEach((file, index) => {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    const div = document.createElement('div');
-                    div.className = 'preview-new relative rounded-lg overflow-hidden shadow-md';
-                    div.innerHTML = `
-                        <img src="${e.target.result}" class="w-full h-32 object-cover" />
-                        <button type="button" data-index="${index}"
-                            class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs remove-new-btn">
-                            ×
-                        </button>
-                    `;
-                    previewContainer.appendChild(div);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
+        // Event saat pilih file
         imageInput.addEventListener('change', function() {
-            const files = Array.from(this.files).filter(f => f.type.startsWith('image/'));
-            if (files.length === 0) return;
+            const selectedFiles = Array.from(this.files).filter(f => f.type.startsWith('image/'));
 
             const existingVisible = document.querySelectorAll('.preview-existing').length;
-            const total = existingVisible + newFiles.length + files.length;
-            if (total > 5) {
+            if (existingVisible + newFiles.length + selectedFiles.length > 5) {
                 alert('Maksimal total 5 foto.');
+                this.value = ""; // Reset input file browser
                 return;
             }
 
-            newFiles.push(...files);
-            updatePreview();
+            // Gabung file baru ke array penampung
+            newFiles = [...newFiles, ...selectedFiles];
+            renderNewFilesPreview();
+
+            // Reset input file supaya bisa pilih file yang sama kalau habis dihapus
+            this.value = "";
         });
 
+        // Saat Submit: Pindahin semua file dari array ke Input File asli
         if (form) {
             form.addEventListener('submit', function() {
                 const dt = new DataTransfer();

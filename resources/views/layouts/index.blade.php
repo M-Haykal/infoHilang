@@ -22,6 +22,8 @@
 
 <body class="bg-netral-50 font-sans">
     @include('components.loading')
+
+    {{-- Navbar --}}
     <nav class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
 

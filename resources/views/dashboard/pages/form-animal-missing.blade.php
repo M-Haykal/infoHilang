@@ -150,16 +150,12 @@
                     <div id="input-jenis-baru" class="mt-4 hidden">
                         <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
                             <div class="flex items-center mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                                <i class="fas fa-plus mr-2 text-primary"></i>
                                 <span class="text-sm font-medium text-primary">Tambah Jenis Hewan Baru</span>
                             </div>
                             <div class="flex gap-3">
                                 <input type="text" id="jenis_baru" placeholder="Ketik jenis baru..."
-                                    class="flex-1 px-4 py-3 border rounded-xl focus:ring-1 focus:ring-netral-500 text-sm transition-all outline-none">
+                                    class="flex-1 px-4 py-3 border border-netral-200 rounded-xl focus:border-primary text-sm transition-all outline-none">
                                 <button type="button" id="simpan-jenis-baru"
                                     class="bg-success text-white px-4 py-2 rounded-lg hover:bg-success-dark font-medium">Simpan</button>
                                 <button type="button" id="batal-jenis-baru"
@@ -172,16 +168,12 @@
                     <div id="input-ras-baru-container" class="mt-4 hidden">
                         <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
                             <div class="flex items-center mb-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary mr-2" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
+                                <i class="fas fa-plus mr-2 text-primary"></i>
                                 <span class="text-sm font-medium text-primary">Tambah Ras Hewan Baru</span>
                             </div>
                             <div class="flex gap-3">
                                 <input type="text" id="ras_baru_input" placeholder="Ketik ras baru..."
-                                    class="flex-1 px-4 py-3 border rounded-xl focus:ring-1 focus:ring-netral-500 text-sm transition-all outline-none">
+                                    class="flex-1 px-4 py-3 border border-netral-200 rounded-xl focus:border-primary text-sm transition-all outline-none">
                                 <button type="button" id="simpan-ras-baru-btn"
                                     class="bg-success text-white px-4 py-2 rounded-lg hover:bg-success-dark font-medium">Simpan</button>
                                 <button type="button" id="batal-ras-baru-btn"
@@ -205,11 +197,11 @@
                         <div>
                             <label for="umur" class="block text-sm font-semibold text-dark mb-2">Umur</label>
                             <div class="relative">
-                                <input type="text" id="umur" name="umur" value="{{ old('umur') }}"
-                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('umur') border-danger @enderror"
+                                <input type="number" id="umur" name="umur" value="{{ old('umur') }}"
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none no-scrollbar @error('umur') border-danger @enderror"
                                     placeholder="Contoh: 5">
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-netral-500">
-                                    <span class="text-sm">Tahun</span>
+                                    <span class="text-sm">tahun</span>
                                 </div>
                             </div>
                             @error('umur')
@@ -234,13 +226,9 @@
 
                     <!-- Timeline First Aid -->
                     <div id="first-aid-container" class="mt-6 hidden">
-                        <div class="bg-rose-300 rounded-lg p-4 border border-rose-500">
+                        <div class="bg-rose-300 rounded-lg p-4 border border-rose-400">
                             <h3 class="text-lg font-bold text-rose-600 mb-3 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-rose-600"
-                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                                </svg>
+                                <i class="fa-solid fa-heart mr-2 text-rose-600"></i>
                                 Langkah Pertolongan Pertama
                             </h3>
                             <ul id="first-aid-list" class="space-y-3 pl-4 text-rose-600">

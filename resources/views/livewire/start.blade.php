@@ -20,7 +20,7 @@
 
     <section id="laporan" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-6 gap-4">
                 <div class="text-center md:text-left">
                     <h2 class="text-3xl font-extrabold text-dark mb-2">Laporan Terbaru</h2>
                     <p class="text-netral-500 mt-2">Bantu tetangga kita menemukan apa yang hilang</p>
@@ -39,13 +39,13 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($reports as $report)
                 <div wire:key="report-{{ $report->tipe }}-{{ $report->id }}" class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-netral-200 group">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ asset($report->foto[0] ?? 'default.jpg') }}" alt="{{ $report->display_name }}" class="w-full max-h-70 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="relative overflow-hidden aspect-square w-full group">
+                        <img src="{{ asset('storage/' . ($report->foto[0] ?? 'default.jpg')) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700">
 
-                        <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
 
+                        <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
                             {{ $report->status }}
-
                         </span>
                     </div>
 
@@ -59,13 +59,15 @@
                             </span>
                         </div>
 
-                        <p class="text-netral-500 text-sm mb-2 line-clamp-2 h-10">
-                            {{ $report->display_desc ?? 'Tidak ada deskripsi tambahan.' }}
-                        </p>
+                        <div class="text-sm text-netral-500 line-clamp-2 mb-2 prose-compact">
+                            {!! $report->display_desc ?? 'Tidak ada deskripsi tambahan.' !!}
+                        </div>
 
                         <div class="flex items-center text-xs text-netral-500 mb-4 bg-netral-50 p-2 rounded-lg border border-netral-100">
                             <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
-                            <span class="truncate">{{ $report->lokasi_terakhir_dilihat ?? $report->lokasi }}</span>
+                            <span class="block truncate" title="{{ strip_tags($report->lokasi_terakhir_dilihat) }}">
+                                {{ strip_tags($report->lokasi_terakhir_dilihat ?? $report->lokasi) }}
+                            </span>
                         </div>
 
                         <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">

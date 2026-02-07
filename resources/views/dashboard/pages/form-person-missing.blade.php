@@ -13,20 +13,15 @@
 
         <!-- Error Message -->
         @if ($errors->has('duplicate'))
-            <div class="max-w-5xl mx-auto">
-                <div class="bg-danger-light border-l-4 border-danger p-4 mb-6">
+        <div class="max-w-5xl mx-auto">
+                <div class="bg-danger p-4 mb-6 rounded-xl">
                     <div class="flex">
                         <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-danger" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                    clip-rule="evenodd" />
-                            </svg>
+                            <i class="fa-solid fa-circle-xmark text-white"></i>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-bold text-danger">Laporan Ditolak!</h3>
-                            <div class="mt-2 text-sm text-danger">
+                            <h3 class="text-sm font-bold text-white">Laporan Ditolak!</h3>
+                            <div class="mt-2 text-sm text-white">
                                 <p>{{ $errors->first('duplicate') }}</p>
                             </div>
                         </div>
@@ -78,7 +73,7 @@
                             <label for="umur" class="block text-sm font-semibold text-dark mb-2">Umur</label>
                             <div class="relative">
                                 <input type="number" id="umur" name="umur" value="{{ old('umur') }}"
-                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none transition @error('umur') border-danger @enderror"
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none appearance-none no-scrollbar @error('umur') border-danger @enderror"
                                     placeholder="Contoh: 25">
                                 <div class="absolute inset-y-0 right-0 flex items-center pr-3 text-netral-500">
                                     <span class="text-sm">tahun</span>
@@ -226,7 +221,7 @@
                             </label>
                             <input type="datetime-local" id="tanggal_terakhir_dilihat" name="tanggal_terakhir_dilihat"
                                 value="{{ old('tanggal_terakhir_dilihat') }}"
-                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm text-netral-500 transition-all outline-none">
+                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none">
                         </div>
                         <div>
                             <label for="status" class="block text-sm font-semibold text-dark mb-2">Status

@@ -1,21 +1,21 @@
 @extends('dashboard.layouts.index')
 
-@section('title', 'Detail Laporan Orang Hilang | InfoHilang')
+@section('title', 'Detail Laporan Barang Hilang | InfoHilang')
 
 @section('content')
     <div class="space-y-6">
         <!-- Header -->
         <header class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-gray-800">{{ $barangHilang->nama_barang }}</h1>
-            <p class="text-gray-600 mt-1">
+            <h1 class="text-2xl font-bold text-dark">{{ $barangHilang->nama_barang }}</h1>
+            <p class="text-netral-500 mt-1">
                 Dilaporkan hilang sejak
                 {{ date('d M Y H:i', strtotime($barangHilang->tanggal_terakhir_dilihat)) }}
             </p>
             <span
                 class="inline-block mt-3 px-3 py-1 text-xs font-semibold rounded-full
-                    @if ($barangHilang->status === 'Hilang') bg-danger text-secondary
-                    @elseif($barangHilang->status === 'Ditemukan') bg-success text-secondary
-                    @else bg-gray-100 text-gray-800 @endif">
+                    @if ($barangHilang->status === 'Hilang') bg-danger text-white
+                    @elseif($barangHilang->status === 'Ditemukan') bg-success text-white
+                    @else bg-netral-100 text-dark @endif">
                 {{ $barangHilang->status }}
             </span>
         </header>
@@ -25,7 +25,7 @@
             @if ($barangHilang->foto && count($barangHilang->foto) > 0)
                 <div x-data="{ activeImage: '{{ asset('storage/' . $barangHilang->foto[0]) }}' }" class="space-y-4">
                     <!-- Preview Besar -->
-                    <div class="w-full h-64 sm:h-80 bg-gray-100 rounded-lg overflow-hidden flex items-center justify-center">
+                    <div class="w-full h-72 sm:h-80 bg-netral-100 rounded-lg overflow-hidden flex items-center justify-center">
                         <img :src="activeImage" alt="Foto Preview"
                             class="object-cover w-full h-full transition-all duration-300 hover:scale-[1.02]">
                     </div>
@@ -42,19 +42,18 @@
                     </div>
                 </div>
             @else
-                <div class="w-full h-64 sm:h-80 bg-gray-100 flex items-center justify-center">
-                    <span class="text-gray-400">Tidak ada foto</span>
+                <div class="w-full h-64 sm:h-80 bg-netral-100 flex items-center justify-center">
+                    <span class="text-netral-500">Tidak ada foto</span>
                 </div>
             @endif
         </div>
 
-
         <!-- Info Utama -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
             <!-- Data Pribadi -->
-            <div class="bg-white rounded-xl shadow-sm p-5">
-                <h2 class="font-semibold text-gray-800 mb-4 border-b pb-2">Informasi Barang</h2>
-                <ul class="space-y-3 text-sm text-gray-700">
+            <div class="bg-white rounded-xl shadow-md p-5">
+                <h2 class="font-bold text-primary mb-4 border-b pb-2">Informasi Barang</h2>
+                <ul class="space-y-3 text-sm text-dark">
                     <li class="flex justify-between">
                         <span class="font-medium">Jenis Barang:</span>
                         <span>{{ $barangHilang->jenis_barang }}</span>
@@ -67,51 +66,51 @@
                         <span class="font-medium">Warna Barang:</span>
                         <span>{{ $barangHilang->warna_barang }}</span>
                     </li>
-                    <li>
+                    <li class="text-dark">
                         <span class="font-medium block mb-1">Deskripsi Barang:</span>
-                        <p class="text-gray-600">{{ $barangHilang->deskripsi_barang ?: '–' }}</p>
+                        <div>{!! $barangHilang->deskripsi_barang ?: '–' !!}</div>
                     </li>
                 </ul>
             </div>
 
             <!-- Ciri-Ciri & Kontak -->
             <div class="space-y-6">
-                <div class="bg-white rounded-xl shadow-sm p-5">
-                    <h2 class="font-semibold text-gray-800 mb-3">Ciri-Ciri Khusus</h2>
+                <div class="bg-white rounded-xl shadow-md p-5">
+                    <h2 class="font-bold text-primary mb-3">Ciri-Ciri Khusus</h2>
                     @if ($barangHilang->ciri_ciri && count($barangHilang->ciri_ciri) > 0)
-                        <ul class="space-y-2 text-sm text-gray-700">
+                        <ul class="space-y-2 text-sm text-dark">
                             @foreach ($barangHilang->ciri_ciri as $key => $value)
                                 <li><span class="font-medium">{{ $key }}:</span> {{ $value }}</li>
                             @endforeach
                         </ul>
                     @else
-                        <p class="text-gray-500 text-sm">Tidak ada ciri khusus.</p>
+                        <p class="text-netral-500 text-sm">Tidak ada ciri khusus.</p>
                     @endif
                 </div>
 
-                <div class="bg-white rounded-xl shadow-sm p-5">
-                    <h2 class="font-semibold text-gray-800 mb-3">Kontak Pelapor</h2>
+                <div class="bg-white rounded-xl shadow-md p-5">
+                    <h2 class="font-bold text-primary mb-3">Kontak Pelapor</h2>
                     @if ($barangHilang->kontak && count($barangHilang->kontak) > 0)
-                        <ul class="space-y-2 text-sm text-gray-700">
+                        <ul class="space-y-2 text-sm text-dark">
                             @foreach ($barangHilang->kontak as $key => $value)
                                 <li><span class="font-medium">{{ $key }}:</span> {{ $value }}</li>
                             @endforeach
                         </ul>
                     @else
-                        <p class="text-gray-500 text-sm">Tidak tersedia.</p>
+                        <p class="text-netral-500 text-sm">Tidak tersedia.</p>
                     @endif
                 </div>
             </div>
         </div>
 
         <!-- Lokasi -->
-        <div class="bg-white rounded-xl shadow-sm p-5" data-aos="fade-up" data-aos-delay="200">
-            <h2 class="font-semibold text-gray-800 mb-3">Lokasi Terakhir Terlihat</h2>
-            <p class="text-gray-700 mb-4">{{ $barangHilang->lokasi_terakhir_dilihat ?: 'Tidak diketahui' }}</p>
+        <div class="bg-white rounded-xl shadow-md p-5" data-aos="fade-up" data-aos-delay="200">
+            <h2 class="font-semibold text-primary mb-3">Lokasi Terakhir Terlihat</h2>
+            <div class="text-dark mb-4">{!! $barangHilang->lokasi_terakhir_dilihat ?: 'Tidak diketahui' !!}</div>
             @if ($barangHilang->latitude && $barangHilang->longitude)
-                <div id="map" class="w-full h-48 rounded-lg border border-gray-200"></div>
+                <div id="map" class="w-full h-48 rounded-lg border border-netral-200"></div>
             @else
-                <p class="text-gray-500 text-sm">Koordinat tidak tersedia.</p>
+                <p class="text-netral-500 text-sm">Koordinat tidak tersedia.</p>
             @endif
         </div>
 
