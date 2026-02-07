@@ -1,6 +1,6 @@
 @extends('dashboard.layouts.index')
 
-@section('title', 'History Laporan Hilang | InfoHilang')
+@section('title', 'Daftar Laporan Hilang | InfoHilang')
 
 @section('content')
 <div class="space-y-6">
@@ -14,7 +14,7 @@
             <!-- Tab Headers -->
             <div class="flex flex-col sm:flex-row justify-between border-b border-netral-100">
 
-                <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Histori Laporan</h2>
+                <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Laporan</h2>
 
                 <div class="flex space-x-1 sm:space-x-2 p-2 sm:ml-auto sm:self-center justify-end">
                     <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-barang">
@@ -34,7 +34,7 @@
 
             <!-- Tab Content -->
             <div id="ajax-pagination-container">
-                @include('dashboard.components._missing_content')
+                @include('dashboard.components.missing_content')
             </div>
         </div>
     </section>

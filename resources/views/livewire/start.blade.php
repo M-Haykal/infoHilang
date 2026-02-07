@@ -40,10 +40,27 @@
                 @forelse($reports as $report)
                 <div wire:key="report-{{ $report->tipe }}-{{ $report->id }}" class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-netral-200 group">
                     <div class="relative overflow-hidden aspect-square w-full group">
-                        <img src="{{ asset('storage/' . ($report->foto[0] ?? 'default.jpg')) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700">
+                        @if($report->foto && count($report->foto) > 0)
+                        {{-- Gambar utama dengan fallback --}}
+                        <img src="{{ asset('storage/' . $report->foto[0]) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                        {{-- Placeholder kalau file di storage rusak/hilang --}}
+                        <div class="hidden absolute inset-0 bg-netral-50 flex-col items-center justify-center text-netral-400">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-tighter">Image Error</span>
+                        </div>
+                        @else
+                        {{-- Placeholder kalau memang tidak ada foto di database --}}
+                        <div class="absolute inset-0 bg-netral-50 flex flex-col items-center justify-center text-netral-300">
+                            <i class="fa-solid fa-image text-3xl mb-2"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-tighter text-netral-400">No Photo Available</span>
+                        </div>
+                        @endif
 
+                        {{-- Overlay gradasi (supaya teks/badge/status lebih kontras) --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+
+                        {{-- Status badge --}}
                         <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
                             {{ $report->status }}
                         </span>
@@ -371,7 +388,7 @@
                     item.classList.remove('border-accent', 'ring-1', 'ring-accent', 'shadow-md');
                 });
 
-                // Jika sebelumnya tertutup, buka yang diklik
+                // Kalau sebelumnya tertutup, buka yang diklik
                 if (!isAlreadyOpen) {
                     answer.classList.remove('hidden');
                     parent.classList.add('border-accent', 'ring-1', 'ring-accent', 'shadow-md');

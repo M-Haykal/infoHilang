@@ -129,14 +129,30 @@
                         @foreach ($reports as $report)
                         <div class="group flex {{ $viewMode === 'grid' ? 'flex-col' : 'flex-row' }} overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all duration-300">
 
-                            <div class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 aspect-square flex-shrink-0' }}">
+                            <div class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 aspect-square flex-shrink-0' }} group">
+                                @if($report->foto && count($report->foto) > 0)
+                                {{-- Gambar utama dengan fallback --}}
+                                <img src="{{ asset('storage/' . $report->foto[0]) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                                <img src="{{ asset('storage/' . ($report->foto[0] ?? 'default.jpg')) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110">
+                                {{-- Placeholder kalau file di storage rusak/hilang --}}
+                                <div class="hidden absolute inset-0 bg-netral-50 flex-col items-center justify-center text-netral-400">
+                                    <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-tighter">Image Error</span>
+                                </div>
+                                @else
+                                {{-- Placeholder kalau memang tidak ada foto di database --}}
+                                <div class="absolute inset-0 bg-netral-50 flex flex-col items-center justify-center text-netral-300">
+                                    <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-tighter text-netral-400">No Photo Available</span>
+                                </div>
+                                @endif
 
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                {{-- Overlay gradasi (supaya teks/badge/status lebih kontras) --}}
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
 
-                                <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                    {{ strtoupper($report->status) }}
+                                {{-- Status badge --}}
+                                <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                                    {{ $report->status }}
                                 </span>
                             </div>
 

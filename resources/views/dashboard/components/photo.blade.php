@@ -9,14 +9,29 @@
         {{-- Foto lama --}}
         @if (!empty($foto))
         @foreach ($foto as $path)
-        <div class="relative group rounded-lg overflow-hidden shadow-md preview-existing" data-path="{{ $path }}">
-            <img src="{{ asset('storage/' . $path) }}" alt="Foto Lama" class="w-full h-32 object-cover">
-            <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs delete-existing-btn">
-                ×
+        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-netral-100 preview-existing bg-netral-50" data-path="{{ $path }}">
+
+            {{-- Gambar dengan fallback error --}}
+            <img src="{{ asset('storage/' . $path) }}" alt="Foto Lama" class="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+            {{-- Placeholder kalau file fisik hilang --}}
+            <div class="hidden w-full h-32 bg-netral-100 flex-col items-center justify-center text-netral-400">
+                <i class="fa-solid fa-file-circle-exclamation text-xl mb-1"></i>
+                <span class="text-[8px] font-bold uppercase tracking-tighter">File Missing</span>
+            </div>
+
+            {{-- Overlay & tombol hapus --}}
+            <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <button type="button" class="absolute top-2 right-2 bg-danger text-white rounded-lg w-7 h-7 flex items-center justify-center hover:bg-danger-dark transition-colors shadow-lg delete-existing-btn z-10" title="Hapus Foto">
+                <i class="fa-solid fa-trash-can text-[10px]"></i>
             </button>
+
+            {{-- Label path --}}
+            <div class="absolute bottom-0 inset-x-0 bg-white/90 backdrop-blur-sm py-1 px-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                <p class="text-[8px] text-netral-500 truncate font-mono">{{ $path }}</p>
+            </div>
         </div>
         @endforeach
-        <span class="text-[10px]">{{ asset('storage/' . $path) }}</span>
         @endif
     </div>
 

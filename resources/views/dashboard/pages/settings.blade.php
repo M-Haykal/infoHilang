@@ -18,7 +18,7 @@
             <button onclick="switchTab('profile')" id="btn-profile" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white font-bold transition">
                 <i class="fa-solid fa-user"></i> Profil Umum
             </button>
-            <button onclick="switchTab('security')" id="btn-security" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary-light text-dark transition">
+            <button onclick="switchTab('security')" id="btn-security" class="tab-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-netral-100 hover:bg-primary-light text-dark transition">
                 <i class="fa-solid fa-shield-halved"></i> Keamanan
             </button>
         </div>
@@ -78,7 +78,7 @@
         document.querySelectorAll('.settings-content').forEach(el => el.classList.add('hidden'));
         document.querySelectorAll('.tab-btn').forEach(el => {
             el.classList.remove('bg-primary', 'text-white', 'font-bold');
-            el.classList.add('hover:bg-primary-light', 'text-dark');
+            el.classList.add('hover:bg-primary-light', 'text-dark', 'bg-netral-100');
         });
 
         document.getElementById('tab-' + tab).classList.remove('hidden');

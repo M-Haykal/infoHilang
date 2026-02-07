@@ -2,6 +2,15 @@
 
 @section('title', 'Detail Laporan Hewan Hilang | InfoHilang')
 @section('content')
+@php
+// Logika warna badge dipindah ke sini agar file blade di bawah tetap bersih
+$statusColor = 'bg-netral-100 text-dark';
+if ($hewanHilang->status === 'Hilang') {
+$statusColor = 'bg-danger text-white';
+} elseif ($hewanHilang->status === 'Ditemukan') {
+$statusColor = 'bg-success text-white';
+}
+@endphp
 <div class="space-y-6">
     <div class="flex flex-col lg:flex-row gap-6 items-stretch">
         <div class="w-full lg:w-5/12 flex flex-col">
@@ -20,10 +29,11 @@
                     </div>
                 </div>
                 @else
-                <div class="w-full flex-1 bg-netral-100 flex items-center justify-center rounded-lg">
+                <div id="imagePlaceholder" class="w-full flex-1 bg-netral-100 flex items-center justify-center rounded-lg min-h-[300px]">
                     <div class="text-center">
-                        <i class="fa-solid fa-image text-4xl text-netral-300 mb-2 block"></i>
-                        <span class="text-netral-500 text-sm">Tidak ada foto</span>
+                        <i class="fa-solid fa-image-slash text-4xl text-netral-300 mb-2 block"></i>
+                        <span class="text-netral-500 text-sm block font-medium">Foto Tidak Tersedia</span>
+                        <p class="text-[10px] text-netral-400 mt-1 italic">Data kosong atau file rusak</p>
                     </div>
                 </div>
                 @endif
