@@ -5,7 +5,7 @@
         <p class="text-xs text-netral-500 mt-2">Maksimal 5 foto. Format: JPG, PNG, GIF.</p>
     </div>
 
-    <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4">
+    <div id="previewContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 mb-2">
         {{-- Foto lama --}}
         @if (!empty($foto))
         @foreach ($foto as $path)
