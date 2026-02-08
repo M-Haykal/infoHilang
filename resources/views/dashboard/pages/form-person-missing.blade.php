@@ -5,11 +5,20 @@
 @section('content')
     <div class="space-y-6" data-page="form-person-missing">
         <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-dark">Laporan Orang Hilang</h1>
-            <p class="text-netral-500 max-w-2xl mx-auto mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan orang
-                dengan lengkap dan teliti</p>
-        </header>
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
+            <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
+                <h1 class="text-3xl font-bold text-dark">Laporan Orang Hilang</h1>
+                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan orang
+                dengan lengkap dan teliti.</p>
+            </div>
+
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
+                    <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                    <span>Kembali</span>
+                </a>
+            </div>
+        </div>
 
         <!-- Error Message -->
         @if ($errors->has('duplicate'))
@@ -56,7 +65,7 @@
                     </div>
 
                     <!-- Deskripsi Orang -->
-                    <div class="mb-6">
+                    <div class="mb-4">
                         <label for="deskripsi_orang" class="block text-sm font-semibold text-dark mb-2">Deskripsi
                             Fisik</label>
                         <textarea id="deskripsi_orang" name="deskripsi_orang" rows="3"

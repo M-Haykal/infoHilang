@@ -9,7 +9,7 @@
         {{-- Foto lama --}}
         @if (!empty($foto))
         @foreach ($foto as $path)
-        <div class="relative group rounded-xl overflow-hidden shadow-sm border border-netral-100 preview-existing bg-netral-50" data-path="{{ $path }}">
+        <div class="relative group rounded-xl shadow-sm border border-netral-200 preview-existing bg-netral-50 overflow-hidden isolate" data-path="{{ $path }}">
 
             {{-- Gambar dengan fallback error --}}
             <img src="{{ asset('storage/' . $path) }}" alt="Foto Lama" class="w-full h-32 object-cover transition-transform duration-500 group-hover:scale-110" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
@@ -22,12 +22,13 @@
 
             {{-- Overlay & tombol hapus --}}
             <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
             <button type="button" class="absolute top-2 right-2 bg-danger text-white rounded-lg w-7 h-7 flex items-center justify-center hover:bg-danger-dark transition-colors shadow-lg delete-existing-btn z-10" title="Hapus Foto">
                 <i class="fa-solid fa-trash-can text-[10px]"></i>
             </button>
 
             {{-- Label path --}}
-            <div class="absolute bottom-0 inset-x-0 bg-white/90 backdrop-blur-sm py-1 px-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <div class="absolute bottom-0 inset-x-0 bg-white/90 py-1 px-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                 <p class="text-[8px] text-netral-500 truncate font-mono">{{ $path }}</p>
             </div>
         </div>
