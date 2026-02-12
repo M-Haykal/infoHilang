@@ -1,13 +1,13 @@
 @props(['model', 'modelName'])
 
 <div class="mt-10 max-w-3xl">
-    <h2 class="text-xl font-semibold text-gray-800 mb-4">
+    <h2 class="text-xl font-semibold text-dark mb-4">
         {{ $model->comentars->count() }} Komentar
     </h2>
 
     <div class="comment-list">
         @forelse($model->comentars as $comment)
-            <div class="mb-6 pb-6 border-b border-gray-200 last:border-0">
+            <div class="mb-6 pb-6 border-b border-netral-200 last:border-0">
                 <!-- Komentar Utama -->
                 <div class="flex gap-3">
                     <div class="flex-shrink-0">
@@ -20,13 +20,13 @@
                         @endif
                     </div>
                     <div class="flex-1">
-                        <div class="font-medium text-gray-800">
+                        <div class="font-medium text-dark">
                             {{ $comment->user?->username ?? 'Anonim' }}
-                            <span class="text-gray-500 text-sm ml-2">
+                            <span class="text-netral-500 text-sm ml-2">
                                 {{ $comment->created_at->format('d M Y H:i') }}
                             </span>
                         </div>
-                        <p class="mt-1 text-gray-700">{{ $comment->content }}</p>
+                        <p class="mt-1 text-dark">{{ $comment->content }}</p>
                     </div>
                 </div>
 
@@ -46,11 +46,11 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="text-sm">
-                                        <strong class="text-gray-800">{{ $reply->user?->username ?? 'Anonim' }}</strong>
+                                        <strong class="text-dark">{{ $reply->user?->username ?? 'Anonim' }}</strong>
                                         <span
-                                            class="text-gray-500 ml-2">{{ $reply->created_at->format('d M Y H:i') }}</span>
+                                            class="text-netral-500 ml-2">{{ $reply->created_at->format('d M Y H:i') }}</span>
                                     </div>
-                                    <p class="text-gray-700 mt-1">{{ $reply->content }}</p>
+                                    <p class="text-dark mt-1">{{ $reply->content }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -58,7 +58,7 @@
                 @endif
 
                 <!-- Tombol & Form Balas -->
-                <button type="button" class="mt-2 text-sm text-blue-600 hover:underline reply-toggle-btn"
+                <button type="button" class="mt-2 text-sm text-primary hover:underline reply-toggle-btn"
                     data-comment-id="{{ $comment->id }}">
                     Balas
                 </button>
@@ -70,15 +70,15 @@
                         <input type="hidden" name="foundable_id" value="{{ $model->id }}">
                         <input type="hidden" name="parent_id" value="{{ $comment->id }}">
                         <textarea name="content" rows="2"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500"
+                            class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"
                             placeholder="Tulis balasan..." required></textarea>
                         <div class="mt-2 flex gap-2">
                             <button type="submit"
-                                class="px-3 py-1.5 bg-blue-600 text-white text-sm rounded hover:bg-blue-700">
+                                class="px-3 py-1.5 bg-primary text-white text-sm rounded hover:bg-primary-dark">
                                 Kirim
                             </button>
                             <button type="button"
-                                class="px-3 py-1.5 text-gray-600 text-sm rounded hover:bg-gray-100 cancel-reply-btn">
+                                class="px-3 py-1.5 text-netral-500 text-sm rounded hover:bg-netral-100 cancel-reply-btn">
                                 Batal
                             </button>
                         </div>
@@ -86,22 +86,22 @@
                 </div>
             </div>
         @empty
-            <p class="text-gray-500 italic">Belum ada komentar.</p>
+            <p class="text-netral-500 italic">Belum ada komentar.</p>
         @endforelse
     </div>
 
     <!-- Form Komentar Utama -->
-    <div class="mt-8 pt-6 border-t border-gray-200">
-        <h3 class="font-medium text-gray-800 mb-3">Tambah Komentar</h3>
+    <div class="mt-8 pt-6 border-t border-netral-200">
+        <h3 class="font-medium text-dark mb-3">Tambah Komentar</h3>
         <form action="{{ route('commentar.store') }}" method="POST">
             @csrf
             <input type="hidden" name="foundable_type" value="{{ $modelName }}">
             <input type="hidden" name="foundable_id" value="{{ $model->id }}">
             <textarea name="content" rows="3"
-                class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500"
+                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"
                 placeholder="Tulis komentar Anda..." required></textarea>
             <button type="submit"
-                class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                class="mt-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">
                 Kirim Komentar
             </button>
         </form>
@@ -129,7 +129,7 @@
                 if (!container) return;
 
                 const html = `
-            <div class="mb-6 pb-6 border-b border-gray-200">
+            <div class="mb-6 pb-6 border-b border-netral-200">
                 <div class="flex gap-3">
                     <img src="${comment.user?.avatar
                         ? '/storage/' + comment.user.avatar
@@ -140,7 +140,7 @@
                     <div class="flex-1">
                         <div class="font-medium">
                             ${comment.user?.username ?? 'Anonim'}
-                            <span class="text-sm text-gray-500 ml-2">baru saja</span>
+                            <span class="text-sm text-netral-500 ml-2">baru saja</span>
                         </div>
                         <p class="mt-1">${comment.content}</p>
                     </div>

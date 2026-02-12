@@ -1,20 +1,30 @@
 @extends('dashboard.layouts.index')
 
-@section('title', 'History Laporan Hilang | InfoHilang')
+@section('title', 'Daftar Laporan Hilang | InfoHilang')
 
 @section('content')
 <div class="space-y-6">
-    <header class="text-center">
-        <h1 class="text-2xl font-bold text-dark mb-2">Daftar Laporan Hilang</h1>
-        <p class="text-netral-500">Pantau dan kelola laporan kehilangan dengan mudah.</p>
-    </header>
+    <!-- Header -->
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
+        <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
+            <h1 class="text-3xl font-bold text-dark">Daftar Laporan Hilang</h1>
+            <p class="text-xs font-medium text-netral-400 mt-2">Pantau dan kelola laporan kehilangan dengan mudah.</p>
+        </div>
+
+        {{-- <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
+            <a href="{{ route('missing') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
+                <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                <span>Kembali</span>
+            </a>
+        </div> --}}
+    </div>
 
     <section class="menu-history-hilang max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
         <div class="bg-white rounded-xl shadow-lg overflow-hidden">
             <!-- Tab Headers -->
             <div class="flex flex-col sm:flex-row justify-between border-b border-netral-100">
 
-                <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Histori Laporan</h2>
+                <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Laporan</h2>
 
                 <div class="flex space-x-1 sm:space-x-2 p-2 sm:ml-auto sm:self-center justify-end">
                     <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-barang">
@@ -34,7 +44,7 @@
 
             <!-- Tab Content -->
             <div id="ajax-pagination-container">
-                @include('dashboard.components._missing_content')
+                @include('dashboard.components.missing_content')
             </div>
         </div>
     </section>
@@ -71,6 +81,9 @@
 <script>
     document.querySelectorAll('.tab-button').forEach(button => {
         button.addEventListener('click', () => {
+            const tabId = button.dataset.tab;
+            sessionStorage.setItem('last_active_tab', tabId);
+
             // Remove active class from all buttons
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active', 'bg-primary/10', 'text-primary');
@@ -86,10 +99,19 @@
                 pane.classList.add('hidden');
             });
 
-            // Show the targeted tab pane
-            const tabId = button.dataset.tab;
             document.getElementById(tabId).classList.remove('hidden');
         });
+    });
+
+    // Cek saat halaman di-load kembali
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedTabId = sessionStorage.getItem('last_active_tab');
+        if (savedTabId) {
+            const targetButton = document.querySelector(`[data-tab="${savedTabId}"]`);
+            if (targetButton) {
+                targetButton.click(); // Trigger klik otomatis via AJAX
+            }
+        }
     });
 
     document.addEventListener('click', function(e) {

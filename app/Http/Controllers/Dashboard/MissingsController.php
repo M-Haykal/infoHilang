@@ -15,9 +15,17 @@ class MissingsController extends Controller
     public function index(Request $request)
     {
         $userId = Auth::id();
-        $missingItems = BarangHilang::where('user_id', $userId)->paginate(10, ['*'], 'page_item');
-        $missingPersons = OrangHilang::where('user_id', $userId)->paginate(10, ['*'], 'page_person');
-        $missingAnimals = HewanHilang::where('user_id', $userId)->paginate(10, ['*'], 'page_animal');
+        $missingItems = BarangHilang::where('user_id', $userId)
+            ->latest()
+            ->paginate(10, ['*'], 'page_item');
+
+        $missingPersons = OrangHilang::where('user_id', $userId)
+            ->latest()
+            ->paginate(10, ['*'], 'page_person');
+
+        $missingAnimals = HewanHilang::where('user_id', $userId)
+            ->latest()
+            ->paginate(10, ['*'], 'page_animal');
 
         if ($request->ajax()) {
             return response()->json([

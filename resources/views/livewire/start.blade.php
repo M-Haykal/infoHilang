@@ -20,7 +20,7 @@
 
     <section id="laporan" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-10 gap-4">
+            <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-6 gap-4">
                 <div class="text-center md:text-left">
                     <h2 class="text-3xl font-extrabold text-dark mb-2">Laporan Terbaru</h2>
                     <p class="text-netral-500 mt-2">Bantu tetangga kita menemukan apa yang hilang</p>
@@ -39,13 +39,30 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @forelse($reports as $report)
                 <div wire:key="report-{{ $report->tipe }}-{{ $report->id }}" class="bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 border border-netral-200 group">
-                    <div class="relative overflow-hidden">
-                        <img src="{{ asset($report->foto[0] ?? 'default.jpg') }}" alt="{{ $report->display_name }}" class="w-full max-h-70 md:h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="relative overflow-hidden aspect-square w-full group">
+                        @if($report->foto && count($report->foto) > 0)
+                        {{-- Gambar utama dengan fallback --}}
+                        <img src="{{ asset('storage/' . $report->foto[0]) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                        <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                        {{-- Placeholder kalau file di storage rusak/hilang --}}
+                        <div class="hidden absolute inset-0 bg-netral-50 flex-col items-center justify-center text-netral-400">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-tighter">Image Error</span>
+                        </div>
+                        @else
+                        {{-- Placeholder kalau memang tidak ada foto di database --}}
+                        <div class="absolute inset-0 bg-netral-50 flex flex-col items-center justify-center text-netral-300">
+                            <i class="fa-solid fa-image text-3xl mb-2"></i>
+                            <span class="text-[10px] font-bold uppercase tracking-tighter text-netral-400">No Photo Available</span>
+                        </div>
+                        @endif
 
+                        {{-- Overlay gradasi (supaya teks/badge/status lebih kontras) --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+
+                        {{-- Status badge --}}
+                        <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
                             {{ $report->status }}
-
                         </span>
                     </div>
 
@@ -59,13 +76,15 @@
                             </span>
                         </div>
 
-                        <p class="text-netral-500 text-sm mb-2 line-clamp-2 h-10">
-                            {{ $report->display_desc ?? 'Tidak ada deskripsi tambahan.' }}
-                        </p>
+                        <div class="text-sm text-netral-500 line-clamp-2 mb-2 prose-compact">
+                            {!! $report->display_desc ?? 'Tidak ada deskripsi tambahan.' !!}
+                        </div>
 
                         <div class="flex items-center text-xs text-netral-500 mb-4 bg-netral-50 p-2 rounded-lg border border-netral-100">
                             <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
-                            <span class="truncate">{{ $report->lokasi_terakhir_dilihat ?? $report->lokasi }}</span>
+                            <span class="block truncate" title="{{ strip_tags($report->lokasi_terakhir_dilihat) }}">
+                                {{ strip_tags($report->lokasi_terakhir_dilihat ?? $report->lokasi) }}
+                            </span>
                         </div>
 
                         <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">
@@ -369,7 +388,7 @@
                     item.classList.remove('border-accent', 'ring-1', 'ring-accent', 'shadow-md');
                 });
 
-                // Jika sebelumnya tertutup, buka yang diklik
+                // Kalau sebelumnya tertutup, buka yang diklik
                 if (!isAlreadyOpen) {
                     answer.classList.remove('hidden');
                     parent.classList.add('border-accent', 'ring-1', 'ring-accent', 'shadow-md');

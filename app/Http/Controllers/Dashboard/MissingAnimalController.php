@@ -22,7 +22,7 @@ class MissingAnimalController extends Controller
         $jenisPath = public_path('json/animals.json');
         $rasPath = public_path('json/race_animal.json');
         $firstAidPath = public_path('json/firstAidSteps.json');
-        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Instagram', 'Facebook', 'Twitter'];
+        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Username Instagram', 'Username Facebook', 'Username Twitter'];
 
         if (!file_exists($jenisPath) || !file_exists($rasPath) || !file_exists($firstAidPath)) {
             return view('dashboard.pages.form-animal-missing', [

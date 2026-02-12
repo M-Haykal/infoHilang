@@ -129,11 +129,30 @@
                         @foreach ($reports as $report)
                         <div class="group flex {{ $viewMode === 'grid' ? 'flex-col' : 'flex-row' }} overflow-hidden rounded-2xl border bg-white shadow-sm hover:shadow-md transition-all duration-300">
 
-                            <div class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 flex-shrink-0' }}">
-                                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="{{ asset($report->foto[0] ?? 'default.jpg') }}" alt="{{ $report->report_name }}" />
+                            <div class="relative overflow-hidden {{ $viewMode === 'grid' ? 'w-full aspect-square' : 'w-[36%] md:w-48 aspect-square flex-shrink-0' }} group">
+                                @if($report->foto && count($report->foto) > 0)
+                                {{-- Gambar utama dengan fallback --}}
+                                <img src="{{ asset('storage/' . $report->foto[0]) }}" alt="{{ $report->display_name }}" class="absolute inset-0 w-full h-full object-cover object-center group-hover:scale-110 transition-transform duration-700" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
 
-                                <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                                    {{ strtoupper($report->status) }}
+                                {{-- Placeholder kalau file di storage rusak/hilang --}}
+                                <div class="hidden absolute inset-0 bg-netral-50 flex-col items-center justify-center text-netral-400">
+                                    <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-tighter">Image Error</span>
+                                </div>
+                                @else
+                                {{-- Placeholder kalau memang tidak ada foto di database --}}
+                                <div class="absolute inset-0 bg-netral-50 flex flex-col items-center justify-center text-netral-300">
+                                    <i class="fa-solid fa-image text-3xl mb-2"></i>
+                                    <span class="text-[10px] font-bold uppercase tracking-tighter text-netral-400">No Photo Available</span>
+                                </div>
+                                @endif
+
+                                {{-- Overlay gradasi (supaya teks/badge/status lebih kontras) --}}
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+
+                                {{-- Status badge --}}
+                                <span class="absolute top-3 left-3 {{ $report->status == 'Hilang' ? 'bg-danger' : 'bg-success' }} text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm z-10">
+                                    {{ $report->status }}
                                 </span>
                             </div>
 
@@ -148,12 +167,14 @@
                                     </div>
 
                                     <div class="space-y-2">
-                                        <p class="text-sm text-netral-500 line-clamp-2 mb-2">
-                                            {{ $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' }}
-                                        </p>
+                                        <div class="text-sm text-netral-500 line-clamp-2 mb-2 prose-compact">
+                                            {!! $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' !!}
+                                        </div>
                                         <div title="Lokasi terakhir dilihat" class="flex items-center text-xs text-netral-500 bg-netral-50 p-2 rounded-lg border border-netral-100">
                                             <i class="fa-solid fa-location-dot mr-2 text-accent"></i>
-                                            <span class="truncate">{{ $report->lokasi_terakhir_dilihat }}</span>
+                                            <span class="block truncate" title="{{ strip_tags($report->lokasi_terakhir_dilihat) }}">
+                                                {{ strip_tags($report->lokasi_terakhir_dilihat) }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>

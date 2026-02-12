@@ -18,6 +18,7 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
 use App\Http\Controllers\Dashboard\DuplicateCheckController;
+use App\Http\Controllers\Dashboard\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
         Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])
             ->name('check-duplicate');
+
+            // Settins
+        Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
+        Route::put('/settings/profil', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
+        Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
 
         // Form laporan orang hilang
         Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');

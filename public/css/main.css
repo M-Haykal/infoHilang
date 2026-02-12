@@ -10,3 +10,8 @@
     top: 0;
     width: auto;
 }
+
+.prose-compact p {
+    display: inline; /* Ubah p menjadi inline biar line-clamp bekerja */
+    margin: 0;
+}

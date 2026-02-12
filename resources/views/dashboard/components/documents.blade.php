@@ -1,8 +1,8 @@
 <div class="mb-6" data-documents>
-    <label for="documentInput" class="block text-sm font-semibold text-gray-700 mb-2">Dokumen Pendukung (Opsional)</label>
+    <label for="documentInput" class="block text-sm font-semibold text-dark mb-2">Dokumen Pendukung (Opsional)</label>
     <input type="file" id="documentInput" name="document_pendukung[]" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple
-        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-white hover:file:bg-gray-800 cursor-pointer">
-    <p class="text-xs text-gray-500 mt-2">Maksimal 3 file. Format: PDF, DOC, DOCX, JPG, PNG.</p>
+        class="block w-full text-sm text-netral-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-dark file:text-white hover:file:bg-dark-hover cursor-pointer">
+    <p class="text-xs text-netral-500 mt-2">Maksimal 3 file. Format: PDF, DOC, DOCX, JPG, PNG.</p>
 
     <div id="documentPreviewContainer" class="flex flex-wrap gap-3 mt-4">
         {{-- Dokumen lama (dari database) --}}
@@ -10,22 +10,22 @@
             @foreach ($document_pendukung as $path)
                 <div class="relative group bg-white border rounded-lg p-3 flex items-center w-48 shadow-sm">
                     <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                     <div class="ml-3 truncate">
-                        <p class="text-xs font-medium text-gray-800">
+                        <p class="text-xs font-medium text-dark">
                             {{ basename($path) }}
                         </p>
-                        <p class="text-xs text-gray-500">
+                        <p class="text-xs text-netral-500">
                             {{ \Storage::disk('public')->exists($path) ? (\Storage::disk('public')->size($path) / 1024 < 1024 ? round(\Storage::disk('public')->size($path) / 1024, 1) . ' KB' : round(\Storage::disk('public')->size($path) / (1024 * 1024), 1) . ' MB') : '–' }}
                         </p>
                     </div>
                     <button type="button"
-                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs delete-existing-doc-btn"
+                        class="absolute -top-2 -right-2 bg-danger text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-danger-dark text-xs delete-existing-doc-btn"
                         data-path="{{ $path }}">
                         ×
                     </button>
@@ -116,15 +116,15 @@
                         file.type.includes('word') ? '📘' : '🖼️';
 
                     div.innerHTML = `
-                <div class="flex-shrink-0 w-10 h-10 bg-gray-100 rounded flex items-center justify-center text-lg">
+                <div class="flex-shrink-0 w-10 h-10 bg-netral-100 rounded flex items-center justify-center text-lg">
                     ${icon}
                 </div>
                 <div class="ml-3 truncate">
-                    <p class="text-xs font-medium text-gray-800">${file.name}</p>
-                    <p class="text-xs text-gray-500">${(file.size / 1024).toFixed(1)} KB</p>
+                    <p class="text-xs font-medium text-dark">${file.name}</p>
+                    <p class="text-xs text-netral-500">${(file.size / 1024).toFixed(1)} KB</p>
                 </div>
                 <button type="button" data-index="${index}"
-                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 text-xs remove-new-doc-btn">
+                    class="absolute -top-2 -right-2 bg-danger text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-danger-dark text-xs remove-new-doc-btn">
                     ×
                 </button>
             `;

@@ -21,7 +21,7 @@ class MissingStuffController extends Controller
     public function index()
     {
         $userId = Auth::user()->id;
-        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Instagram', 'Facebook', 'Twitter'];
+        $contacts = ['Nomor Telepon', 'Nomor WhatsApp', 'Alamat Email', 'Username Instagram', 'Username Facebook', 'Username Twitter'];
 
         return view('dashboard.pages.form-stuff-missing', compact('userId', 'contacts'));
     }

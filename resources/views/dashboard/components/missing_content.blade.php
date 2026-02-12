@@ -14,7 +14,23 @@
 
                 <div class="flex space-x-4 mb-4 sm:mb-0">
                     <div class="flex-shrink-0">
-                        <img src="{{ asset($item->foto[0] ?? 'default.jpg') }}" alt="Barang" class="w-16 h-16 object-cover rounded-lg border border-netral-200">
+                        @if($item->foto && count($item->foto) > 0)
+                        {{-- Jika ada data foto di database --}}
+                        <div class="relative w-16 h-16">
+                            <img src="{{ asset('storage/' . $item->foto[0]) }}" alt="{{ $item->nama_barang }}" class="w-16 h-16 object-cover rounded-lg border border-netral-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                            {{-- Placeholder Tersembunyi (Hanya muncul jika img error) --}}
+                            <div class="hidden w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex-col items-center justify-center text-netral-400">
+                                <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                                <span class="text-[8px] uppercase">Error</span>
+                            </div>
+                        </div>
+                        @else
+                        {{-- Jika memang data foto kosong dari database --}}
+                        <div class="w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex items-center justify-center text-netral-400">
+                            <i class="fa-solid fa-camera-rotate text-xl"></i>
+                        </div>
+                        @endif
                     </div>
 
                     <div>
@@ -48,7 +64,7 @@
                             </span>
                             <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{{ $item->lokasi_terakhir_dilihat }}</span>
+                                <span class="text-netral-500">{!! $item->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>
@@ -108,7 +124,23 @@
             <div class="flex flex-wrap flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-accent/50 rounded-lg border border-netral-200 hover:shadow-md transition-all duration-300">
                 <div class="flex space-x-4 mb-4 sm:mb-0">
                     <div class="flex-shrink-0">
-                        <img src="{{ asset($missingPerson->foto[0] ?? 'default.jpg') }}" alt="Orang" class="w-16 h-16 object-cover rounded-lg border border-netral-200">
+                        @if($missingPerson->foto && count($missingPerson->foto) > 0)
+                        {{-- Jika ada data foto di database --}}
+                        <div class="relative w-16 h-16">
+                            <img src="{{ asset('storage/' . $missingPerson->foto[0]) }}" alt="{{ $missingPerson->nama_orang }}" class="w-16 h-16 object-cover rounded-lg border border-netral-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                            {{-- Placeholder Tersembunyi (Hanya muncul jika img error) --}}
+                            <div class="hidden w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex-col items-center justify-center text-netral-400">
+                                <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                                <span class="text-[8px] uppercase">Error</span>
+                            </div>
+                        </div>
+                        @else
+                        {{-- Jika memang data foto kosong dari database --}}
+                        <div class="w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex items-center justify-center text-netral-400">
+                            <i class="fa-solid fa-camera-rotate text-xl"></i>
+                        </div>
+                        @endif
                     </div>
 
                     <div>
@@ -142,7 +174,7 @@
                             </span>
                             <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{{ $missingPerson->lokasi_terakhir_dilihat }}</span>
+                                <span class="text-netral-500">{!! $missingPerson->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>
@@ -209,7 +241,23 @@
             <div class="flex flex-wrap flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-accent/50 rounded-lg border border-netral-200 hover:shadow-md transition-all duration-300">
                 <div class="flex space-x-4 mb-4 sm:mb-0">
                     <div class="flex-shrink-0">
-                        <img src="{{ asset($missingAnimal->foto[0] ?? 'default.jpg') }}" alt="Hewan" class="w-16 h-16 object-cover rounded-lg border border-netral-200">
+                        @if($missingAnimal->foto && count($missingAnimal->foto) > 0)
+                        {{-- Jika ada data foto di database --}}
+                        <div class="relative w-16 h-16">
+                            <img src="{{ asset('storage/' . $missingAnimal->foto[0]) }}" alt="{{ $missingAnimal->nama_hewan }}" class="w-16 h-16 object-cover rounded-lg border border-netral-200" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                            {{-- Placeholder Tersembunyi (Hanya muncul jika img error) --}}
+                            <div class="hidden w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex-col items-center justify-center text-netral-400">
+                                <i class="fa-solid fa-triangle-exclamation text-sm"></i>
+                                <span class="text-[8px] uppercase">Error</span>
+                            </div>
+                        </div>
+                        @else
+                        {{-- Jika memang data foto kosong dari database --}}
+                        <div class="w-16 h-16 bg-netral-100 rounded-lg border border-dashed border-netral-300 flex items-center justify-center text-netral-400">
+                            <i class="fa-solid fa-camera-rotate text-xl"></i>
+                        </div>
+                        @endif
                     </div>
                     <div>
                         {{-- Nama dan Status --}}
@@ -242,7 +290,7 @@
                             </span>
                             <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{{ $missingAnimal->lokasi_terakhir_dilihat }}</span>
+                                <span class="text-netral-500">{!! $missingAnimal->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>

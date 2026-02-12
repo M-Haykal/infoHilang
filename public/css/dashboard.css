@@ -45,3 +45,17 @@
 .shepherd-button-success {
     @apply bg-green-600 text-white font-bold px-9 py-3 rounded-xl shadow-lg;
 }
+
+@layer utilities {
+    /* Chrome, Safari, Edge, Opera */
+    .no-scrollbar::-webkit-outer-spin-button,
+    .no-scrollbar::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    .no-scrollbar {
+        -moz-appearance: textfield;
+    }
+}

@@ -16,6 +16,7 @@ module.exports = {
 
                 success: {
                     DEFAULT: 'oklch(62.7% 0.194 149.214)', // green-600
+                    dark: 'oklch(0.527 0.154 150.069)', // green-700
                 },
 
                 danger: {

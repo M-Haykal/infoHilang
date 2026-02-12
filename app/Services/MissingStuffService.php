@@ -161,6 +161,8 @@ class MissingStuffService
 
         $fotoPaths = array_slice($fotoPaths, 0, 5);
 
+        // dd($fotoPaths);
+
         // === Dokumen ===
         $docPaths = $barangHilang->document_pendukung ?? [];
 
@@ -200,7 +202,8 @@ class MissingStuffService
             'kontak' => $kontak,
             'foto' => $fotoPaths,
             'document_pendukung' => $docPaths,
-            'user_id' => $validated['user_id'],
+            'user_id' => $userId
+            // 'user_id' => $validated['user_id'],
         ])->save();
 
         return $barangHilang;

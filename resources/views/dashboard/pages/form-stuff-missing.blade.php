@@ -5,28 +5,32 @@
 @section('content')
     <div class="space-y-6" data-page="form-stuff-missing">
         <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Laporan Barang Hilang</h1>
-            <p class="text-gray-600 max-w-2xl mx-auto mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan barang
-                dengan lengkap dan teliti</p>
-        </header>
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
+            <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
+                <h1 class="text-3xl font-bold text-dark">Laporan Barang Hilang</h1>
+                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan barang
+                dengan lengkap dan teliti.</p>
+            </div>
+
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
+                    <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                    <span>Kembali</span>
+                </a>
+            </div>
+        </div>
 
         <!-- Error Message -->
         @if ($errors->has('duplicate'))
             <div class="max-w-5xl mx-auto">
-                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6">
+                <div class="bg-danger p-4 mb-6 rounded-xl">
                     <div class="flex">
                         <div class="flex-shrink-0">
-                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                                    clip-rule="evenodd" />
-                            </svg>
+                            <i class="fa-solid fa-circle-xmark text-white"></i>
                         </div>
                         <div class="ml-3">
-                            <h3 class="text-sm font-medium text-red-800">Laporan Ditolak – Terdeteksi Duplikat!</h3>
-                            <div class="mt-2 text-sm text-red-700">
+                            <h3 class="text-sm font-bold text-white">Laporan Ditolak – Terdeteksi Duplikat!</h3>
+                            <div class="mt-2 text-sm text-white">
                                 <p>{{ $errors->first('duplicate') }}</p>
                             </div>
                         </div>
@@ -44,16 +48,16 @@
 
                 <!-- Informasi Dasar Barang -->
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-box mr-2 text-primary"></i>
                         Informasi Dasar Barang
                     </h3>
 
                     <!-- Nama Barang -->
                     <div class="mb-6">
-                        <label for="nama_barang" class="block text-sm font-semibold text-gray-700 mb-2">Nama Barang</label>
+                        <label for="nama_barang" class="block text-sm font-semibold text-dark mb-2">Nama Barang</label>
                         <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('nama_barang') border-danger @enderror"
+                            class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('nama_barang') border-danger @enderror"
                             placeholder="Masukan nama barang" required>
                         @error('nama_barang')
                             <p class="text-danger text-sm mt-1">{{ $message }}</p>
@@ -62,10 +66,10 @@
 
                     <!-- Deskripsi Barang -->
                     <div class="mb-6">
-                        <label for="deskripsi_barang" class="block text-sm font-semibold text-gray-700 mb-2">Deskripsi
+                        <label for="deskripsi_barang" class="block text-sm font-semibold text-dark mb-2">Deskripsi
                             Barang</label>
                         <textarea id="deskripsi_barang" name="deskripsi_barang" rows="3"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('deskripsi_barang') border-danger @enderror"
+                            class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('deskripsi_barang') border-danger @enderror"
                             placeholder="Contoh: Barang berwarna hitam, merk 'ABC', dll.">{{ old('deskripsi_barang') }}</textarea>
                         @error('deskripsi_barang')
                             <p class="text-danger text-sm mt-1">{{ $message }}</p>
@@ -73,22 +77,22 @@
                     </div>
 
                     <!-- Jenis & Merk Barang -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <div>
-                            <label for="jenis_barang" class="block text-sm font-semibold text-gray-700 mb-2">Jenis
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div class="mb-5 sm:mb-0">
+                            <label for="jenis_barang" class="block text-sm font-semibold text-dark mb-2">Jenis
                                 Barang</label>
                             <input type="text" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang') }}"
-                                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('jenis_barang') border-danger @enderror"
+                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('jenis_barang') border-danger @enderror"
                                 placeholder="Masukan jenis barang" required>
                             @error('jenis_barang')
                                 <p class="text-danger text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
                         <div>
-                            <label for="merk_barang" class="block text-sm font-semibold text-gray-700 mb-2">Merk
+                            <label for="merk_barang" class="block text-sm font-semibold text-dark mb-2">Merk
                                 Barang</label>
                             <input type="text" id="merk_barang" name="merk_barang" value="{{ old('merk_barang') }}"
-                                class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('merk_barang') border-danger @enderror"
+                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('merk_barang') border-danger @enderror"
                                 placeholder="Masukan merk barang" required>
                             @error('merk_barang')
                                 <p class="text-danger text-sm mt-1">{{ $message }}</p>
@@ -97,21 +101,21 @@
                     </div>
                 </div>
 
-                <hr class="my-8 border-gray-200">
+                <hr class="my-8 border-netral-200">
 
                 <!-- Detail Fisik Barang -->
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-message mr-2 text-primary"></i>
                         Detail Fisik Barang
                     </h3>
 
                     <!-- Warna Barang -->
                     <div class="mb-6">
-                        <label for="warna_barang" class="block text-sm font-semibold text-gray-700 mb-2">Warna
+                        <label for="warna_barang" class="block text-sm font-semibold text-dark mb-2">Warna
                             Barang</label>
                         <input type="text" id="warna_barang" name="warna_barang" value="{{ old('warna_barang') }}"
-                            class="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition @error('warna_barang') border-danger @enderror"
+                            class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('warna_barang') border-danger @enderror"
                             placeholder="Masukan warna barang" required>
                         @error('warna_barang')
                             <p class="text-danger text-sm mt-1">{{ $message }}</p>
@@ -122,25 +126,25 @@
                     @include('dashboard.components.characteristics', ['ciriCiri' => []])
                 </div>
 
-                <hr class="my-8 border-gray-200">
+                <hr class="my-8 border-netral-200">
 
                 <!-- Kontak Darurat -->
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-phone mr-2 text-primary"></i>
                         Kontak Darurat
                     </h3>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                         @foreach ($contacts as $contact)
-                            <div>
-                                <label for="kontak_{{ Str::snake($contact) }}" class="block text-xs text-gray-600 mb-1">
+                            <div class="mb-2">
+                                <label for="kontak_{{ Str::snake($contact) }}" class="block text-xs text-dark mb-1">
                                     {{ $contact }}
                                 </label>
                                 <input type="text" id="kontak_{{ Str::snake($contact) }}"
                                     name="kontak[{{ $contact }}]" value="{{ old('kontak.' . $contact) }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
-                                    placeholder="Masukkan {{ strtolower($contact) }}">
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
+                                    placeholder="Masukkan {{ $contact }}">
                             </div>
                         @endforeach
                     </div>
@@ -148,53 +152,49 @@
                     @include('dashboard.components.contacts', ['kontak' => old('kontak', [])])
                 </div>
 
-                <hr class="my-8 border-gray-200">
+                <hr class="my-8 border-netral-200">
 
                 <!-- Lokasi & Waktu -->
                 <div class="mb-8">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-map-marker-alt mr-2 text-primary"></i>
                         Lokasi & Waktu
                     </h3>
 
                     <!-- Lokasi -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Lokasi Terakhir Dilihat</label>
+                        <label class="block text-sm font-semibold text-dark mb-2">Lokasi Terakhir Dilihat</label>
                         <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="3"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition"
+                            class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
                             placeholder="Contoh: Stasiun Gambir, Jakarta Pusat">{{ old('lokasi_terakhir_dilihat') }}</textarea>
 
                         @include('dashboard.components.maps')
 
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
                             <div>
                                 <label for="latitude"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Latitude</label>
+                                    class="block text-sm font-semibold text-dark mb-2">Latitude</label>
                                 <input type="text" id="latitude" name="latitude" readonly
                                     value="{{ old('latitude') }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-netral-200 text-sm text-netral-500 transition-all outline-none cursor-not-allowed">
                             </div>
                             <div>
                                 <label for="longitude"
-                                    class="block text-sm font-semibold text-gray-700 mb-2">Longitude</label>
+                                    class="block text-sm font-semibold text-dark mb-2">Longitude</label>
                                 <input type="text" id="longitude" name="longitude" readonly
                                     value="{{ old('longitude') }}"
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed">
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-netral-200 text-sm text-netral-500 transition-all outline-none cursor-not-allowed">
                             </div>
                         </div>
 
-                        <div class="bg-primary/50 border border-primary/200 rounded-lg p-4 mt-4">
+                        <div class="bg-accent-surface border border-accent rounded-lg p-4 mt-4">
                             <div class="flex">
                                 <div class="flex-shrink-0">
-                                    <svg class="h-5 w-5 text-primary/500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <i class="fa-solid fa-circle-exclamation text-accent"></i>
                                 </div>
                                 <div class="ml-3">
-                                    <h3 class="text-sm font-medium text-primary/800">Tips Pelaporan</h3>
-                                    <p class="text-sm text-primary/700 mt-1">
+                                    <h3 class="text-sm font-bold text-accent">Tips Pelaporan</h3>
+                                    <p class="text-sm text-accent mt-1">
                                         Koordinat peta akan otomatis terisi saat Anda klik lokasi di peta.
                                         Semakin akurat lokasi, semakin cepat proses pencarian.
                                     </p>
@@ -204,29 +204,29 @@
                     </div>
 
                     <!-- Tanggal & Status -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>
-                            <label for="tanggal_terakhir_dilihat" class="block text-sm font-semibold text-gray-700 mb-2">
+                            <label for="tanggal_terakhir_dilihat" class="block text-sm font-semibold text-dark mb-2">
                                 Tanggal Terakhir Dilihat
                             </label>
                             <input type="datetime-local" id="tanggal_terakhir_dilihat" name="tanggal_terakhir_dilihat"
                                 value="{{ old('tanggal_terakhir_dilihat') }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition">
+                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none">
                         </div>
                         <div>
-                            <label for="status" class="block text-sm font-semibold text-gray-700 mb-2">Status
+                            <label for="status" class="block text-sm font-semibold text-dark mb-2">Status
                                 Laporan</label>
                             <input type="text" id="status" name="status" value="Hilang" readonly
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition bg-gray-100 cursor-not-allowed">
+                                class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-netral-200 text-sm text-netral-500 transition-all outline-none cursor-not-allowed">
                         </div>
                     </div>
                 </div>
 
-                <hr class="my-8 border-gray-200">
+                <hr class="my-8 border-netral-200">
 
                 <!-- Foto, Dokumen & Submit -->
                 <div class="mb-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-image mr-2 text-primary"></i>
                         Foto, Dokumen & Submit
                     </h3>
@@ -243,22 +243,14 @@
                     <!-- Submit Button + Cek Duplikat -->
                     <div class="flex flex-col sm:flex-row gap-5 justify-end items-center mt-8">
                         <button type="submit"
-                            class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success/90 transition shadow-lg text-lg flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
+                            class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success-dark transition shadow-lg text-lg flex items-center justify-center">
+                            <i class="fa-regular fa-circle-check mr-2"></i>
                             Kirim Laporan
                         </button>
 
                         <button type="button" id="check-duplicate-btn" data-type="barang"
                             class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center justify-center text-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
-                            </svg>
+                            <i class="fa-solid fa-microchip mr-2"></i>
                             Cek Duplikat Laporan
                         </button>
                     </div>
