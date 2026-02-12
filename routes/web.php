@@ -1,6 +1,7 @@
 <?php
 
 use App\Livewire\Chat;
+use App\Livewire\DetailMissing;
 use App\Livewire\Profile;
 use App\Livewire\Start;
 use App\Livewire\ListMissing;
@@ -56,6 +57,7 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 // });
 
 Route::get('/', Start::class)->name('start');
+Route::get('/detail', DetailMissing::class)->name('detail-missing');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
 
 Route::middleware('guest.redirect')->group(function () {
