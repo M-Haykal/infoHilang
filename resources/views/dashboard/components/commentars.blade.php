@@ -98,7 +98,7 @@
             <input type="hidden" name="foundable_type" value="{{ $modelName }}">
             <input type="hidden" name="foundable_id" value="{{ $model->id }}">
             <textarea name="content" rows="3"
-                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"
+                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
                 placeholder="Tulis komentar Anda..." required></textarea>
             <button type="submit"
                 class="mt-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 transition">

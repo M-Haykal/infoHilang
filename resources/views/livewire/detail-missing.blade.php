@@ -10,9 +10,9 @@
         </ol>
     </nav>
 
-    <div x-data="{ showContactRow: false }">
+    <div x-data="{ showContactRow: false, showReportModal: false }" x-effect="showReportModal ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')">
         <div class="flex flex-col lg:flex-row gap-8 mb-6">
-            {{-- Media & Kontak --}}
+            {{-- Foto & Kontak --}}
             <div class="w-full lg:w-5/12">
                 <div class="lg:sticky lg:top-24 space-y-6">
 
@@ -43,48 +43,57 @@
                     </div>
 
                     {{-- Kontak Pelapor --}}
-                    <div class="grid grid-cols-2 gap-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-3" data-aos="fade-up" data-aos-delay="100">
                         @php
-                        $kontak = $data['raw']->kontak;
+                            $kontak = $data['raw']->kontak;
 
-                        // Fungsi helper untuk cek apakah data ada dan bukan "-" atau kosong
-                        $isValid = function($key) use ($kontak) {
-                        return isset($kontak[$key]) && $kontak[$key] !== '-' && trim($kontak[$key]) !== '';
-                        };
+                            // Fungsi helper untuk cek apakah data ada dan bukan "-" atau kosong
+                            $isValid = function($key) use ($kontak) {
+                            return isset($kontak[$key]) && $kontak[$key] !== '-' && trim($kontak[$key]) !== '';
+                            };
 
-                        // Prioritasin 3 Kontak Utama
-                        if ($isValid('Nomor WhatsApp')) {
-                        $label = 'WhatsApp';
-                        $icon = 'fa-brands fa-whatsapp';
-                        $color = 'bg-success';
-                        $val = preg_replace('/[^0-9]/', '', $kontak['Nomor WhatsApp']);
-                        // 08xxx ke 628xxx
-                        $val = str_starts_with($val, '0') ? '62' . substr($val, 1) : $val;
-                        $href = "https://wa.me/" . $val;
-                        } elseif ($isValid('Nomor Telepon')) {
-                        $label = 'Telepon';
-                        $icon = 'fa-solid fa-phone-flip';
-                        $color = 'bg-purple-700';
-                        $val = preg_replace('/[^0-9]/', '', $kontak['Nomor Telepon']);
-                        $href = "tel:" . $val;
-                        } elseif ($isValid('Alamat Email')) {
-                        $label = 'Email';
-                        $icon = 'fa-solid fa-envelope';
-                        $color = 'bg-danger-dark';
-                        $href = "mailto:" . $kontak['Alamat Email'];
-                        } else {
-                        // Fallback kalau ketiganya tidak ada
-                        $label = 'Lihat Kontak';
-                        $icon = 'fa-solid fa-address-book';
-                        $color = 'bg-accent';
-                        $href = "#"; // Diarahkan untuk buka row kontak
-                        }
+                            // Prioritasin 3 Kontak Utama
+                            if ($isValid('Nomor WhatsApp')) {
+                            $label = 'WhatsApp';
+                            $icon = 'fa-brands fa-whatsapp';
+                            $color = 'bg-success';
+                            $val = preg_replace('/[^0-9]/', '', $kontak['Nomor WhatsApp']);
+                            // 08xxx ke 628xxx
+                            $val = str_starts_with($val, '0') ? '62' . substr($val, 1) : $val;
+                            $href = "https://wa.me/" . $val;
+                            } elseif ($isValid('Nomor Telepon')) {
+                            $label = 'Telepon';
+                            $icon = 'fa-solid fa-phone-flip';
+                            $color = 'bg-purple-700';
+                            $val = preg_replace('/[^0-9]/', '', $kontak['Nomor Telepon']);
+                            $href = "tel:" . $val;
+                            } elseif ($isValid('Alamat Email')) {
+                            $label = 'Email';
+                            $icon = 'fa-solid fa-envelope';
+                            $color = 'bg-danger-dark';
+                            $href = "mailto:" . $kontak['Alamat Email'];
+                            } else {
+                            // Fallback kalau ketiganya tidak ada
+                            $label = 'Lihat Kontak';
+                            $icon = 'fa-solid fa-address-book';
+                            $color = 'bg-accent';
+                            $href = "#"; // Diarahkan untuk buka row kontak
+                            }
                         @endphp
-                        <a href="{{ $href }}" @if($href==="#" ) @click.prevent="showContactRow = true" @endif target="_blank" class="flex items-center justify-center gap-2 {{ $color }} text-white py-4 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
+
+                        {{-- Kontak prioritas --}}
+                        <a href="{{ $href }}" @if($href==="#" ) @click.prevent="showContactRow = true" @endif target="_blank" class="flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
                             <i class="{{ $icon }} text-lg"></i> {{ $label }}
                         </a>
-                        <button @click="if (navigator.share) { navigator.share({ title: '{{ $data['title'] }}', url: window.location.href }) }" class="flex items-center justify-center gap-2 bg-dark text-white py-4 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
-                            <i class="fa-solid fa-share-nodes"></i> Bagikan
+
+                        {{-- Print PDF --}}
+                        <a href="" target="_blank" class="w-14 h-14 flex items-center justify-center bg-danger text-white rounded-2xl hover:shadow-lg transition-all active:scale-95">
+                            <i class="fa-solid fa-file-pdf text-base"></i>
+                        </a>
+
+                        {{-- Bagikan --}}
+                        <button @click="if (navigator.share) { navigator.share({ title: '{{ $data['title'] }}', url: window.location.href }) }" class="w-14 h-14 flex items-center justify-center bg-dark text-white rounded-2xl hover:shadow-lg transition-all active:scale-95">
+                            <i class="fa-solid fa-share-nodes"></i>
                         </button>
                     </div>
 
@@ -118,6 +127,8 @@
 
             {{-- Detail Informasi --}}
             <div class="w-full lg:w-7/12 space-y-6">
+
+                {{-- Informasi atas --}}
                 <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6" data-aos="fade-left">
                     <div class="mb-0">
                         <div class="flex items-center gap-2 mb-4">
@@ -163,6 +174,8 @@
                 </div>
 
                 <div class="flex flex-col md:flex-row items-stretch gap-3">
+
+                    {{-- Detail Khusus --}}
                     <div class="w-full md:w-[40%] bg-white rounded-3xl shadow-sm border border-netral-100 p-6" data-aos="fade-up">
                         <h3 class="font-bold text-dark mb-4 flex items-center gap-2 uppercase text-xs tracking-widest">
                             <i class="fa-solid fa-fingerprint text-primary text-base"></i> Detail Khusus
@@ -181,68 +194,81 @@
                         </div>
                     </div>
 
-                    <div class="w-full md:w-[60%] bg-white rounded-3xl shadow-sm border border-netral-100 p-6 flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                    {{-- Laporan Jejak --}}
+                    <div class="w-full md:w-[60%] bg-white rounded-3xl shadow-sm border border-netral-100 p-6 flex flex-col max-h-[540px] h-fit" data-aos="fade-up" data-aos-delay="100">
                         <h3 class="font-bold text-dark mb-4 flex items-center gap-2 uppercase text-xs tracking-widest">
                             <i class="fa-solid fa-map-location-dot text-primary text-base"></i> Laporan Jejak
                         </h3>
 
-                        <div class="relative flex-1 mb-3">
-                            <div class="absolute left-[19px] top-2 bottom-2 w-0.5 bg-netral-100"></div>
+                        <div class="relative flex-1 overflow-y-auto mb-4 pr-3 no-scrollbar scroll-smooth">
+                            <div class="relative">
+                                <div class="absolute left-[19px] top-2 bottom-2 w-0.5 bg-netral-100 -z-0"></div>
 
-                            {{-- Data Dummy --}}
-                            @php $riwayatPenemuan = [(object)['nama_pelapor'=>'Rizky Amalia','created_at'=>'2026-02-10 14:30:00','lokasi_detail'=>'Taman Ganesha','deskripsi'=>'Ciri-ciri sama.','link_bukti'=>'#','is_verified'=>true], (object)[
-                            'nama_pelapor' => 'Anonim',
-                            'created_at' => '2026-02-11 09:15:00',
-                            'lokasi_detail' => 'Stasiun UI',
-                            'deskripsi' => 'Dapat kabar dari grup komunitas, katanya ada yang melihat di peron 2. Sudah saya lampirkan foto dari kejauhan.',
-                            'link_bukti' => '#',
-                            'is_verified' => false
-                            ],]; @endphp
+                                {{-- Data Dummy --}}
+                                @php $riwayatPenemuan = [(object)['nama_pelapor'=>'Rizky Amalia','created_at'=>'2026-02-10 14:30:00','lokasi_detail'=>'Taman Ganesha','deskripsi'=>'Ciri-ciri sama.','link_bukti'=>'#','is_verified'=>true], (object)[
+                                    'nama_pelapor' => 'Anonim',
+                                    'created_at' => '2026-02-11 09:15:00',
+                                    'lokasi_detail' => 'Stasiun UI',
+                                    'deskripsi' => 'Dapat kabar dari grup komunitas, katanya ada yang melihat di peron 2. Sudah saya lampirkan foto dari kejauhan.',
+                                    'link_bukti' => '#',
+                                    'is_verified' => false],(object)[
+                                    'nama_pelapor' => 'Citra',
+                                    'created_at' => '2026-02-11 09:15:00',
+                                    'lokasi_detail' => 'Stasiun Pondok Cina',
+                                    'deskripsi' => 'Dapat kabar dari grup komunitas, katanya ada yang melihat di peron 2. Sudah saya lampirkan foto dari kejauhan.',
+                                    'link_bukti' => '#',
+                                    'is_verified' => false]]; @endphp
 
-                            @foreach($riwayatPenemuan as $item)
-                            <div class="relative pl-12 group mb-3">
-                                <div class="absolute left-0 top-0 w-10 h-10 bg-white border-2 rounded-2xl shadow-sm flex items-center justify-center z-10 transition-all group-hover:scale-110">
-                                    <i class="text-sm fa-solid {{ $item->is_verified ? 'fa-check-double text-success' : 'fa-location-crosshairs text-primary' }}"></i>
-                                </div>
-                                <div class="{{ $item->is_verified ? 'bg-success-light' : 'bg-white' }} p-4 rounded-2xl border border-netral-100 shadow-sm hover:shadow-md transition-all">
-                                    <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                                        <div class="flex items-center gap-2">
-                                            <span class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
-                                            <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
-                                            <span class="text-[10px] text-netral-400 font-bold uppercase">
-                                                {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
-                                            </span>
+                                @foreach($riwayatPenemuan as $item)
+                                <div class="relative pl-12 group mb-3 last:mb-2">
+                                    <div class="absolute left-0 top-0 w-10 h-10 bg-white border-2 {{ $item->is_verified ? 'border-success shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-netral-100 shadow-sm' }} rounded-2xl shadow-sm flex items-center justify-center z-10 transition-all">
+                                        <i class="text-sm fa-solid {{ $item->is_verified ? 'fa-check-double text-success' : 'fa-location-crosshairs text-primary' }}"></i>
+                                    </div>
+                                    <div class="{{ $item->is_verified ? 'bg-success-light' : 'bg-white' }} p-4 rounded-2xl border border-netral-100 shadow-sm hover:shadow-md transition-all">
+                                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                            <div class="flex items-center gap-2">
+                                                <span class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
+                                                <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
+                                                <span class="text-[10px] text-netral-400 font-bold uppercase">
+                                                    {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
+                                                </span>
+                                            </div>
+
+                                            @if($item->is_verified)
+                                            <div class="flex items-center gap-2 px-3 py-1 bg-success text-white text-xs rounded-full shadow-sm shadow-success animate-pulse-slow">
+                                                <i class="fa-solid fa-certificate"></i>
+                                                <span class="font-black uppercase tracking-widest">Terkonfirmasi</span>
+                                            </div>
+                                            @endif
                                         </div>
 
-                                        @if($item->is_verified)
-                                        <span class="py-0.5 text-success text-xs font-bold rounded-md uppercase tracking-tighter">
-                                            Terkonfirmasi
-                                        </span>
-                                        @endif
-                                    </div>
-                                    <div class="bg-netral-50/50 p-3 rounded-xl border border-dashed border-netral-200 mb-3">
-                                        <p class="text-[10px] text-netral-400 uppercase font-bold tracking-tighter mb-1">Lokasi Temuan</p>
-                                        <p class="text-sm font-bold text-dark italic leading-tight">{{ $item->lokasi_detail }}</p>
-                                    </div>
-                                    <p class="text-xs text-netral-600 leading-relaxed mb-3">
-                                        {{ $item->deskripsi }}
-                                    </p>
-                                    {{-- Action Buttons --}}
-                                    <div class="border-t border-netral-50 flex flex-wrap items-center gap-2">
-                                        <a href="{{ $item->link_bukti }}" class="inline-flex items-center gap-1 px-2 py-1 bg-dark text-white text-[10px] font-bold rounded-md hover:bg-primary transition-all">
-                                            <i class="fa-solid fa-image"></i> Lihat Bukti
-                                        </a>
+                                        {{-- Lokasi Box --}}
+                                        <div class="{{ $item->is_verified ? 'bg-white border-success' : 'bg-netral-50 border-netral-200' }} p-3 rounded-xl border border-dashed mb-3">
+                                            <p class="text-[10px] {{ $item->is_verified ? 'text-success' : 'text-netral-400' }} uppercase font-bold tracking-tighter mb-1">Lokasi Temuan</p>
+                                            <p class="text-sm font-bold text-dark italic leading-tight">{{ $item->lokasi_detail }}</p>
+                                        </div>
 
-                                        <button class="px-2 py-1 bg-netral-100 text-netral-500 text-[10px] font-bold rounded-md hover:bg-danger/10 hover:text-danger transition-all">
-                                            <i class="fa-solid fa-flag"></i> Laporkan Hoax
-                                        </button>
+                                        {{-- Deskripsi --}}
+                                        <p class="text-xs {{ $item->is_verified ? 'text-dark font-medium' : 'text-netral-500' }} leading-relaxed mb-3">
+                                            {{ $item->deskripsi }}
+                                        </p>
+                                        {{-- Action Buttons --}}
+                                        <div class="border-t border-netral-50 flex flex-wrap items-center gap-2">
+                                            <a href="{{ $item->link_bukti }}" class="inline-flex items-center gap-1 px-2 py-1 {{ $item->is_verified ? 'bg-success hover:bg-success-dark' : 'bg-dark hover:bg-primary' }} text-white text-[10px] font-bold rounded-md transition-all">
+                                                <i class="fa-solid fa-image"></i> Lihat Bukti
+                                            </a>
+
+                                            <button class="px-2 py-1 bg-netral-100 text-netral-500 text-[10px] font-bold rounded-md hover:bg-danger hover:text-white transition-all">
+                                                <i class="fa-solid fa-flag"></i> Laporkan Hoax
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
+                                @endforeach
                             </div>
-                            @endforeach
                         </div>
 
-                        <button class="w-full py-4 border-2 border-dashed border-primary/20 bg-primary/5 rounded-3xl text-primary font-bold text-sm hover:bg-primary/10 transition-all flex items-center justify-center gap-3 group">
+                        <button @click="showReportModal = true" class="w-full py-4 border-2 border-dashed border-primary bg-primary-light rounded-3xl text-primary font-bold text-sm transition-all flex items-center justify-center gap-3 group">
                             <div class="w-8 h-8 bg-primary text-white rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-plus"></i>
                             </div>
@@ -253,9 +279,9 @@
             </div>
         </div>
 
-        {{-- Informasi Kontak --}}
+        {{-- Breakdown Informasi Kontak --}}
         <div x-show="showContactRow" x-ref="contactSection" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" class="mb-6">
-            <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6 md:p-8 bg-gradient-to-br from-white to-primary/5">
+            <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6 md:p-8">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="font-bold text-dark flex items-center gap-2 uppercase text-xs tracking-widest">
                         <i class="fa-solid fa-address-book text-primary text-base"></i> Opsi Kontak Pemilik
@@ -274,15 +300,14 @@
                         <button @click="
                             navigator.clipboard.writeText('{{ $value }}');
                             copied = true;
-                            setTimeout(() => copied = false, 2000);"
-                            class="w-full flex items-center gap-4 p-4 bg-white border border-netral-100 rounded-2xl hover:border-primary hover:shadow-md transition-all group overflow-hidden cursor-pointer text-left">
+                            setTimeout(() => copied = false, 2000);" class="w-full flex items-center gap-4 p-4 bg-white border border-netral-100 rounded-2xl hover:border-primary hover:shadow-md transition-all group overflow-hidden cursor-pointer text-left">
                             {{-- Feedback kalau berhasil copy --}}
                             <div x-show="copied" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" class="absolute inset-0 bg-primary flex items-center justify-center z-20 text-white font-bold text-xs gap-2 rounded-2xl">
                                 <i class="fa-solid fa-copy animate-bounce"></i> Berhasil Disalin!
                             </div>
 
                             {{-- Icon section --}}
-                            <div class="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
+                            <div class="w-12 h-12 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                                 @php
                                 $p = strtolower($platform);
                                 $icon = match(true) {
@@ -321,6 +346,85 @@
             'model' => $data['raw'],
             'modelName' => get_class($data['raw']),
             ])
+        </div>
+
+        {{-- Modal tambah hasil penemuan --}}
+        <div x-show="showReportModal" class="fixed inset-0 z-[9999] flex items-center justify-center backdrop-blur-md p-4 sm:p-6" x-cloak>
+
+            <div x-show="showReportModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" class="absolute inset-0 backdrop-blur-md"></div>
+
+            <div x-show="showReportModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" @click.away="showReportModal = false" class="relative bg-white w-full max-w-4xl max-h-[calc(100dvh-40px)] shadow-2xl flex flex-col border border-netral-100 rounded-xl overflow-hidden">
+
+                <div class="p-6 md:p-8 border-b border-netral-50 flex justify-between items-center bg-white sticky top-0 z-10">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-primary-light rounded-2xl flex items-center justify-center text-primary">
+                            <i class="fa-solid fa-bullhorn text-xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl md:text-2xl font-black text-dark tracking-tight">Kontribusi Informasi Temuan</h2>
+                            <p class="text-xs text-netral-400 font-bold uppercase tracking-widest">Bantu perkuat jejak pencarian untuk {{ $data['title'] }}</p>
+                        </div>
+                    </div>
+                    <button @click="showReportModal = false" class="w-12 h-12 rounded-full hover:bg-netral-100 flex items-center justify-center text-netral-400 transition-all">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="p-6 md:p-8 overflow-y-auto no-scrollbar flex-1 bg-netral-50">
+                    <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
+
+                        <div class="flex flex-col h-full space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Informasi Lokasi</label>
+                                <div class="relative group">
+                                    <input type="text" placeholder="Di mana kamu melihatnya? (Misal: Lobby Utama Mall X)" class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
+                                </div>
+                            </div>
+
+                            <div class="flex-1 flex flex-col">
+                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Detail Kronologi & Deskripsi</label>
+                                <textarea rows="5" placeholder="Jelaskan kondisi terakhir yang terlihat (pakaian, arah pergi, atau kondisi barang)..." class="flex-1 w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col h-full space-y-4">
+                            <div>
+                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Unggah Bukti Foto (Opsional)</label>
+                                <div class="flex items-center justify-center w-full">
+                                    <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-netral-200 rounded-xl cursor-pointer bg-white hover:border-primary transition-all group">
+                                        <div class="flex flex-col items-center justify-center py-4">
+                                            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-netral-300 group-hover:text-primary"></i>
+                                            </div>
+                                            <p class="text-xs text-netral-400 font-bold">Klik untuk unggah atau seret foto</p>
+                                            <p class="text-[10px] text-netral-300 mt-1">PNG, JPG (Max. 5MB)</p>
+                                        </div>
+                                        <input type="file" class="hidden" />
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="px-5 py-3 rounded-2xl border bg-white">
+                                <div class="flex gap-3 items-start text-primary">
+                                    <i class="fa-solid fa-circle-info mt-1"></i>
+                                    <p class="text-xs font-bold leading-relaxed">
+                                        Informasi yang kamu kirim akan muncul di timeline publik setelah divalidasi oleh pemilik atau admin.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <button type="submit" class="w-full py-5 bg-primary text-white rounded-xl font-bold shadow-xl hover:bg-primary-dark hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-3">
+                                Kirim Laporan Temuan <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                            <p class="text-center text-[10px] text-netral-400 mt-4 font-medium italic">
+                                *Dengan mengirim, kamu setuju untuk memberikan informasi yang jujur dan bertanggung jawab.
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
