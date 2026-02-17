@@ -1,4 +1,4 @@
-<div class="max-w-7xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
     {{-- Breadcrumb --}}
     <nav class="flex mb-6 text-sm text-netral-500" aria-label="Breadcrumb">
         <ol class="flex items-center space-x-2">
@@ -11,10 +11,10 @@
     </nav>
 
     <div x-data="{ showContactRow: false, showReportModal: false }" x-effect="showReportModal ? document.body.classList.add('overflow-hidden') : document.body.classList.remove('overflow-hidden')">
-        <div class="flex flex-col lg:flex-row gap-8 mb-6">
+        <div class="flex flex-col lg:flex-row gap-3 mb-3">
             {{-- Foto & Kontak --}}
             <div class="w-full lg:w-5/12">
-                <div class="lg:sticky lg:top-24 space-y-6">
+                <div class="lg:sticky lg:top-24 space-y-3 overflow-hidden">
 
                     {{-- Media --}}
                     <div class="bg-white rounded-3xl shadow-sm border border-netral-100 overflow-hidden p-3" data-aos="fade-right">
@@ -43,7 +43,7 @@
                     </div>
 
                     {{-- Kontak Pelapor --}}
-                    <div class="flex items-center gap-3" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-3" data-aos="fade-up">
                         @php
                             $kontak = $data['raw']->kontak;
 
@@ -82,7 +82,26 @@
                         @endphp
 
                         {{-- Kontak prioritas --}}
-                        <a href="{{ $href }}" @if($href==="#" ) @click.prevent="showContactRow = true" @endif target="_blank" class="flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
+                        <a href="{{ $href }}"
+                            @if($href !== "#") target="_blank" @endif
+                            @if($href === "#")
+                                @click.prevent="
+                                    showContactRow = true;
+                                    $nextTick(() => {
+                                        const el = $refs.contactSection;
+                                        if (el) {
+                                            const offset = 90;
+                                            const elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+                                            const offsetPosition = elementPosition - offset;
+
+                                            window.scrollTo({
+                                                top: offsetPosition,
+                                                behavior: 'smooth'
+                                            });
+                                        }
+                                    })"
+                            @endif
+                            class="h-14 flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
                             <i class="{{ $icon }} text-lg"></i> {{ $label }}
                         </a>
 
@@ -98,7 +117,7 @@
                     </div>
 
                     {{-- CTA --}}
-                    <div class="p-6 bg-primary rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-3">
+                    <div class="p-6 bg-primary rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-3" data-aos="fade-up">
                         <div class="text-center md:text-left">
                             <h4 class="text-xl font-bold mb-2">Punya Informasi?</h4>
                             <p class="text-sm">Bantu temukan {{ $data['title'] }} dengan menghubungi
@@ -126,7 +145,7 @@
             </div>
 
             {{-- Detail Informasi --}}
-            <div class="w-full lg:w-7/12 space-y-6">
+            <div class="w-full lg:w-7/12 space-y-3 overflow-hidden">
 
                 {{-- Informasi atas --}}
                 <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6" data-aos="fade-left">
@@ -280,7 +299,7 @@
         </div>
 
         {{-- Breakdown Informasi Kontak --}}
-        <div x-show="showContactRow" x-ref="contactSection" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" class="mb-6">
+        <div x-show="showContactRow" x-ref="contactSection" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" class="mb-3">
             <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6 md:p-8">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="font-bold text-dark flex items-center gap-2 uppercase text-xs tracking-widest">
@@ -337,6 +356,7 @@
             </div>
         </div>
 
+        {{-- Diskusi / Komentar --}}
         <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6 md:p-8" data-aos="fade-up">
             <h3 class="font-bold text-dark mb-8 flex items-center gap-2">
                 <i class="fa-solid fa-comments text-primary text-xl"></i> Diskusi Laporan
@@ -355,14 +375,15 @@
 
             <div x-show="showReportModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95 translate-y-4" x-transition:enter-end="opacity-100 scale-100 translate-y-0" x-transition:leave="transition ease-in duration-200" @click.away="showReportModal = false" class="relative bg-white w-full max-w-4xl max-h-[calc(100dvh-40px)] shadow-2xl flex flex-col border border-netral-100 rounded-xl overflow-hidden">
 
-                <div class="p-6 md:p-8 border-b border-netral-50 flex justify-between items-center bg-white sticky top-0 z-10">
+                {{-- Header --}}
+                <div class="p-6 border-b border-netral-50 flex justify-between items-center bg-white sticky top-0 z-10">
                     <div class="flex items-center gap-4">
                         <div class="w-12 h-12 bg-primary-light rounded-2xl flex items-center justify-center text-primary">
                             <i class="fa-solid fa-bullhorn text-xl"></i>
                         </div>
                         <div>
-                            <h2 class="text-xl md:text-2xl font-black text-dark tracking-tight">Kontribusi Informasi Temuan</h2>
-                            <p class="text-xs text-netral-400 font-bold uppercase tracking-widest">Bantu perkuat jejak pencarian untuk {{ $data['title'] }}</p>
+                            <h2 class="text-3xl md:text-2xl font-bold text-dark">Kontribusi Informasi Temuan</h2>
+                            <p class="text-xs font-medium text-netral-400">Bantu perkuat jejak pencarian untuk {{ $data['title'] }}</p>
                         </div>
                     </div>
                     <button @click="showReportModal = false" class="w-12 h-12 rounded-full hover:bg-netral-100 flex items-center justify-center text-netral-400 transition-all">
@@ -370,44 +391,124 @@
                     </button>
                 </div>
 
-                <div class="p-6 md:p-8 overflow-y-auto no-scrollbar flex-1 bg-netral-50">
-                    <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch">
+                {{-- Body/Form --}}
+                <div class="p-6 overflow-y-auto no-scrollbar flex-1 bg-netral-50">
+                    <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch" x-data="{
+                        images: [],
+                        handleFiles(event) {
+                            const files = Array.from(event.target.files);
+                            if (this.images.length + files.length > 3) {
+                                alert('Maksimal hanya 3 gambar yang diperbolehkan.');
+                                return;
+                            }
+                            files.forEach(file => {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    this.images.push(e.target.result);
+                                };
+                                reader.readAsDataURL(file);
+                            });
+                        },
+                        removeImage(index) {
+                            this.images.splice(index, 1);
+                        }
+                    }">
 
+                        {{-- Nama & Kontak Penemu --}}
+                        <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-dark mb-2">
+                                    Nama Penemu <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" required name="nama_penemu" placeholder="Masukkan nama lengkap Anda"
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-dark mb-2">
+                                    Kontak Penemu (WhatsApp/No. HP) <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" required name="kontak_penemu" placeholder="Contoh: 08123456789"
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
+                            </div>
+                        </div>
+
+                        {{-- Informasi Lokasi & Detail/Deksripsi --}}
                         <div class="flex flex-col h-full space-y-4">
                             <div>
-                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Informasi Lokasi</label>
+                                <label class="block text-xs font-bold text-dark mb-2">
+                                    Informasi Lokasi <span class="text-danger">*</span>
+                                </label>
                                 <div class="relative group">
                                     <input type="text" placeholder="Di mana kamu melihatnya? (Misal: Lobby Utama Mall X)" class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
                                 </div>
                             </div>
 
                             <div class="flex-1 flex flex-col">
-                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Detail Kronologi & Deskripsi</label>
+                                <label class="block text-xs font-bold text-dark mb-2">Detail Kronologi & Deskripsi</label>
                                 <textarea rows="5" placeholder="Jelaskan kondisi terakhir yang terlihat (pakaian, arah pergi, atau kondisi barang)..." class="flex-1 w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"></textarea>
                             </div>
                         </div>
 
                         <div class="flex flex-col h-full space-y-4">
                             <div>
-                                <label class="block text-[10px] font-black text-netral-400 uppercase tracking-widest mb-3">Unggah Bukti Foto (Opsional)</label>
+                                <label class="block text-xs font-bold text-dark mb-2">
+                                    Unggah Bukti Foto (Maks. 3) (Opsional) <span class="text-netral-400 font-normal" x-text="`(${images.length}/3)`"></span>
+                                </label>
+
+                                {{-- Dropzone Area --}}
                                 <div class="flex items-center justify-center w-full">
-                                    <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-netral-200 rounded-xl cursor-pointer bg-white hover:border-primary transition-all group">
-                                        <div class="flex flex-col items-center justify-center py-4">
-                                            <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                                                <i class="fa-solid fa-cloud-arrow-up text-2xl text-netral-300 group-hover:text-primary"></i>
+                                    <label
+                                        class="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed rounded-xl transition-all group"
+                                        :class="images.length >= 3
+                                            ? 'bg-netral-100 border-netral-200 cursor-not-allowed'
+                                            : 'bg-white border-netral-200 cursor-pointer hover:border-primary'"
+                                    >
+                                        <div class="flex items-center gap-3">
+                                            {{-- Container Icon --}}
+                                            <div class="rounded-2xl flex items-center justify-center transition-all shrink-0"
+                                                :class="images.length < 3 ? 'group-hover:scale-110' : ''">
+                                                <i class="fa-solid fa-cloud-arrow-up text-2xl transition-colors"
+                                                    :class="images.length >= 3 ? 'text-netral-300 group-hover:text-netral-300' : 'text-netral-400 group-hover:text-primary'"></i>
                                             </div>
-                                            <p class="text-xs text-netral-400 font-bold">Klik untuk unggah atau seret foto</p>
-                                            <p class="text-[10px] text-netral-300 mt-1">PNG, JPG (Max. 5MB)</p>
+
+                                            {{-- Text section --}}
+                                            <div class="flex flex-col">
+                                                {{-- Teks Utama --}}
+                                                <p class="text-xs font-bold tracking-tight transition-colors"
+                                                    :class="images.length >= 3 ? 'text-netral-400' : 'text-netral-500'">
+                                                    <span x-text="images.length >= 3 ? 'Batas maksimal foto tercapai' : 'Klik untuk unggah atau seret foto'"></span>
+                                                </p>
+                                                {{-- Teks Format --}}
+                                                <p class="text-[10px] mt-0.5 uppercase font-bold transition-colors"
+                                                    :class="images.length >= 3 ? 'text-netral-300' : 'text-netral-400'">
+                                                    PNG, JPG (Max. 5MB)
+                                                </p>
+                                            </div>
                                         </div>
-                                        <input type="file" class="hidden" />
+                                        <input type="file" class="hidden" accept="image/*" multiple @change="handleFiles($event)" :disabled="images.length >= 3" />
                                     </label>
+                                </div>
+
+                                {{-- Preview Container --}}
+                                <div class="flex flex-wrap gap-2 mt-3" x-show="images.length > 0">
+                                    <template x-for="(img, index) in images" :key="index">
+                                        <div class="relative w-14 h-14 rounded-lg overflow-hidden group border border-netral-100 shadow-sm shrink-0">
+                                            <img :src="img" class="w-full h-full object-cover">
+
+                                            {{-- Tombol Hapus --}}
+                                            <button @click.prevent="removeImage(index)"
+                                                    class="absolute inset-0 bg-danger-light text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                <i class="fa-solid fa-trash-can text-[10px]"></i>
+                                            </button>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
 
                             <div class="px-5 py-3 rounded-2xl border bg-white">
                                 <div class="flex gap-3 items-start text-primary">
                                     <i class="fa-solid fa-circle-info mt-1"></i>
-                                    <p class="text-xs font-bold leading-relaxed">
+                                    <p class="text-[10px] font-bold leading-relaxed">
                                         Informasi yang kamu kirim akan muncul di timeline publik setelah divalidasi oleh pemilik atau admin.
                                     </p>
                                 </div>
@@ -415,7 +516,7 @@
                         </div>
 
                         <div class="md:col-span-2">
-                            <button type="submit" class="w-full py-5 bg-primary text-white rounded-xl font-bold shadow-xl hover:bg-primary-dark hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-3">
+                            <button type="submit" class="w-full py-3 bg-primary text-white rounded-xl font-bold shadow-xl hover:bg-primary-dark hover:scale-[1.01] active:scale-95 transition-all flex items-center justify-center gap-3">
                                 Kirim Laporan Temuan <i class="fa-solid fa-paper-plane"></i>
                             </button>
                             <p class="text-center text-[10px] text-netral-400 mt-4 font-medium italic">
