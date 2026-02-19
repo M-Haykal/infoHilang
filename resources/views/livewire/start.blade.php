@@ -87,7 +87,7 @@
                             </span>
                         </div>
 
-                        <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">
+                        <a href="{{ route('detail-missing', $report->slug) ?? route('detail-missing') }}" class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">
                             Detail Laporan
                         </a>
                     </div>

@@ -8,6 +8,6 @@ class FormReportFound extends Component
 {
     public function render()
     {
-        return view('livewire.form-report-found');
+        return view('livewire.form-report-found')->layout('layouts.index')->title('Form Laporan Ditemukan | InfoHilang');
     }
 }
