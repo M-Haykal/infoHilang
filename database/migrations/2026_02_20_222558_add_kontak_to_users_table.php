@@ -11,7 +11,13 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->json('kontak')->nullable()->after('no_hp');
+            // $table->string('kontak')->nullable();
+
+            // $table->dropColumn('no_hp');
+            $table->dropColumn('provinsi');
+            $table->dropColumn('kota');
+            $table->dropColumn('kecamatan');
+            $table->dropColumn('kelurahan');
         });
     }
 
@@ -21,7 +27,7 @@ return new class extends Migration {
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('kontak');
+            //
         });
     }
 };

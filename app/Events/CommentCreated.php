@@ -36,7 +36,7 @@ class CommentCreated
             'comments.' .
             $this->comment->foundable_type. '.' .
             $this->comment->foundable_id
-        )
+        );
     }
 
     public function broadcastAs(): string

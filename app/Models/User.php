@@ -26,12 +26,7 @@ class User extends Authenticatable implements CanResetPassword
         'password',
         'avatar',
         'role',
-        'provinsi',
-        'kota',
-        'kecamatan',
-        'kelurahan',
         'alamat',
-        'no_hp',
         'kontak',
         'google_id',
     ];

@@ -58,7 +58,7 @@ use App\Http\Controllers\Dashboard\SettingsController;
 // });
 
 Route::get('/', Start::class)->name('start');
-Route::get('/detail', DetailMissing::class)->name('detail-missing');
+Route::get('/detail-{type}/{slug}', DetailMissing::class)->name('detail-missing');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
 
 Route::middleware('guest.redirect')->group(function () {

@@ -28,8 +28,8 @@ class LaporanDitemukan extends Model
 
     protected $casts = [
         'bukti_ditemukan' => 'array'
-    ]
-
+    ];
+    
     public function foundable()
     {
         return $this->morphTo();
