@@ -82,4 +82,9 @@ class HewanHilang extends Model
     {
         return 'hewan';
     }
+
+    public function laporanDitemukan()
+    {
+        return $this->morphMany(LaporanDitemukan::class, 'foundable');
+    }
 }

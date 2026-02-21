@@ -1,24 +1,24 @@
 <?php
 
 use App\Livewire\Chat;
-use App\Livewire\DetailMissing;
-use App\Livewire\Profile;
 use App\Livewire\Start;
+use App\Livewire\Profile;
 use App\Livewire\ListMissing;
+use App\Livewire\DetailMissing;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
-use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\GoogleAuthController;
-use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Dashboard\MissingsController;
+use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Dashboard\CommentarController;
-use App\Http\Controllers\Dashboard\MissingPersonController;
+use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
+use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\DuplicateCheckController;
-use App\Http\Controllers\Dashboard\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,8 +136,6 @@ Route::middleware('auth')->group(function () {
     });
 });
 
-
-
 //get api wilayah indonesia
 Route::prefix('wilayah')->group(function () {
     Route::get('/provinces', [WilayahController::class, 'getProvinces']);
@@ -148,3 +146,5 @@ Route::prefix('wilayah')->group(function () {
     Route::get('/villages/{district_code}', [WilayahController::class, 'getVillages'])
         ->where('district_code', '[0-9.]+');
 });
+
+Route::get('laporan/{type}/{slug}', DetailMissing::class)->name('landing.detail');

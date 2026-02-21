@@ -29,9 +29,19 @@ class LaporanDitemukan extends Model
     protected $casts = [
         'bukti_ditemukan' => 'array'
     ];
-    
+
     public function foundable()
     {
         return $this->morphTo();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getNamaPengirimAttribute()
+    {
+        return $this->user?->name ?? 'Anonim';
     }
 }

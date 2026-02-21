@@ -1,4 +1,4 @@
-<div class="py-20 max-w-7xl mx-auto px-4">
+<div class="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
     <!-- PageHeading -->
     <div class="text-center mb-10">
         <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span>
@@ -237,7 +237,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                                <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
+                                    <a href="{{ route('landing.detail', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
+                                        Laporan</a>
+                                </div>
+                            </div>
                         </div>
                     @else
                         <div

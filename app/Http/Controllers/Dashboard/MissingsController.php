@@ -29,8 +29,10 @@ class MissingsController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'html' => view('dashboard.components._missing_content', compact('missingItems', 'missingPersons', 'missingAnimals'))->render()
+                'html' => view('dashboard.components.missing_content', compact('missingItems', 'missingPersons', 'missingAnimals'))->render()
             ]);
+
+
         }
 
         return view('dashboard.pages.missing', compact('missingItems', 'missingPersons', 'missingAnimals'));
