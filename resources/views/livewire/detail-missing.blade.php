@@ -206,7 +206,7 @@
                             class="prose prose-sm max-w-none text-netral-600 leading-relaxed bg-netral-50 p-5 rounded-2xl border-l-4 border-primary">
                             {!! $data['description'] ?:
                                 '<span class="italic text-netral-400">Deskripsi tidak
-                                                            dicantumkan.</span>' !!}
+                                                                                                                                                                            dicantumkan.</span>' !!}
                         </div>
                     </div>
                 </div>
@@ -246,7 +246,7 @@
 
                                 {{-- Data Dummy --}}
                                 @php
-                                $riwayatPenemuan = [
+                                    $riwayatPenemuan = [
                                         (object) [
                                             'nama_pelapor' => 'Rizky Amalia',
                                             'created_at' => '2026-02-10 14:30:00',
@@ -273,7 +273,8 @@
                                             'link_bukti' => '#',
                                             'is_verified' => false,
                                         ],
-                                ]; @endphp
+                                    ];
+                                @endphp
 
                                 @forelse ($riwayatPenemuan as $item)
                                     <div class="relative pl-12 group mb-3 last:mb-2">
@@ -473,7 +474,7 @@
 
                 {{-- Body/Form --}}
                 <div class="p-6 overflow-y-auto no-scrollbar flex-1 bg-netral-50">
-                    <form action="#" class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch"
+                    <form wire:submit.prevent="create" class="grid grid-cols-1 md:grid-cols-2 gap-5 items-stretch"
                         x-data="{
                             images: [],
                             handleFiles(event) {
@@ -502,7 +503,7 @@
                                     Nama Penemu <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" required name="nama_penemu"
-                                    placeholder="Masukkan nama lengkap Anda"
+                                    placeholder="Masukkan nama lengkap Anda" wire:model="nama_penemu"
                                     class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
                             </div>
                             <div>
@@ -510,6 +511,7 @@
                                     Kontak Penemu (WhatsApp/No. HP) <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" required name="kontak_penemu" placeholder="Contoh: 08123456789"
+                                    wire.model="kontak_penemu"
                                     class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
                             </div>
                         </div>
@@ -523,6 +525,7 @@
                                 <div class="relative group">
                                     <input type="text"
                                         placeholder="Di mana kamu melihatnya? (Misal: Lobby Utama Mall X)"
+                                        wire:model="lokasi_temuan" required name="lokasi_temuan"
                                         class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
                                 </div>
                             </div>
@@ -532,6 +535,7 @@
                                     Deskripsi</label>
                                 <textarea rows="5"
                                     placeholder="Jelaskan kondisi terakhir yang terlihat (pakaian, arah pergi, atau kondisi barang)..."
+                                    wire:model="keterangan" name="keterangan"
                                     class="flex-1 w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none"></textarea>
                             </div>
                         </div>
@@ -574,8 +578,9 @@
                                                 </p>
                                             </div>
                                         </div>
-                                        <input type="file" class="hidden" accept="image/*" multiple
-                                            @change="handleFiles($event)" :disabled="images.length >= 3" />
+                                        <input type="file" wire:model="bukti_ditemukan" name="bukti_ditemukan[]"
+                                            class="hidden" accept="image/*" multiple @change="handleFiles($event)"
+                                            :disabled="images.length >= 3">
                                     </label>
                                 </div>
 
@@ -606,6 +611,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        {{-- <input type="hidden" name="foundable_id" value="{{ $data->slug }}">
+                        <input type="hidden" name="foundable_type" value="{{ $data['type'] }}"> --}}
 
                         <div class="md:col-span-2">
                             <button type="submit"

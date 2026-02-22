@@ -237,11 +237,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
-                                    <a href="{{ route('landing.detail', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
-                                        Laporan</a>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     @else
                         <div
@@ -256,12 +252,11 @@
                             </button>
                         </div>
                     @endif
-                    <div class="mt-8 p-4">
-                        {{ $reports->links('vendor.pagination.tailwind') }}
-                    </div>
+                </div>
+                <div class="mt-8 p-4">
+                    {{ $reports->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
-
         </div>
     </div>
 

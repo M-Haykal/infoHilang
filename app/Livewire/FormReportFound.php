@@ -4,8 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use App\Models\LaporanDitemukan;
-use Illuminate\Support\Facades\Auth;
+use App\Services\LaporanDitemukanService;
 
 class FormReportFound extends Component
 {
@@ -25,37 +24,23 @@ class FormReportFound extends Component
     {
         return [
             'nama_penemu' => 'required|string|max:255',
-            'kontak_penemu' => 'required|string|max:255',
-            'lokasi_ditemukan' => 'required|string|max:500',
+            'kontak_penemu' => 'required|string|max:20',
+            'lokasi_ditemukan' => 'required|string|max:255',
             'keterangan' => 'nullable|string',
-            'tanggal_ditemukan' => 'required|date',
-            'bukti_ditemukan.*' => 'nullable|array|max:3',
+            'tanggal_ditemukan' => 'nullable|date',
+            'bukti_ditemukan' => 'nullable|array|max:3',
+            'bukti_ditemukan.*' => 'nullable|image|max:5120',
         ];
     }
 
-    public function create()
+    public function create(LaporanDitemukanService $service)
     {
-        $this->validate();
+        $validated = $this->validate();
 
-        $uploadedImages = [];
-
-        if ($this->bukti_ditemukan) {
-            foreach ($this->bukti_ditemukan as $image) {
-                $uploadedImages[] = $image->store('laporan_ditemukan', 'public');
-            }
-        }
-
-        LaporanDitemukan::create([
-            'nama_penemu' => $this->nama_penemu,
-            'kontak_penemu' => $this->kontak_penemu,
-            'lokasi_ditemukan' => $this->lokasi_ditemukan,
-            'keterangan' => $this->keterangan,
-            'tanggal_ditemukan' => $this->tanggal_ditemukan ?? now(),
-            'bukti_ditemukan' => $uploadedImages,
-            'user_id' => auth()->check() ? Auth::id() : null,
+        $service->store([
+            ...$validated,
             'foundable_id' => $this->foundable_id,
             'foundable_type' => $this->foundable_type,
-            'is_confirmed' => false,
         ]);
 
         $this->reset([

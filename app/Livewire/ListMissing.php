@@ -208,7 +208,7 @@ class ListMissing extends Component
 
         $this->loadMapReports();
     }
-
+    
     private function loadMapReports()
     {
         if (!$this->userLat || !$this->userLng)
@@ -229,7 +229,7 @@ class ListMissing extends Component
                     $item->longitude
                 );
 
-                if ($distance > $this->radius)
+                if ($distance > $this->radius)      // radius check here
                     return null;
 
                 return [
