@@ -205,10 +205,9 @@ class ListMissing extends Component
     {
         $this->userLat = $lat;
         $this->userLng = $lng;
-
         $this->loadMapReports();
     }
-    
+
     private function loadMapReports()
     {
         if (!$this->userLat || !$this->userLng)
@@ -228,23 +227,46 @@ class ListMissing extends Component
                     $item->latitude,
                     $item->longitude
                 );
-
-                if ($distance > $this->radius)      // radius check here
+                if ($distance > $this->radius)
                     return null;
+
+                // Normalisasi tipe & data
+                if ($item instanceof BarangHilang) {
+                    $type = 'Barang';
+                    $name = $item->nama_barang;
+                    $desc = $item->deskripsi_barang;
+                } elseif ($item instanceof HewanHilang) {
+                    $type = 'Hewan';
+                    $name = $item->nama_hewan;
+                    $desc = $item->deskripsi_hewan;
+                } else { // OrangHilang
+                    $type = 'Orang';
+                    $name = $item->nama_orang;
+                    $desc = $item->deskripsi_orang;
+                }
+
+                // Potong deskripsi jika terlalu panjang (opsional)
+                $descShort = strlen($desc) > 80
+                    ? substr($desc, 0, 80) . '...'
+                    : $desc;
 
                 return [
                     'id' => $item->id,
-                    'lat' => $item->latitude,
-                    'lng' => $item->longitude,
-                    'type' => class_basename($item),
+                    'lat' => (float) $item->latitude,
+                    'lng' => (float) $item->longitude,
+                    'type' => $type,
+                    'name' => $name,
+                    'description' => $descShort,
+                    'location' => $item->lokasi_terakhir_dilihat ?? $item->lokasi ?? '-',
                     'distance' => round($distance, 2),
+                    'url' => route('detail-missing', ['type' => strtolower($type), 'slug' => $item->slug]),
                 ];
             })
             ->filter()
             ->values()
             ->toArray();
 
-        $this->dispatch('refreshMap', $this->mapReports);
+        $this->dispatch('refreshMap', reports: $this->mapReports);
     }
 
     private function distanceKm($lat1, $lon1, $lat2, $lon2)

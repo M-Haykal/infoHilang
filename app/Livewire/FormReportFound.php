@@ -16,7 +16,6 @@ class FormReportFound extends Component
     public $keterangan;
     public $tanggal_ditemukan;
     public $bukti_ditemukan = [];
-
     public $foundable_id;
     public $foundable_type;
 
@@ -33,28 +32,41 @@ class FormReportFound extends Component
         ];
     }
 
+    protected $listeners = ['openReportModal'];
+
+    public function openReportModal($id, $type)
+    {
+        $this->foundable_id = $id;
+        $this->foundable_type = $type;
+        $this->showReportModal = true;
+    }
+
     public function create(LaporanDitemukanService $service)
     {
         $validated = $this->validate();
 
-        $service->store([
-            ...$validated,
-            'foundable_id' => $this->foundable_id,
-            'foundable_type' => $this->foundable_type,
-        ]);
+        try {
+            $service->store([
+                ...$validated,
+                'foundable_id' => $this->foundable_id,
+                'foundable_type' => $this->foundable_type,
+            ]);
 
-        $this->reset([
-            'nama_penemu',
-            'kontak_penemu',
-            'lokasi_ditemukan',
-            'keterangan',
-            'tanggal_ditemukan',
-            'bukti_ditemukan'
-        ]);
+            $this->reset([
+                'nama_penemu',
+                'kontak_penemu',
+                'lokasi_ditemukan',
+                'keterangan',
+                'tanggal_ditemukan',
+                'bukti_ditemukan'
+            ]);
 
-        $this->dispatch('report-created');
+            session()->flash('success', 'Laporan berhasil dikirim dan menunggu validasi.');
+            $this->dispatch('report-created');
+        } catch (\Exception $th) {
+            session()->flash('error', 'Terjadi kesalahan saat mengirim laporan.');
+        }
 
-        session()->flash('success', 'Laporan berhasil dikirim dan menunggu validasi.');
     }
 
     public function render()

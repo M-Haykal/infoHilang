@@ -27,6 +27,8 @@ class LaporanDitemukanService
             }
         }
 
+        dd($data, $uploadedImages);
+
         return LaporanDitemukan::create([
             'nama_penemu' => $data['nama_penemu'],
             'kontak_penemu' => $data['kontak_penemu'],

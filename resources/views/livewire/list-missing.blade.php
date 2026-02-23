@@ -25,7 +25,6 @@
             </div>
         </div>
 
-
         <div class="flex flex-col gap-8 lg:flex-row items-stretch">
             <!-- Filters Sidebar -->
             <aside class="w-full lg:w-1/4 xl:w-1/5 py-4">
@@ -280,45 +279,75 @@
         let markers = [];
 
         document.addEventListener('livewire:init', () => {
+            Livewire.on('refreshMap', (payload) => {
+                const reports = payload.reports || payload;
+                if (!map) return;
+
+                markers.forEach(m => map.removeLayer(m));
+                markers = [];
+
+                reports.forEach(r => {
+                    const popupContent = `
+                        <div class="popup-card" style="min-width: 200px; font-family: sans-serif;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
+                                <strong style="font-size: 14px; color: #1e293b;">${r.name}</strong>
+                                <span style="font-size: 11px; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 999px;">
+                                    ${r.type}
+                                </span>
+                            </div>
+                            
+                            <p style="font-size: 12px; color: #475569; margin: 4px 0 8px; line-height: 1.4;">
+                                ${r.description || '<em>Tanpa deskripsi</em>'}
+                            </p>
+                            
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
+                                📍 ${r.location}
+                            </div>
+                            
+                            <div style="display: flex; gap: 8px; align-items: center; font-size: 11px;">
+                                <span style="color: #2563eb;">📏 ${r.distance} km</span>
+                                ${r.url ? `<a href="${r.url}" style="color: #059669; text-decoration: none; font-weight: 500;">Lihat Detail →</a>` : ''}
+                            </div>
+                        </div>
+                    `;
+
+                    const marker = L.marker([r.lat, r.lng])
+                        .addTo(map)
+                        .bindPopup(popupContent, {
+                            maxWidth: 280
+                        });
+
+                    markers.push(marker);
+                });
+            });
+
             navigator.geolocation.getCurrentPosition(pos => {
-                Livewire.dispatch('setUserLocation', [
-                    pos.coords.latitude, pos.coords.longitude
-                ]);
+                const {
+                    latitude,
+                    longitude
+                } = pos.coords;
 
-                map = L.map('map').setView(
-                    [pos.coords.latitude, pos.coords.longitude], 14
-                );
+                Livewire.dispatch('setUserLocation', {
+                    lat: latitude,
+                    lng: longitude
+                });
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
-                    .addTo(map);
+                map = L.map('map').setView([latitude, longitude], 14);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-                L.marker([pos.coords.latitude, pos.coords.longitude])
+                L.marker([latitude, longitude])
                     .addTo(map)
                     .bindPopup('Lokasi Anda')
                     .openPopup();
 
-                const radiusKm = 5; // ubah ke 1–5 sesuai kebutuhan
-                const radiusMeter = radiusKm * 1000;
-
-                window.radiusCircle = L.circle([pos.coords.latitude, pos.coords.longitude], {
-                    radius: radiusMeter,
+                window.radiusCircle = L.circle([latitude, longitude], {
+                    radius: 5000,
                     color: '#2563eb',
                     fillColor: '#3b82f6',
-                    fillOpacity: 0.15,
-                    weight: 2
+                    fillOpacity: 0.15
                 }).addTo(map);
-            });
-        });
-
-        Livewire.on('refreshMap', reports => {
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
-
-            reports.forEach(r => {
-                const marker = L.marker([r.lat, r.lng])
-                    .addTo(map)
-                    .bindPopup(`${r.type} • ${r.distance} km`);
-                markers.push(marker);
+            }, err => {
+                console.error('Geolocation error:', err);
             });
         });
     </script>
