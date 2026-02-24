@@ -46,7 +46,7 @@
                     ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
                     ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
                     ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
-                    ['route' => 'blog', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Blog'],
+                    ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
                     ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
                     ];
                     @endphp

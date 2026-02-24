@@ -6,6 +6,8 @@ import introJs from "intro.js";
 import "intro.js/introjs.css";
 import 'select2';
 import 'select2/dist/css/select2.min.css';
+import "trix";
+import 'trix/dist/trix.css';
 
 window.Pusher = Pusher;
 window.Alpine = Alpine;
@@ -39,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     element: "#dashboard",
                     intro: "Ini adalah halaman dashboard utama Anda. Dengan berbagai menu dan informasi penting.",
                 },
-                { 
+                {
                     title: "Memperluas Tampilan",
                     element: "#fullscreen-button",
                     intro: "Klik tombol ini untuk memperluas tampilan dashboard ke layar penuh.",

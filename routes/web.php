@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Dashboard\BlogController;
 use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
@@ -89,10 +90,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
-        Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])
-            ->name('check-duplicate');
+        Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])->name('check-duplicate');
 
-            // Settins
+        // Settins
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::put('/settings/profil', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
         Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
@@ -132,6 +132,12 @@ Route::middleware('auth')->group(function () {
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
         Route::put('/commentar/{comentar}', [CommentarController::class, 'update'])->name('commentar.update');
         Route::delete('/commentar/{comentar}', [CommentarController::class, 'delete'])->name('commentar.delete');
+
+        Route::get('/artikel', [BlogController::class, 'index'])->name('artikel');
+        Route::get('/artikel/tulis', [BlogController::class, 'create'])->name('artikel.create');
+        Route::post('/artikel/simpan', [BlogController::class, 'store'])->name('artikel.store');
+        Route::get('/artikel/{slug}', [BlogController::class, 'show'])->name('artikel.show');
+        Route::delete('/artikel/{slug}/hapus', [BlogController::class, 'destroy'])->name('artikel.destroy');
     });
 });
 

@@ -12,8 +12,8 @@
             @forelse ($missingItems as $item)
             <div class="flex flex-wrap flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-accent/50 rounded-lg border border-netral-200 hover:shadow-md transition-all duration-300">
 
-                <div class="flex space-x-4 mb-4 sm:mb-0">
-                    <div class="flex-shrink-0">
+                <div class="flex space-x-4 items-center mb-4 sm:mb-0">
+                    <div class="flex-shrink-0 self-start">
                         @if($item->foto && count($item->foto) > 0)
                         {{-- Jika ada data foto di database --}}
                         <div class="relative w-16 h-16">
@@ -58,13 +58,13 @@
                         {{-- Lokasi dan Tanggal--}}
                         <div class="flex flex-wrap gap-2 mt-3">
                             <span class="inline-flex text-xs">
-                                <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
-                                <span class="text-netral-500">{{ date('d M Y H:i',
+                                <i class="fa-solid fa-calendar mt-1 mr-1 text-[10px] text-accent"></i>
+                                <span class="text-netral-500 text-[10px]">{{ date('d M Y H:i',
                                     strtotime($item->tanggal_terakhir_dilihat)) }}</span>
                             </span>
                             <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{!! $item->lokasi_terakhir_dilihat !!}</span>
+                                <span class="text-netral-500 text-[10px]">{!! $item->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>
@@ -122,8 +122,8 @@
         <div class="space-y-4">
             @forelse ($missingPersons as $missingPerson)
             <div class="flex flex-wrap flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-accent/50 rounded-lg border border-netral-200 hover:shadow-md transition-all duration-300">
-                <div class="flex space-x-4 mb-4 sm:mb-0">
-                    <div class="flex-shrink-0">
+                <div class="flex space-x-4 items-center mb-4 sm:mb-0">
+                    <div class="flex-shrink-0 self-start">
                         @if($missingPerson->foto && count($missingPerson->foto) > 0)
                         {{-- Jika ada data foto di database --}}
                         <div class="relative w-16 h-16">
@@ -166,15 +166,15 @@
                         </div>
 
                         {{-- Lokasi dan Tanggal--}}
-                        <div class="flex flex-wrap gap-2 mt-3">
+                        <div class="flex items-center flex-wrap gap-2 mt-3">
                             <span class="inline-flex text-xs">
-                                <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
-                                <span class="text-netral-500">{{ date('d M Y H:i',
+                                <i class="fa-solid fa-calendar mt-1 mr-1 text-[10px] text-accent"></i>
+                                <span class="text-netral-500 text-[10px]">{{ date('d M Y H:i',
                                     strtotime($missingPerson->tanggal_terakhir_dilihat)) }}</span>
                             </span>
                             <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
                                 <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{!! $missingPerson->lokasi_terakhir_dilihat !!}</span>
+                                <span class="text-netral-500 text-[10px]">{!! $missingPerson->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>
@@ -239,8 +239,8 @@
         <div class="space-y-4">
             @forelse ($missingAnimals as $missingAnimal)
             <div class="flex flex-wrap flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 bg-accent/50 rounded-lg border border-netral-200 hover:shadow-md transition-all duration-300">
-                <div class="flex space-x-4 mb-4 sm:mb-0">
-                    <div class="flex-shrink-0">
+                <div class="flex space-x-4 items-center mb-4 sm:mb-0">
+                    <div class="flex-shrink-0 self-start">
                         @if($missingAnimal->foto && count($missingAnimal->foto) > 0)
                         {{-- Jika ada data foto di database --}}
                         <div class="relative w-16 h-16">
@@ -284,13 +284,13 @@
                         {{-- Lokasi dan Tanggal--}}
                         <div class="flex flex-wrap gap-2 mt-3">
                             <span class="inline-flex text-xs">
-                                <i class="fa-solid fa-calendar mt-1 mr-1 text-accent"></i>
-                                <span class="text-netral-500">{{ date('d M Y H:i',
+                                <i class="fa-solid fa-calendar mt-1 mr-1 text-[10px] text-accent"></i>
+                                <span class="text-netral-500 text-[10px]">{{ date('d M Y H:i',
                                     strtotime($missingAnimal->tanggal_terakhir_dilihat)) }}</span>
                             </span>
-                            <span title="Lokasi terakhir dilihat" class="flex text-xs sm:min-w-0 sm:flex-none sm:max-w-[280px]">
-                                <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0"></i>
-                                <span class="text-netral-500">{!! $missingAnimal->lokasi_terakhir_dilihat !!}</span>
+                            <span title="Lokasi terakhir dilihat" class="flex sm:min-w-0 sm:flex-none sm:max-w-[280px]">
+                                <i class="fa-solid fa-location-dot mt-1 mr-1 text-accent sm:flex-shrink-0 text-[10px]"></i>
+                                <span class="text-netral-500 text-[10px]">{!! $missingAnimal->lokasi_terakhir_dilihat !!}</span>
                             </span>
                         </div>
                     </div>

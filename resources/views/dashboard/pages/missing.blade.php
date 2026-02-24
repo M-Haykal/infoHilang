@@ -10,13 +10,6 @@
             <h1 class="text-3xl font-bold text-dark">Daftar Laporan Hilang</h1>
             <p class="text-xs font-medium text-netral-400 mt-2">Pantau dan kelola laporan kehilangan dengan mudah.</p>
         </div>
-
-        {{-- <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
-            <a href="{{ route('missing') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
-                <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
-                <span>Kembali</span>
-            </a>
-        </div> --}}
     </div>
 
     <section class="menu-history-hilang max-w-6xl mx-auto" data-aos="fade-up" data-aos-duration="600" data-aos-delay="200">
@@ -27,13 +20,13 @@
                 <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Laporan</h2>
 
                 <div class="flex space-x-1 sm:space-x-2 p-2 sm:ml-auto sm:self-center justify-end">
-                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-barang">
-                        <i class="hidden md:block fa-solid fa-box mr-2"></i>
-                        Barang Hilang
-                    </button>
                     <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300" data-tab="tab-orang">
                         <i class="hidden md:block fa-solid fa-user mr-2"></i>
                         Orang Hilang
+                    </button>
+                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-barang">
+                        <i class="hidden md:block fa-solid fa-box mr-2"></i>
+                        Barang Hilang
                     </button>
                     <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300" data-tab="tab-hewan">
                         <i class="hidden md:block fa-solid fa-paw mr-2"></i>
