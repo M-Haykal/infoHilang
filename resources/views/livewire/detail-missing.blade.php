@@ -497,7 +497,7 @@
 
                                             {{-- Tombol Hapus --}}
                                             <button @click.prevent="removeImage(index)"
-                                                    class="absolute inset-0 bg-danger-light text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    class="absolute inset-0 bg-danger text-white opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                 <i class="fa-solid fa-trash-can text-[10px]"></i>
                                             </button>
                                         </div>

@@ -10,7 +10,7 @@
             <h1 class="text-3xl font-bold text-dark">Daftar Artikel</h1>
             <p class="text-xs font-medium text-netral-400 mt-2">Kelola dan publikasikan artikel bermanfaat untuk mempercepat proses penemuan.</p>
         </div>
-        <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
+        <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-20 pointer-events-auto">
             <a href="{{ route('artikel.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary text-white border border-primary rounded-xl font-bold text-sm hover:bg-primary-dark hover:border-primary-dark hover:shadow-lg hover:shadow-primary-dark hover:scale-105 transition-all group active:scale-95">
                 <i class="fa-solid fa-plus transition-transform group-hover:rotate-90"></i>
                 <span>Tambah Artikel</span>
@@ -38,9 +38,7 @@
                                         <img src="{{ asset('storage/' . $blog->image) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                     </div>
                                     <div class="max-w-xs">
-                                    <a href="{{ route('artikel.show', $blog->slug) }}" class="group/title">
-                                        <p class="text-sm font-bold text-dark leading-tight truncate group-hover:text-accent transition-colors">{{ $blog->title }}</p>
-                                    </a>
+                                        <p class="text-sm font-bold text-dark leading-tight truncate">{{ $blog->title }}</p>
 
                                         <p class="text-[10px] text-netral-400 font-medium mt-1 truncate">
                                             {{ Str::limit(strip_tags($blog->content), 60) }}
@@ -62,7 +60,10 @@
                             </td>
                             <td class="px-6 py-4">
                                 <div class="flex items-center justify-center gap-2">
-                                    <a href="" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-yellow-500 hover:border-yellow-500 transition-all shadow-sm">
+                                    <a href="{{ route('artikel.show', $blog->slug) }}" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-primary hover:border-primary transition-all shadow-sm">
+                                        <i class="fa-solid fa-eye text-xs"></i>
+                                    </a>
+                                    <a href="{{ route('artikel.edit', $blog->slug) }}" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-yellow-500 hover:border-yellow-500 transition-all shadow-sm">
                                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                                     </a>
                                     <form action="{{ route('artikel.destroy', $blog->slug) }}" method="POST" data-confirm-delete>

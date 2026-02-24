@@ -137,6 +137,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/artikel/tulis', [BlogController::class, 'create'])->name('artikel.create');
         Route::post('/artikel/simpan', [BlogController::class, 'store'])->name('artikel.store');
         Route::get('/artikel/{slug}', [BlogController::class, 'show'])->name('artikel.show');
+        Route::get('/artikel/{slug}/edit', [BlogController::class, 'edit'])->name('artikel.edit');
+        Route::patch('/artikel/{slug}/update', [BlogController::class, 'update'])->name('artikel.update');
         Route::delete('/artikel/{slug}/hapus', [BlogController::class, 'destroy'])->name('artikel.destroy');
     });
 });

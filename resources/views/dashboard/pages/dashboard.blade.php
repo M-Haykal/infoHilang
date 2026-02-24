@@ -13,7 +13,7 @@
             <p class="text-xs font-medium text-netral-400 mt-2">Kelola laporan barang, orang, atau hewan hilang.</p>
         </div>
 
-        {{-- <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
+        {{-- <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-20 pointer-events-auto">
             <a href="{{ route('missing') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
                 <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
                 <span>Kembali</span>
