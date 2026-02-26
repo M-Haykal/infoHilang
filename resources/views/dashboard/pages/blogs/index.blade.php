@@ -63,10 +63,18 @@
                                     <a href="{{ route('artikel.show', $blog->slug) }}" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-primary hover:border-primary transition-all shadow-sm">
                                         <i class="fa-solid fa-eye text-xs"></i>
                                     </a>
-                                    <a href="{{ route('artikel.edit', $blog->slug) }}" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-yellow-500 hover:border-yellow-500 transition-all shadow-sm">
+                                    <a href="{{ route('artikel.edit', $blog->slug) }}"
+                                        class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-yellow-500 hover:border-yellow-500 transition-all shadow-sm"
+                                        data-confirm-edit
+                                        data-title="Edit Artikel"
+                                        data-message="Apakah kamu ingin mengubah data artikel ini?">
                                         <i class="fa-solid fa-pen-to-square text-xs"></i>
                                     </a>
-                                    <form action="{{ route('artikel.destroy', $blog->slug) }}" method="POST" data-confirm-delete>
+                                    <form action="{{ route('artikel.destroy', $blog->slug) }}" method="POST"
+                                        data-confirm-delete
+                                        data-title="Hapus Artikel"
+                                        data-message="Data ini akan dihapus secara permanen!"
+                                        >
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-danger hover:border-danger transition-all shadow-sm">
@@ -85,7 +93,7 @@
                                     </div>
                                     <h3 class="text-lg font-bold text-dark">Belum ada artikel</h3>
                                     <p class="text-xs text-netral-400 mt-1">Mulai tulis pengalaman atau tipsmu.</p>
-                                    <a href="" class="mt-6 px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:scale-105 transition-all">Tulis Artikel</a>
+                                    <a href="{{ route('artikel.create') }}" class="mt-6 px-6 py-2 bg-primary text-white text-sm font-bold rounded-lg shadow-lg hover:scale-105 transition-all">Tulis Artikel</a>
                                 </div>
                             </td>
                         </tr>

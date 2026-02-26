@@ -25,7 +25,7 @@
         </div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="flex flex-col fixed inset-y-0 left-0 z-[100] w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto pointer-events-none lg:pointer-events-auto">
+        <aside id="sidebar" class="flex flex-col fixed inset-y-0 left-0 z-[1000] w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto pointer-events-none lg:pointer-events-auto">
             <div class="flex flex-col h-full w-full pointer-events-auto bg-white">
                 <div class="p-4 flex items-center justify-between border-b">
                     <a href="{{ route('start') }}" class="flex items-center gap-2 group">
@@ -43,25 +43,43 @@
                 </div>
                 <nav class="py-4 overflow-y-auto flex-1">
                     <ul class="space-y-2 px-2">
-                        @php
-                        $menus = [
-                        ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
-                        ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
-                        ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
-                        ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
-                        ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
-                        ];
-                        @endphp
-                        @foreach($menus as $menu)
-                        <li>
-                            <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ request()->routeIs($menu['route']) ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
 
-                                <i class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                        @php
+                            $menus = [
+                                ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
+                                ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
+                                ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
+                                ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
+                                ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
+                            ];
+                        @endphp
+
+                        @foreach($menus as $menu)
+                            @php
+                                $isActive = false;
+
+                                // pengecekan URL aktif
+                                if ($menu['route'] == 'dashboard') {
+                                    $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
+                                } elseif ($menu['route'] == 'missing') {
+                                    $isActive = request()->is('user/hilang*') || request()->is('user/edit-laporan*') || request()->is('user/detail-laporan*');
+                                } elseif ($menu['route'] == 'artikel') {
+                                    $isActive = request()->is('user/artikel*');
+                                } else {
+                                    $isActive = request()->routeIs($menu['route'] . '*');
+                                }
+                            @endphp
+
+                        <li>
+                            <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
+
+                                <i class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
                                 </i>
 
                                 <span class="tracking-wide">{{ $menu['label'] }}</span>
                             </a>
                         </li>
+
                         @endforeach
                     </ul>
                 </nav>
@@ -121,7 +139,8 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script defer src="{{ asset('js/dashboard.js') }}"></script>
+    <script defer src="{{ asset('js/dashboard/sidebar.js') }}"></script>
+    <script defer src="{{ asset('js/dashboard/dashboard.js') }}"></script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 

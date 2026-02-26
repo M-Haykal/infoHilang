@@ -1,6 +1,6 @@
 <div class="tab-content p-6">
     <!-- Barang Hilang Tab -->
-    <div id="tab-barang" class="tab-pane active">
+    <div id="tab-barang" class="tab-pane hidden">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-semibold text-dark">Barang Hilang</h3>
             <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -75,11 +75,19 @@
                         <i class="fa-solid fa-eye mr-1"></i>
                         Detail
                     </a>
-                    <a href="{{ route('form-barang-hilang.edit', $item->slug) }}" class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition" data-confirm-edit>
+                    <a href="{{ route('form-barang-hilang.edit', $item->slug) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
+                        data-confirm-edit
+                        data-title="Edit Laporan"
+                        data-message="Apakah kamu ingin mengubah laporan ini?">
                         <i class="fa-solid fa-pencil mr-1"></i>
                         Edit
                     </a>
-                    <form action="{{ route('form-barang-hilang.destroy', $item->slug) }}" method="POST" data-confirm-delete class="inline">
+                    <form action="{{ route('form-barang-hilang.destroy', $item->slug) }}" method="POST"
+                        data-confirm-delete
+                        data-title="Hapus Laporan"
+                        data-message="Data ini akan dihapus secara permanen!"
+                        class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 text-sm bg-danger text-white rounded-lg hover:bg-danger-dark transition">
@@ -111,7 +119,7 @@
     </div>
 
     <!-- Orang Hilang Tab -->
-    <div id="tab-orang" class="tab-pane hidden">
+    <div id="tab-orang" class="tab-pane active">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-semibold text-dark">Orang Hilang</h3>
             <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
@@ -191,12 +199,20 @@
                         Detail
                     </a>
 
-                    <a href="{{ route('form-orang-hilang.edit', $missingPerson->slug) }}" class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition" data-confirm-edit>
+                    <a href="{{ route('form-orang-hilang.edit', $missingPerson->slug) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
+                        data-confirm-edit
+                        data-title="Edit Laporan"
+                        data-message="Apakah kamu ingin mengubah laporan ini?">
                         <i class="fa-solid fa-pencil mr-1"></i>
                         Edit
                     </a>
 
-                    <form action="{{ route('form-orang-hilang.destroy', $missingPerson->slug) }}" method="POST" data-confirm-delete class="inline">
+                    <form action="{{ route('form-orang-hilang.destroy', $missingPerson->slug) }}" method="POST"
+                        data-confirm-delete
+                        data-title="Hapus Laporan"
+                        data-message="Data ini akan dihapus secara permanen!"
+                        class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 text-sm bg-danger text-white rounded-lg hover:bg-danger-dark transition">
@@ -308,12 +324,21 @@
                         Detail
                     </a>
 
-                    <a href="{{ route('form-hewan-hilang.edit', $missingAnimal->slug) }}" class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition" data-confirm-edit>
+                    <a href="{{ route('form-hewan-hilang.edit', $missingAnimal->slug) }}"
+                        class="inline-flex items-center px-3 py-2 text-sm bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition"
+                        data-confirm-edit
+                        data-title="Edit Laporan"
+                        data-message="Apakah kamu ingin mengubah laporan ini?"
+                        >
                         <i class="fa-solid fa-pencil mr-1"></i>
                         Edit
                     </a>
 
-                    <form action="{{ route('form-hewan-hilang.destroy', $missingAnimal->slug) }}" method="POST" data-confirm-delete class="inline">
+                    <form action="{{ route('form-hewan-hilang.destroy', $missingAnimal->slug) }}" method="POST"
+                        data-confirm-delete
+                        data-title="Hapus Laporan"
+                        data-message="Data ini akan dihapus secara permanen!"
+                        class="inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="inline-flex items-center px-3 py-2 text-sm bg-danger text-white rounded-lg hover:bg-danger-dark transition">

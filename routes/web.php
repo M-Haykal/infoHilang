@@ -5,6 +5,7 @@ use App\Livewire\Start;
 use App\Livewire\Profile;
 use App\Livewire\ListMissing;
 use App\Livewire\DetailMissing;
+use App\Livewire\ListBlog;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
@@ -60,6 +61,8 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 
 Route::get('/', Start::class)->name('start');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
+Route::get('/artikel', [ListBlog::class, 'index'])->name('landing.artikel.index');
+Route::get('/artikel/{slug}', [ListBlog::class, 'show'])->name('landing.artikel.show');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes

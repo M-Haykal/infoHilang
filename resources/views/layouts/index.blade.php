@@ -37,6 +37,7 @@
             <div class="hidden md:flex items-center space-x-8 font-bold text-dark">
                 <a href="{{ route('start') }}" class="hover:text-primary transition">Beranda</a>
                 <a href="{{ route('start') }}#cara-kerja" class="hover:text-primary transition">Cara Kerja</a>
+                <a href="{{ route('landing.artikel.index') }}" class="hover:text-primary transition">Artikel</a>
                 <a href="{{ route('start') }}#laporan" class="hover:text-primary transition">Cari Laporan</a>
             </div>
 
