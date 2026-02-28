@@ -15,7 +15,7 @@ class LaporanDitemukanService
             ->orderBy('created_at', 'desc')
             ->get();
     }
-    
+
     public function store(array $data)
     {
         $uploadedImages = [];
@@ -26,8 +26,6 @@ class LaporanDitemukanService
                 $uploadedImages[] = $image->store('laporan_ditemukan', 'public');
             }
         }
-
-        dd($data, $uploadedImages);
 
         return LaporanDitemukan::create([
             'nama_penemu' => $data['nama_penemu'],

@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Echo from "laravel-echo";
-import Alpine from "alpinejs";
+// import Alpine from "alpinejs";
 import Pusher from "pusher-js";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
@@ -8,7 +8,7 @@ import 'select2';
 import 'select2/dist/css/select2.min.css';
 
 window.Pusher = Pusher;
-window.Alpine = Alpine;
+// window.Alpine = Alpine;
 window.introJs = introJs;
 
 window.Echo = new Echo({
@@ -275,4 +275,4 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 800);
 });
 
-Alpine.start();
+// Alpine.start();

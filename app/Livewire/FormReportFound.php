@@ -3,12 +3,15 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+use Livewire\Attributes\On; // Tambahkan ini
 use Livewire\WithFileUploads;
 use App\Services\LaporanDitemukanService;
 
 class FormReportFound extends Component
 {
     use WithFileUploads;
+
+    public $showReportModal = false;
 
     public $nama_penemu;
     public $kontak_penemu;
@@ -32,41 +35,37 @@ class FormReportFound extends Component
         ];
     }
 
-    protected $listeners = ['openReportModal'];
-
-    public function openReportModal($id, $type)
+    // ✅ CARA 1: Menggunakan PHP 8 Attribute (Recommended untuk LW 3.6)
+    #[On('openReportModal')]
+    public function openReportModal($id = null, $type = null)
     {
         $this->foundable_id = $id;
         $this->foundable_type = $type;
         $this->showReportModal = true;
     }
 
+    // ✅ CARA 2: Jika tetap pakai $listeners, pastikan format benar
+    // protected $listeners = [
+    //     'openReportModal' => 'openReportModal'
+    // ];
+
     public function create(LaporanDitemukanService $service)
     {
-        $validated = $this->validate();
+        $this->validate();
 
-        try {
-            $service->store([
-                ...$validated,
-                'foundable_id' => $this->foundable_id,
-                'foundable_type' => $this->foundable_type,
-            ]);
+        $service->store([
+            'nama_penemu' => $this->nama_penemu,
+            'kontak_penemu' => $this->kontak_penemu,
+            'lokasi_ditemukan' => $this->lokasi_ditemukan,
+            'keterangan' => $this->keterangan,
+            'tanggal_ditemukan' => $this->tanggal_ditemukan,
+            'bukti_ditemukan' => $this->bukti_ditemukan,
+            'foundable_id' => $this->foundable_id,
+            'foundable_type' => $this->foundable_type,
+        ]);
 
-            $this->reset([
-                'nama_penemu',
-                'kontak_penemu',
-                'lokasi_ditemukan',
-                'keterangan',
-                'tanggal_ditemukan',
-                'bukti_ditemukan'
-            ]);
-
-            session()->flash('success', 'Laporan berhasil dikirim dan menunggu validasi.');
-            $this->dispatch('report-created');
-        } catch (\Exception $th) {
-            session()->flash('error', 'Terjadi kesalahan saat mengirim laporan.');
-        }
-
+        $this->reset();
+        $this->showReportModal = false;
     }
 
     public function render()
