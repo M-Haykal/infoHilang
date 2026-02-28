@@ -1,26 +1,27 @@
 <?php
 
-use App\Livewire\Chat;
-use App\Livewire\Start;
-use App\Livewire\Profile;
-use App\Livewire\ListMissing;
-use App\Livewire\DetailMissing;
-use App\Livewire\ListBlog;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Dashboard\MissingsController;
-use App\Http\Controllers\Dashboard\SettingsController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Dashboard\BlogController;
 use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\DuplicateCheckController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
-use App\Http\Controllers\Dashboard\DuplicateCheckController;
+use App\Http\Controllers\Dashboard\MissingsController;
+use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\WilayahController;
+use App\Livewire\Chat;
+use App\Livewire\DetailBlog;
+use App\Livewire\DetailMissing;
+use App\Livewire\ListBlog;
+use App\Livewire\ListMissing;
+use App\Livewire\Profile;
+use App\Livewire\Start;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,8 +62,8 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 
 Route::get('/', Start::class)->name('start');
 Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
-Route::get('/artikel', [ListBlog::class, 'index'])->name('landing.artikel.index');
-Route::get('/artikel/{slug}', [ListBlog::class, 'show'])->name('landing.artikel.show');
+Route::get('/artikel', ListBlog::class)->name('list-blog');
+Route::get('/artikel/{slug}', DetailBlog::class)->name('detail-blog');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes

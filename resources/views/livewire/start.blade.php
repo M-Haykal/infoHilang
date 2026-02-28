@@ -68,7 +68,7 @@
 
                     <div class="p-5">
                         <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-lg font-bold text-dark truncate" title="{{ $report->display_name }}">
+                            <h3 class="text-lg font-bold text-dark group-hover:text-primary truncate" title="{{ $report->display_name }}">
                                 {{ $report->display_name }}
                             </h3>
                             <span class="text-[10px] text-netral-400 font-medium whitespace-nowrap ml-2">
@@ -87,7 +87,7 @@
                             </span>
                         </div>
 
-                        <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">
+                        <a href="/laporan/{{ strtolower($report->tipe) }}/{{ $report->slug }}" class="block w-full text-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300">
                             Detail Laporan
                         </a>
                     </div>

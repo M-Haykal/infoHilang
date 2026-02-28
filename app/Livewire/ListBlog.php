@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 
 class ListBlog extends Component
 {
-    public function index()
+    use WithPagination;
+    protected $paginationTheme = 'tailwind';
+
+    public function render()
     {
         // Mengambil artikel terbaru, 6 per halaman
         $blogs = Blog::with('user')
@@ -34,6 +37,8 @@ class ListBlog extends Component
             ->take(2)
             ->get();
 
-        return view('landing.artikel.show', compact('blog', 'relatedBlogs'));
+        return view('livewire.detail-blog', compact('blog', 'relatedBlogs'))
+        ->layout('layouts.index')
+        ->title('Daftar Artikel | InfoHilang');
     }
 }

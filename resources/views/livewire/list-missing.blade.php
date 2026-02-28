@@ -1,9 +1,16 @@
 <div class="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
     <!-- PageHeading -->
     <div class="text-center mb-10">
-        <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span> Ditemukan</h2>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span> Ditemukan</h2>
+        <p class="text-netral-500 max-w-xl mx-auto mt-4">
+            Pusat informasi kehilangan dan penemuan. Mari saling membantu mempertemukan kembali mereka yang terpisah.
+        </p>
         <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
     </div>
+    {{-- <div class="text-center mb-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span> Ditemukan</h2>
+        <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
+    </div> --}}
 
     <div class="relative">
         <!-- SearchBar -->
@@ -159,7 +166,7 @@
                             <div class="{{ $viewMode === 'grid' ? 'w-full' : 'w-2/3 md:w-48' }} flex flex-1 flex-col p-5 justify-between">
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
-                                        <h3 class="text-lg font-bold text-dark">{{ $report->report_name }}
+                                        <h3 class="text-lg font-bold text-dark group-hover:text-primary">{{ $report->report_name }}
                                         </h3>
                                         @if ($viewMode === 'list')
                                         <span class="hidden md:block text-[10px] text-netral-400 font-medium tracking-widest">{{ $report->created_at->diffForHumans() }}</span>
@@ -179,7 +186,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
-                                    <a href="{{ route('landing.detail', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
+                                    <a href="{{ route('landing.detail', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300 {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
                                         Laporan</a>
                                 </div>
                             </div>
