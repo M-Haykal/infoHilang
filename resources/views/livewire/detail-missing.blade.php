@@ -243,39 +243,6 @@
                         <div class="relative flex-1 overflow-y-auto mb-4 pr-3 no-scrollbar scroll-smooth">
                             <div class="relative">
                                 <div class="absolute left-[19px] top-2 bottom-2 w-0.5 bg-netral-100 -z-0"></div>
-
-                                {{-- Data Dummy --}}
-                                @php
-                                    $riwayatPenemuan = [
-                                        (object) [
-                                            'nama_pelapor' => 'Rizky Amalia',
-                                            'created_at' => '2026-02-10 14:30:00',
-                                            'lokasi_detail' => 'Taman Ganesha',
-                                            'deskripsi' => 'Ciri-ciri sama.',
-                                            'link_bukti' => '#',
-                                            'is_verified' => true,
-                                        ],
-                                        (object) [
-                                            'nama_pelapor' => 'Anonim',
-                                            'created_at' => '2026-02-11 09:15:00',
-                                            'lokasi_detail' => 'Stasiun UI',
-                                            'deskripsi' =>
-                                                'Dapat kabar dari grup komunitas, katanya ada yang melihat di peron 2. Sudah saya lampirkan foto dari kejauhan.',
-                                            'link_bukti' => '#',
-                                            'is_verified' => false,
-                                        ],
-                                        (object) [
-                                            'nama_pelapor' => 'Citra',
-                                            'created_at' => '2026-02-11 09:15:00',
-                                            'lokasi_detail' => 'Stasiun Pondok Cina',
-                                            'deskripsi' =>
-                                                'Dapat kabar dari grup komunitas, katanya ada yang melihat di peron 2. Sudah saya lampirkan foto dari kejauhan.',
-                                            'link_bukti' => '#',
-                                            'is_verified' => false,
-                                        ],
-                                    ];
-                                @endphp
-
                                 @forelse ($riwayatPenemuan as $item)
                                     <div class="relative pl-12 group mb-3 last:mb-2">
                                         <div
@@ -288,7 +255,7 @@
                                             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                                                 <div class="flex items-center gap-2">
                                                     <span
-                                                        class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
+                                                        class="text-xs font-black text-dark">{{ optional($item->user)->name ?? 'Anonim' }}</span>
                                                     <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
                                                     <span class="text-[10px] text-netral-400 font-bold uppercase">
                                                         {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
@@ -312,13 +279,13 @@
                                                     class="text-[10px] {{ $item->is_verified ? 'text-success' : 'text-netral-400' }} uppercase font-bold tracking-tighter mb-1">
                                                     Lokasi Temuan</p>
                                                 <p class="text-sm font-bold text-dark italic leading-tight">
-                                                    {{ $item->lokasi_detail }}</p>
+                                                    {{ $item->lokasi_ditemukan }}</p>
                                             </div>
 
                                             {{-- Deskripsi --}}
                                             <p
                                                 class="text-xs {{ $item->is_verified ? 'text-dark font-medium' : 'text-netral-500' }} leading-relaxed mb-3">
-                                                {{ $item->deskripsi }}
+                                                {{ $item->keterangan }}
                                             </p>
                                             {{-- Action Buttons --}}
                                             <div class="border-t border-netral-50 flex flex-wrap items-center gap-2">

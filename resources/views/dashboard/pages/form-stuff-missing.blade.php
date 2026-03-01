@@ -130,13 +130,25 @@
 
                 <hr class="my-8 border-netral-200">
 
+                <!-- Hidden field for selected profile contact -->
+                <input type="hidden" id="selected_user_id" name="selected_user_id"
+                    value="{{ old('selected_user_id') }}" />
+                <div id="selected-user-label" class="text-sm text-primary mb-2">
+                    @if (old('selected_user_id'))
+                        Pengguna dipilih: {{ optional(App\Models\User::find(old('selected_user_id')))->name }}
+                    @endif
+                </div>
+
                 <!-- Kontak Darurat -->
                 <div class="mb-8">
                     <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
                         <i class="fa-solid fa-phone mr-2 text-primary"></i>
                         Kontak Darurat
                     </h3>
-
+                    <div class="flex justify-end mb-4">
+                        <button type="button" onclick="openUserContactSelector()"
+                            class="text-sm text-primary hover:underline">Pilih dari profil</button>
+                    </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                         @foreach ($contacts as $contact)
                             <div class="mb-2">

@@ -19,6 +19,7 @@ use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\DuplicateCheckController;
+use App\Http\Controllers\Dashboard\UserContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -148,3 +149,5 @@ Route::prefix('wilayah')->group(function () {
 });
 
 Route::get('laporan/{type}/{slug}', DetailMissing::class)->name('landing.detail');
+
+Route::get('dashboard/user-contacts', [UserContactController::class, 'index'])->name('dashboard.user-contacts');

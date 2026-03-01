@@ -76,6 +76,7 @@ class MissingAnimalService
             'status' => 'required|in:Hilang,Ditemukan,Ditutup',
             'foto' => 'nullable|array|max:5',
             'foto.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
+            'selected_user_id' => 'nullable|exists:users,id',
         ]);
     }
 
@@ -128,6 +129,15 @@ class MissingAnimalService
                 if ($key && $val) {
                     $kontak[$key] = $val;
                 }
+            }
+        }
+
+        // Override kontak if a user was selected
+        if ($request->filled('selected_user_id')) {
+            $user = \App\Models\User::find($request->input('selected_user_id'));
+            if ($user) {
+                $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
+                $kontak = $userKontak;
             }
         }
 
