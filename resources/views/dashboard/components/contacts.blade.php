@@ -48,4 +48,8 @@
     <button type="button" class="mt-2 text-sm text-primary hover:underline" onclick="addKontakField()">
         + Tambah Kontak
     </button>
+
+    @push('script')
+        <script src="{{ asset('js/dashboard/dynamic-fields.js') }}"></script>
+    @endpush
 </div>

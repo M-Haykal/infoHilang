@@ -79,4 +79,9 @@ class OrangHilang extends Model
     {
         return 'orang';
     }
+
+    public function laporanDitemukan()
+    {
+        return $this->morphMany(LaporanDitemukan::class, 'foundable');
+    }
 }

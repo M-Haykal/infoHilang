@@ -8,12 +8,13 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
             <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
                 <h1 class="text-3xl font-bold text-dark">Laporan Barang Hilang</h1>
-                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan barang
-                dengan lengkap dan teliti.</p>
+                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan
+                    barang
+                    dengan lengkap dan teliti.</p>
             </div>
 
-            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-20 pointer-events-auto">
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-netral-500 border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-dark hover:border-dark hover:shadow-md transition-all group active:scale-95">
                     <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
                     <span>Kembali</span>
                 </a>
@@ -54,7 +55,7 @@
                     </h3>
 
                     <!-- Nama Barang -->
-                    <div class="mb-6">
+                    <div class="mb-6" id="nama_barang">
                         <label for="nama_barang" class="block text-sm font-semibold text-dark mb-2">Nama Barang</label>
                         <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('nama_barang') border-danger @enderror"
@@ -65,10 +66,10 @@
                     </div>
 
                     <!-- Deskripsi Barang -->
-                    <div class="mb-6">
+                    <div class="mb-6" id="deskripsi_barang">
                         <label for="deskripsi_barang" class="block text-sm font-semibold text-dark mb-2">Deskripsi
                             Barang</label>
-                        <textarea id="deskripsi_barang" name="deskripsi_barang" rows="3"
+                        <textarea name="deskripsi_barang" rows="3"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('deskripsi_barang') border-danger @enderror"
                             placeholder="Contoh: Barang berwarna hitam, merk 'ABC', dll.">{{ old('deskripsi_barang') }}</textarea>
                         @error('deskripsi_barang')
@@ -78,20 +79,20 @@
 
                     <!-- Jenis & Merk Barang -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <div class="mb-5 sm:mb-0">
+                        <div class="mb-5 sm:mb-0" id="jenis_barang">
                             <label for="jenis_barang" class="block text-sm font-semibold text-dark mb-2">Jenis
                                 Barang</label>
-                            <input type="text" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang') }}"
+                            <input type="text" name="jenis_barang" value="{{ old('jenis_barang') }}"
                                 class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('jenis_barang') border-danger @enderror"
                                 placeholder="Masukan jenis barang" required>
                             @error('jenis_barang')
                                 <p class="text-danger text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div>
+                        <div id="merk_barang">
                             <label for="merk_barang" class="block text-sm font-semibold text-dark mb-2">Merk
                                 Barang</label>
-                            <input type="text" id="merk_barang" name="merk_barang" value="{{ old('merk_barang') }}"
+                            <input type="text" name="merk_barang" value="{{ old('merk_barang') }}"
                                 class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('merk_barang') border-danger @enderror"
                                 placeholder="Masukan merk barang" required>
                             @error('merk_barang')
@@ -111,10 +112,10 @@
                     </h3>
 
                     <!-- Warna Barang -->
-                    <div class="mb-6">
+                    <div class="mb-6" id="warna_barang">
                         <label for="warna_barang" class="block text-sm font-semibold text-dark mb-2">Warna
                             Barang</label>
-                        <input type="text" id="warna_barang" name="warna_barang" value="{{ old('warna_barang') }}"
+                        <input type="text" name="warna_barang" value="{{ old('warna_barang') }}"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('warna_barang') border-danger @enderror"
                             placeholder="Masukan warna barang" required>
                         @error('warna_barang')
@@ -172,8 +173,7 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
                             <div>
-                                <label for="latitude"
-                                    class="block text-sm font-semibold text-dark mb-2">Latitude</label>
+                                <label for="latitude" class="block text-sm font-semibold text-dark mb-2">Latitude</label>
                                 <input type="text" id="latitude" name="latitude" readonly
                                     value="{{ old('latitude') }}"
                                     class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-netral-200 text-sm text-netral-500 transition-all outline-none cursor-not-allowed">
@@ -243,13 +243,13 @@
                     <!-- Submit Button + Cek Duplikat -->
                     <div class="flex flex-col sm:flex-row gap-5 justify-end items-center mt-8">
                         <button type="submit"
-                            class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success-dark transition shadow-lg text-lg flex items-center justify-center">
+                            class="px-10 py-4 bg-success text-white text-lg font-bold rounded-xl hover:bg-success-dark hover:shadow-success hover:-translate-y-0.5 transition-all shadow-lg flex items-center justify-center group active:scale-95">
                             <i class="fa-regular fa-circle-check mr-2"></i>
                             Kirim Laporan
                         </button>
 
                         <button type="button" id="check-duplicate-btn" data-type="barang"
-                            class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center justify-center text-lg">
+                            class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 hover:shadow-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg flex items-center justify-center group active:scale-95">
                             <i class="fa-solid fa-microchip mr-2"></i>
                             Cek Duplikat Laporan
                         </button>

@@ -7,10 +7,10 @@
     <meta name="theme-color" content="#ffd57d">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'InfoHilang' }}</title>
     @stack('style')
-    @livewireStyles
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     {{-- Font Awesome --}}
@@ -35,9 +35,32 @@
             </a>
 
             <div class="hidden md:flex items-center space-x-8 font-bold text-dark">
-                <a href="{{ route('start') }}" class="hover:text-primary transition">Beranda</a>
-                <a href="{{ route('start') }}#cara-kerja" class="hover:text-primary transition">Cara Kerja</a>
-                <a href="{{ route('start') }}#laporan" class="hover:text-primary transition">Cari Laporan</a>
+                {{-- Beranda --}}
+                @php $isBeranda = request()->routeIs('start'); @endphp
+                <a href="{{ route('start') }}" class="relative py-2 transition-all duration-300 {{ $isBeranda ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    Beranda
+                    @if($isBeranda)
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                    @endif
+                </a>
+
+                {{-- Cari Laporan --}}
+                @php $isLaporan = request()->routeIs('list-missing') || request()->routeIs('detail-missing'); @endphp
+                <a href="{{ route('list-missing') }}" class="relative py-2 transition-all duration-300 {{ $isLaporan ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    Cari Laporan
+                    @if($isLaporan)
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                    @endif
+                </a>
+
+                {{-- Artikel --}}
+                @php $isArtikel = request()->routeIs('list-blog') || request()->routeIs('detail-blog'); @endphp
+                <a href="{{ route('list-blog') }}" class="relative py-2 transition-all duration-300 {{ $isArtikel ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    Artikel
+                    @if($isArtikel)
+                    <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                    @endif
+                </a>
             </div>
 
             <div class="flex items-center space-x-4">
@@ -88,7 +111,7 @@
     {{ $slot }}
 
     <!-- Footer -->
-    <footer class="bg-dark text-netral-400 py-12 px-8">
+    <footer class="bg-dark text-netral-400 py-12 px-8" wire:ignore>
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center gap-8">
             <div>
                 <a href="{{ route('start') }}" class="inline-block mb-3">
@@ -118,6 +141,7 @@
         </div>
     </footer>
 
+    @livewireScripts
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('script')
     <script src="{{ asset('js/start.js') }}"></script>
@@ -128,7 +152,6 @@
     {{-- <script src="{{ asset('js/all.js') }}"></script> --}}
     <script src="{{ asset('js/all.min.js') }}"></script>
 
-    @livewireScripts
 </body>
 
 </html>

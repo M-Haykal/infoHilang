@@ -1,24 +1,27 @@
 <?php
 
-use App\Livewire\Chat;
-use App\Livewire\Start;
-use App\Livewire\Profile;
-use App\Livewire\ListMissing;
-use App\Livewire\DetailMissing;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Dashboard\MissingsController;
-use App\Http\Controllers\Dashboard\SettingsController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Dashboard\BlogController;
 use App\Http\Controllers\Dashboard\CommentarController;
 use App\Http\Controllers\Dashboard\DashboardController;
-use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\DuplicateCheckController;
 use App\Http\Controllers\Dashboard\MissingAnimalController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
-use App\Http\Controllers\Dashboard\DuplicateCheckController;
+use App\Http\Controllers\Dashboard\MissingsController;
+use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\WilayahController;
+use App\Livewire\Chat;
+use App\Livewire\DetailBlog;
+use App\Livewire\DetailMissing;
+use App\Livewire\ListBlog;
+use App\Livewire\ListMissing;
+use App\Livewire\Profile;
+use App\Livewire\Start;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,8 +60,11 @@ use App\Http\Controllers\Dashboard\DuplicateCheckController;
 //     return view('errors.503');
 // });
 
+Route::get('/daftar-laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
-Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
+Route::get('/laporan/{type}/{slug}', DetailMissing::class)->name('detail-missing');
+Route::get('/artikel', ListBlog::class)->name('list-blog');
+Route::get('/artikel/{slug}', DetailBlog::class)->name('detail-blog');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes
@@ -89,10 +95,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
-        Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])
-            ->name('check-duplicate');
+        Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])->name('check-duplicate');
 
-            // Settins
+        // Settins
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::put('/settings/profil', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
         Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
@@ -132,6 +137,14 @@ Route::middleware('auth')->group(function () {
         Route::post('/commentar', [CommentarController::class, 'store'])->name('commentar.store');
         Route::put('/commentar/{comentar}', [CommentarController::class, 'update'])->name('commentar.update');
         Route::delete('/commentar/{comentar}', [CommentarController::class, 'delete'])->name('commentar.delete');
+
+        Route::get('/artikel', [BlogController::class, 'index'])->name('artikel');
+        Route::get('/artikel/tulis', [BlogController::class, 'create'])->name('artikel.create');
+        Route::post('/artikel/simpan', [BlogController::class, 'store'])->name('artikel.store');
+        Route::get('/artikel/{slug}', [BlogController::class, 'show'])->name('artikel.show');
+        Route::get('/artikel/{slug}/edit', [BlogController::class, 'edit'])->name('artikel.edit');
+        Route::patch('/artikel/{slug}/update', [BlogController::class, 'update'])->name('artikel.update');
+        Route::delete('/artikel/{slug}/hapus', [BlogController::class, 'destroy'])->name('artikel.destroy');
     });
 });
 
@@ -146,4 +159,3 @@ Route::prefix('wilayah')->group(function () {
         ->where('district_code', '[0-9.]+');
 });
 
-Route::get('laporan/{type}/{slug}', DetailMissing::class)->name('landing.detail');

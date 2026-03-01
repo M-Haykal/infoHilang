@@ -12,6 +12,13 @@ class SettingsController extends Controller
 {
     public function index()
     {
+        $kontaks = [
+            'whatsapp' => 'Whatsapp',
+            'instagram' => 'Instagram',
+            'email' => 'Email',
+            'nomor_telepon' => 'Nomor Telepon',
+        ];
+        
         return view('dashboard.pages.settings', [
             'user' => Auth::user()
         ]);

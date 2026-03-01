@@ -26,12 +26,8 @@ class User extends Authenticatable implements CanResetPassword
         'password',
         'avatar',
         'role',
-        'provinsi',
-        'kota',
-        'kecamatan',
-        'kelurahan',
         'alamat',
-        'no_hp',
+        'kontak',
         'google_id',
     ];
 
@@ -52,6 +48,7 @@ class User extends Authenticatable implements CanResetPassword
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'kontak' => 'array',
     ];
 
     public function barangHilangs()
@@ -67,5 +64,10 @@ class User extends Authenticatable implements CanResetPassword
     public function hewanHilangs()
     {
         return $this->hasMany(HewanHilang::class);
+    }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
     }
 }

@@ -12,8 +12,8 @@
                 dengan lengkap dan teliti.</p>
             </div>
 
-            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-50 pointer-events-auto">
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-dark border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-primary hover:border-primary hover:shadow-md transition-all group active:scale-95">
+            <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-20 pointer-events-auto">
+                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-netral-500 border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-dark hover:border-dark hover:shadow-md transition-all group active:scale-95">
                     <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
                     <span>Kembali</span>
                 </a>
@@ -259,13 +259,13 @@
                     <!-- Submit Button + Cek Duplikat -->
                     <div class="flex flex-col sm:flex-row gap-5 justify-end items-center mt-8">
                         <button type="submit"
-                            class="px-10 py-4 bg-success text-white font-bold rounded-xl hover:bg-success-dark transition shadow-lg text-lg flex items-center justify-center">
+                            class="px-10 py-4 bg-success text-white text-lg font-bold rounded-xl hover:bg-success-dark hover:shadow-success hover:-translate-y-0.5 transition-all shadow-lg flex items-center justify-center group active:scale-95">
                             <i class="fa-regular fa-circle-check mr-2"></i>
                             Kirim Laporan
                         </button>
 
-                        <button type="button" id="check-duplicate-btn" data-type="barang"
-                            class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg flex items-center justify-center text-lg">
+                        <button type="button" id="check-duplicate-btn" data-type="orang"
+                            class="px-10 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-lg  font-bold rounded-xl hover:from-indigo-700 hover:to-purple-700 hover:shadow-indigo-700 hover:-translate-y-0.5 transition-all shadow-lg flex items-center justify-center group active:scale-95">
                             <i class="fa-solid fa-microchip mr-2"></i>
                             Cek Duplikat Laporan
                         </button>
