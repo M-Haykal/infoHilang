@@ -82,4 +82,9 @@ class BarangHilang extends Model
     {
         return 'barang';
     }
+
+    public function laporanDitemukan()
+    {
+        return $this->morphMany(LaporanDitemukan::class, 'foundable');
+    }
 }

@@ -7,10 +7,10 @@
     <meta name="theme-color" content="#ffd57d">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'InfoHilang' }}</title>
     @stack('style')
-    @livewireStyles
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     {{-- Font Awesome --}}
@@ -118,6 +118,7 @@
         </div>
     </footer>
 
+    @livewireScripts
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     @stack('script')
     <script src="{{ asset('js/start.js') }}"></script>
@@ -128,7 +129,6 @@
     {{-- <script src="{{ asset('js/all.js') }}"></script> --}}
     <script src="{{ asset('js/all.min.js') }}"></script>
 
-    @livewireScripts
 </body>
 
 </html>
