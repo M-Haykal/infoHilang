@@ -186,7 +186,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
-                                    <a href="{{ route('landing.detail', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300 {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
+                                    <a href="{{ route('detail-missing', [strtolower($report->report_type), $report->slug]) }}" class="flex items-center justify-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300 {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
                                         Laporan</a>
                                 </div>
                             </div>

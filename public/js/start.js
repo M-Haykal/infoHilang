@@ -1,7 +1,20 @@
-AOS.init({
-    once: true,
-    duration: 800,
-    easing: 'ease-in-out',
+function initAOS() {
+    AOS.init({
+        once: true,
+        duration: 800,
+        easing: "ease-in-out",
+    });
+}
+
+// Jalankan saat pertama kali load
+document.addEventListener("DOMContentLoaded", initAOS);
+
+// Refresh AOS setiap kali Livewire selesai update DOM
+document.addEventListener("livewire:updated", () => {
+    // delay sedikit agar Livewire selesai merender tinggi elemen
+    setTimeout(() => {
+        AOS.refresh();
+    }, 100);
 });
 
 // Toggle mobile menu

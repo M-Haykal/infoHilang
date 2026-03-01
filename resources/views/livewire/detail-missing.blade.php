@@ -4,7 +4,7 @@
         <ol class="flex items-center space-x-2">
             <li><a href="/" class="hover:text-primary transition">Beranda</a></li>
             <li><i class="fa-solid fa-chevron-right text-[10px] opacity-50"></i></li>
-            <li><a href="{{ route('list-missing') }}" class="hover:text-primary transition">Daftar Hilang</a></li>
+            <li><a href="{{ route('list-missing') }}" class="hover:text-primary transition">Laporan</a></li>
             <li><i class="fa-solid fa-chevron-right text-[10px] opacity-50"></i></li>
             <li class="font-semibold text-dark italic">{{ $data['title'] }}</li>
         </ol>

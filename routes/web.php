@@ -60,8 +60,9 @@ use Illuminate\Support\Facades\Route;
 //     return view('errors.503');
 // });
 
+Route::get('/laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
-Route::get('/daftar-hilang', ListMissing::class)->name('list-missing');
+Route::get('/laporan/{type}/{slug}', DetailMissing::class)->name('detail-missing');
 Route::get('/artikel', ListBlog::class)->name('list-blog');
 Route::get('/artikel/{slug}', DetailBlog::class)->name('detail-blog');
 
@@ -158,4 +159,3 @@ Route::prefix('wilayah')->group(function () {
         ->where('district_code', '[0-9.]+');
 });
 
-Route::get('laporan/{type}/{slug}', DetailMissing::class)->name('landing.detail');

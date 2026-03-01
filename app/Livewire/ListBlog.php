@@ -21,7 +21,7 @@ class ListBlog extends Component
 
         return view('livewire.list-blog', ['blogs' => $blogs])
         ->layout('layouts.index')
-        ->title('Daftar Artikel | InfoHilang');
+        ->title('Artikel | InfoHilang');
     }
 
     public function show($slug)
