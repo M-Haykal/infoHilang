@@ -1,10 +1,17 @@
 <div class="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
     <!-- PageHeading -->
     <div class="text-center mb-10">
-        <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span>
             Ditemukan</h2>
+        <p class="text-netral-500 max-w-xl mx-auto mt-4">
+            Pusat informasi kehilangan dan penemuan. Mari saling membantu mempertemukan kembali mereka yang terpisah.
+        </p>
         <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
     </div>
+    {{-- <div class="text-center mb-10">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Daftar Hilang <span class="text-primary">&amp;</span> Ditemukan</h2>
+        <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
+    </div> --}}
 
     <div class="relative">
         <!-- SearchBar -->
@@ -186,6 +193,13 @@
                                                     class="text-[10px] font-bold uppercase tracking-tighter text-netral-400">No
                                                     Photo Available</span>
                                             </div>
+                                            {{-- Placeholder kalau file di storage rusak/hilang --}}
+                                            <div
+                                                class="hidden absolute inset-0 bg-netral-50 flex-col items-center justify-center text-netral-400">
+                                                <i class="fa-solid fa-triangle-exclamation text-2xl mb-2"></i>
+                                                <span class="text-[10px] font-bold uppercase tracking-tighter">Image
+                                                    Error</span>
+                                            </div>
                                         @endif
 
                                         {{-- Overlay gradasi (supaya teks/badge/status lebih kontras) --}}
@@ -204,14 +218,14 @@
                                         class="{{ $viewMode === 'grid' ? 'w-full' : 'w-2/3 md:w-48' }} flex flex-1 flex-col p-5 justify-between">
                                         <div>
                                             <div class="flex justify-between items-center mb-2">
-                                                <h3 class="text-lg font-bold text-dark">{{ $report->report_name }}
+                                                <h3 class="text-lg font-bold text-dark group-hover:text-primary">
+                                                    {{ $report->report_name }}
                                                 </h3>
                                                 @if ($viewMode === 'list')
                                                     <span
                                                         class="hidden md:block text-[10px] text-netral-400 font-medium tracking-widest">{{ $report->created_at->diffForHumans() }}</span>
                                                 @endif
                                             </div>
-
                                             <div class="space-y-2">
                                                 <div class="text-sm text-netral-500 line-clamp-2 mb-2 prose-compact">
                                                     {!! $report->deskripsi ?? 'Klik detail untuk melihat deskripsi lengkap laporan ini.' !!}
@@ -226,12 +240,10 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="mt-4 flex {{ $viewMode === 'grid' ? '' : 'justify-end' }}">
-                                            <a href="{{ route('detail-missing', [
-                                                'type' => strtolower($report->report_type),
-                                                'slug' => $report->slug,
-                                            ]) }}"
-                                                class="flex items-center justify-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
+                                            <a href="{{ route('detail-missing', [strtolower($report->report_type), $report->slug]) }}"
+                                                class="flex items-center justify-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300 {{ $viewMode === 'grid' ? 'w-full' : 'w-fit px-4' }}">Detail
                                                 Laporan</a>
                                         </div>
                                     </div>
@@ -251,24 +263,25 @@
                             </button>
                         </div>
                     @endif
-                </div>
-                <div class="mt-8 p-4">
-                    {{ $reports->links('vendor.pagination.tailwind') }}
+                    </div>
+                    <div class="mt-8 p-4">
+                        {{ $reports->links('vendor.pagination.tailwind') }}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- MAP SECTION -->
-    <div class="mt-20 pt-10">
-        <div class="text-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Peta</h2>
-            <p class="text-netral-500 max-w-2xl mx-auto leading-relaxed mt-2">
-                Laporan hilang di sekitarmu
-            </p>
-            <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
-        </div>
-        <div id="map" wire:ignore class="relative z-10 w-full h-64 mt-4 rounded-lg shadow-inner border mb-6">
+        <!-- MAP SECTION -->
+        <div class="mt-20 pt-10">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Peta</h2>
+                <p class="text-netral-500 max-w-2xl mx-auto leading-relaxed mt-2">
+                    Laporan hilang di sekitarmu
+                </p>
+                <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
+            </div>
+            <div id="map" wire:ignore class="relative z-10 w-full h-64 mt-4 rounded-lg shadow-inner border mb-6">
+            </div>
         </div>
     </div>
 </div>
@@ -295,15 +308,16 @@
                                     ${r.type}
                                 </span>
                             </div>
-                            
+
                             <p style="font-size: 12px; color: #475569; margin: 4px 0 8px; line-height: 1.4;">
                                 ${r.description || '<em>Tanpa deskripsi</em>'}
                             </p>
-                            
+
                             <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
+
                                 📍 ${r.location}
                             </div>
-                            
+
                             <div style="display: flex; gap: 8px; align-items: center; font-size: 11px;">
                                 <span style="color: #2563eb;">📏 ${r.distance} km</span>
                                 ${r.url ? `<a href="${r.url}" style="color: #059669; text-decoration: none; font-weight: 500;">Lihat Detail →</a>` : ''}

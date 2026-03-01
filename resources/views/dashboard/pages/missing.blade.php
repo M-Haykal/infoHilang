@@ -20,11 +20,11 @@
                 <h2 class="hidden md:block self-center text-xl font-bold text-primary ml-6 my-auto">Laporan</h2>
 
                 <div class="flex space-x-1 sm:space-x-2 p-2 sm:ml-auto sm:self-center justify-end">
-                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300" data-tab="tab-orang">
+                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-orang">
                         <i class="hidden md:block fa-solid fa-user mr-2"></i>
                         Orang Hilang
                     </button>
-                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300 active" data-tab="tab-barang">
+                    <button class="tab-button flex items-center px-4 sm:px-6 py-3 font-medium text-sm text-netral-500 rounded-lg transition-all duration-300" data-tab="tab-barang">
                         <i class="hidden md:block fa-solid fa-box mr-2"></i>
                         Barang Hilang
                     </button>
@@ -71,93 +71,5 @@
 @endpush
 
 @push('script')
-<script>
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', () => {
-            const tabId = button.dataset.tab;
-            sessionStorage.setItem('last_active_tab', tabId);
-
-            // Remove active class from all buttons
-            document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active', 'bg-primary/10', 'text-primary');
-                btn.classList.add('text-accent/500');
-            });
-
-            // Add active class to clicked button
-            button.classList.add('active', 'bg-primary/10', 'text-primary');
-            button.classList.remove('text-accent/500');
-
-            // Hide all tab panes
-            document.querySelectorAll('.tab-pane').forEach(pane => {
-                pane.classList.add('hidden');
-            });
-
-            document.getElementById(tabId).classList.remove('hidden');
-        });
-    });
-
-    // Cek saat halaman di-load kembali
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedTabId = sessionStorage.getItem('last_active_tab');
-        if (savedTabId) {
-            const targetButton = document.querySelector(`[data-tab="${savedTabId}"]`);
-            if (targetButton) {
-                targetButton.click(); // Trigger klik otomatis via AJAX
-            }
-        }
-    });
-
-    document.addEventListener('click', function(e) {
-        // Cari tombol pagination
-        const link = e.target.closest('.pagination a, .ajax-pagination a');
-
-        if (link) {
-            e.preventDefault();
-            const url = link.getAttribute('href');
-            loadDashboardData(url);
-        }
-    });
-
-    function loadDashboardData(url) {
-        const container = document.getElementById('ajax-pagination-container');
-        container.style.opacity = '0.5';
-
-        fetch(url, {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                    , 'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                container.innerHTML = data.html;
-                container.style.opacity = '1';
-                maintainActiveTab();
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                container.style.opacity = '1';
-            });
-    }
-
-    let currentActiveTabId = 'tab-barang';
-
-    document.querySelectorAll('.tab-button').forEach(button => {
-        button.addEventListener('click', function() {
-            currentActiveTabId = this.getAttribute('data-tab');
-        });
-    });
-
-    function maintainActiveTab() {
-        // Sembunyikan semua pane
-        document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
-
-        // Tampilkan kembali tab yang sedang aktif sebelum AJAX tadi
-        const activePane = document.getElementById(currentActiveTabId);
-        if (activePane) {
-            activePane.classList.remove('hidden');
-        }
-    }
-
-</script>
+<script src="{{ asset('js/dashboard/missing-reports.js') }}"></script>
 @endpush

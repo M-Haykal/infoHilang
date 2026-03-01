@@ -36,12 +36,13 @@ class BlogController extends Controller
         $request->validate([
             'judul_artikel' => 'required|max:255',
             'isi_artikel' => 'required',
-            'foto' => 'image|mimes:jpg,png,jpeg|max:2048'
+            'foto.*' => 'image|mimes:jpg,png,jpeg|max:2048'
         ]);
 
         $imagePath = null;
         if ($request->hasFile('foto')) {
-            $imagePath = $request->file('foto')->store('blogs', 'public');
+            $files = $request->file('foto');
+            $imagePath = $files[0]->store('blogs', 'public');
         }
 
         Blog::create([
@@ -53,6 +54,48 @@ class BlogController extends Controller
         ]);
 
         return redirect()->route('artikel')->with('success', 'Artikel berhasil diterbitkan!');
+    }
+
+    public function edit($slug)
+    {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+        return view('dashboard.pages.blogs.edit', compact('blog'));
+    }
+
+    public function update(Request $request, $slug)
+    {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
+
+        $request->validate([
+            'judul_artikel' => 'required|max:255',
+            'isi_artikel'   => 'required',
+            'foto.*'        => 'image|mimes:jpg,png,jpeg|max:2048'
+        ]);
+
+        $data = [
+            'title'   => $request->judul_artikel,
+            'content' => $request->isi_artikel,
+        ];
+
+        // Update Slug jika judul berubah
+        if ($request->judul_artikel != $blog->title) {
+            $data['slug'] = Str::slug($request->judul_artikel) . '-' . Str::random(5);
+        }
+
+        // Handle Foto Baru
+        if ($request->hasFile('foto')) {
+            // Hapus foto lama dari storage
+            if ($blog->image) {
+                Storage::disk('public')->delete($blog->image);
+            }
+            // Simpan foto baru
+            $files = $request->file('foto');
+            $data['image'] = $files[0]->store('blogs', 'public');
+        }
+
+        $blog->update($data);
+
+        return redirect()->route('artikel')->with('success', 'Artikel berhasil diperbarui!');
     }
 
     public function destroy($slug)
