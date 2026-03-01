@@ -1,30 +1,9 @@
 /**
- * Toggle sidebar
- */
-function toggleSidebar() {
-    const sidebar = document.getElementById("sidebar");
-    const overlay = document.getElementById("sidebar-overlay");
-
-    sidebar.classList.toggle("-translate-x-full");
-    overlay.classList.toggle("hidden");
-}
-
-/**
- * Toggle fullscreen
- */
-
-function toggleFullScreen() {
-    const fullscreenButton = document.getElementById("fullscreen-button");
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen();
-        localStorage.setItem("fullscreen", "true");
-        fullscreenButton.innerHTML = "<i class='fas fa-compress'></i>";
-    } else {
-        document.exitFullscreen();
-        localStorage.setItem("fullscreen", "false");
-        fullscreenButton.innerHTML = "<i class='fas fa-expand'></i>";
-    }
-}
+ * dynamic-fields.js
+ * Handle tambah/hapus field dinamis untuk Form Laporan (InfoHilang)
+ * characteristics.blade.php
+ * contacts.blade.php
+*/
 
 // function removeField(button) {
 //     const field = button.closest(".grid");
@@ -86,24 +65,3 @@ function addKontakField() {
             </div>`;
     container.appendChild(div);
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll(".reply-toggle-btn").forEach((button) => {
-        button.addEventListener("click", function () {
-            const commentId = this.dataset.commentId;
-            const form = document.getElementById(`reply-form-${commentId}`);
-            form.classList.toggle("hidden");
-            if (!form.classList.contains("hidden")) {
-                form.querySelector("textarea").focus();
-            }
-        });
-    });
-
-    document.querySelectorAll(".cancel-reply-btn").forEach((button) => {
-        button.addEventListener("click", function () {
-            const form = this.closest(".reply-form");
-            form.classList.add("hidden");
-            form.querySelector("textarea").value = "";
-        });
-    });
-});

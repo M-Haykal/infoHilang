@@ -104,8 +104,7 @@ class ListMissing extends Component
             $currentPage,
             [
                 'path' => \Illuminate\Pagination\Paginator::resolveCurrentPath(),
-                'as' => '
-                page',
+                'as' => 'page',
             ]
         );
 
@@ -113,7 +112,7 @@ class ListMissing extends Component
             'reports' => $reports
         ])
             ->layout('layouts.index')
-            ->title('Daftar Hilang | InfoHilang');
+            ->title('Daftar Laporan | InfoHilang');
     }
 
     private function getBarangQuery()

@@ -80,7 +80,7 @@
 
                     Swal.fire({
                         title: 'Simpan Data?',
-                        text: 'Apakah Anda yakin ingin menyimpan data ini?',
+                        text: 'Apakah kamu yakin ingin menyimpan data ini?',
                         icon: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#10b981',
@@ -98,12 +98,14 @@
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const url = this.href;
+                    const title = this.dataset.title || 'Konfirmasi Edit';
+                    const message = this.dataset.message || 'Apakah kamu yakin ingin mengubah data ini?';
                     Swal.fire({
-                        title: 'Edit Laporan?',
-                        text: "Anda akan dialihkan ke halaman edit. Lanjutkan?",
-                        icon: 'info',
+                        title: title,
+                        text: message,
+                        icon: 'question',
                         showCancelButton: true,
-                        confirmButtonColor: '#3b82f6',
+                        confirmButtonColor: '#eab308',
                         cancelButtonColor: '#6b7280',
                         confirmButtonText: 'Ya, Edit!',
                         cancelButtonText: 'Batal'
@@ -113,12 +115,36 @@
                 });
             });
 
+            // Modal untuk Delete (Form)
+            document.querySelectorAll('[data-confirm-delete]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const title = this.dataset.title || 'Konfirmasi Hapus';
+                    const message = this.dataset.message || 'Data yang dihapus tidak bisa dikembalikan!';
+
+                    Swal.fire({
+                        title: title,
+                        text: message,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, Hapus!',
+                        cancelButtonText: 'Batal'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            this.submit();
+                        }
+                    });
+                });
+            });
+
             // 🔸 Konfirmasi Umum (untuk tombol/tindakan kustom)
             document.querySelectorAll('[data-confirm-action]').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const title = this.dataset.title || 'Konfirmasi';
-                    const text = this.dataset.text || 'Apakah Anda yakin?';
+                    const text = this.dataset.text || 'Apakah kamu yakin?';
                     const confirmText = this.dataset.confirmText || 'Ya, Lanjutkan!';
                     const cancelText = this.dataset.cancelText || 'Batal';
                     const icon = this.dataset.icon || 'question';

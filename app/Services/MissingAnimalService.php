@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 use App\Services\DuplicateDetectionService;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MissingAnimalService
 {
@@ -134,7 +135,7 @@ class MissingAnimalService
 
         // Override kontak if a user was selected
         if ($request->filled('selected_user_id')) {
-            $user = \App\Models\User::find($request->input('selected_user_id'));
+            $user = User::find($request->input('selected_user_id'));
             if ($user) {
                 $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
                 $kontak = $userKontak;

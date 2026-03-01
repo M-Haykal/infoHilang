@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MissingStuffService
 {
@@ -144,7 +145,7 @@ class MissingStuffService
         }
 
         if ($request->filled('selected_user_id')) {
-            $user = \App\Models\User::find($request->input('selected_user_id'));
+            $user = User::find($request->input('selected_user_id'));
             if ($user) {
                 $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
                 $kontak = $userKontak;

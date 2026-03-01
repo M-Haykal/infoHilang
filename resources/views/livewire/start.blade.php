@@ -1,6 +1,6 @@
 <main>
     <!-- Hero Section -->
-    <header class="bg-primary py-20 px-4">
+    <header class="bg-primary py-20 px-4" wire:ignore>
         <div class="max-w-5xl mx-auto text-center">
             <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight" data-aos="fade-up">
                 Menyatukan Kembali yang Hilang
@@ -22,7 +22,6 @@
     </header>
 
     {{-- Laporan Terbaru --}}
-
     <section id="laporan" class="py-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center md:items-end mb-6 gap-4">
@@ -83,7 +82,8 @@
 
                         <div class="p-5">
                             <div class="flex justify-between items-center mb-2">
-                                <h3 class="text-lg font-bold text-dark truncate" title="{{ $report->display_name }}">
+                                <h3 class="text-lg font-bold text-dark group-hover:text-primary truncate"
+                                    title="{{ $report->display_name }}">
                                     {{ $report->display_name }}
                                 </h3>
                                 <span class="text-[10px] text-netral-400 font-medium whitespace-nowrap ml-2">
@@ -104,14 +104,12 @@
                                 </span>
                             </div>
 
-                            <a href="{{ route('detail-missing', [
-                                'type' => strtolower($report->report_type),
-                                'slug' => $report->slug,
-                            ]) }}"
-                                class="block w-full text-center bg-dark hover:bg-dark-hover text-white font-bold text-sm py-2 rounded-lg transition-colors">
+                            <a href="{{ route('detail-missing', ['type' => strtolower($report->tipe), 'slug' => $report->slug]) }}"
+                                class="block w-full text-center bg-dark hover:bg-primary text-white font-bold text-sm py-2 rounded-lg transition-all duration-300">
                                 Detail Laporan
                             </a>
                         </div>
+
                     </div>
                 @empty
                     <div class="col-span-full py-10 text-center">
@@ -133,7 +131,7 @@
     </section>
 
     <!-- Jenis Laporan -->
-    <section id="jenis-laporan" class="py-20">
+    <section id="jenis-laporan" class="py-20" wire:ignore>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-aos="fade-up">
             <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-dark">
@@ -192,7 +190,7 @@
     </section>
 
     <!-- Cara Kerja -->
-    <section id="cara-kerja" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="cara-kerja" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" wire:ignore>
         <div class="text-center mb-10" data-aos="fade-up">
             <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-dark">Bagaimana InfoHilang Bekerja?</h2>
             <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
@@ -244,7 +242,7 @@
     </section>
 
     <!-- Testimonial Section -->
-    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-background-dark/50 rounded-xl">
+    <section class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 dark:bg-background-dark/50 rounded-xl" wire:ignore>
         <div class="flex flex-col items-center" data-aos="fade-up">
             <div class="text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-dark">Kisah Sukses dari Komunitas
@@ -299,8 +297,8 @@
     </section>
 
     {{-- FAQ --}}
-    <section class="py-16 bg-netral-50 sm:py-24" id="faq" data-aos="fade-up">
-        <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+    <section class="py-16 bg-netral-50 sm:py-24" id="faq" wire:ignore>
+        <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl" data-aos="fade-up">
             <div class="max-w-2xl mx-auto text-center mb-10">
                 <h2 class="text-3xl md:text-4xl font-extrabold leading-tight text-dark">
                     FAQ <span class="text-primary">-</span> Pertanyaan Umum
@@ -324,7 +322,7 @@
 
     <!-- CTA Section (Opsional) -->
     @if (!auth()->check() && !session()->has('registered'))
-        <section class="relative py-20 overflow-hidden" data-aos="fade-up">
+        <section class="relative py-20 overflow-hidden" wire:ignore>
             <div class="absolute inset-0 bg-primary"></div>
 
             <div
@@ -379,83 +377,7 @@
     @endif
 </main>
 
-@push('style')
-    <style>
-
-    </style>
-@endpush
 
 @push('script')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const faqs = [{
-                question: "Apa itu InfoHilang?",
-                answer: "InfoHilang adalah platform komunitas untuk membantu menemukan orang, hewan, atau barang yang hilang melalui sistem laporan publik dan peta lokasi."
-            }, {
-                question: "Apakah saya harus login untuk membuat laporan?",
-                answer: "Tidak wajib, namun dengan akun Anda bisa mengedit laporan, menerima pesan langsung dari penemu, dan mendapatkan notifikasi perkembangan terbaru secara real-time."
-            }, {
-                question: "Apakah identitas saya aman?",
-                answer: "Sangat aman. Nomor HP dan email Anda tidak ditampilkan ke publik. Komunikasi dilakukan melalui sistem chat internal di dalam platform kami."
-            }, {
-                question: "Bagaimana cara melaporkan temuan?",
-                answer: "Klik tombol 'Buat Laporan' lalu pilih kategori 'Ditemukan'. Kami akan mencocokkan data Anda dengan laporan kehilangan yang ada di sistem kami."
-            }, {
-                question: "Apakah InfoHilang menarik biaya?",
-                answer: "Tidak ada biaya sama sekali (Gratis). Platform ini dibangun sebagai bentuk gotong royong antar sesama anggota masyarakat."
-            }];
-
-            const faqList = document.getElementById('faq-list');
-
-            faqList.innerHTML = faqs.map((faq, index) => `
-            <div class="faq-item group transition-all duration-300 bg-white border brounded-2xl overflow-hidden hover:shadow-md">
-                <button type="button"
-                        class="faq-btn flex items-center justify-between w-full px-6 py-5 text-left outline-none focus:outline-none focus-visible:ring-2 focus-visible:ring-inset transition-all duration-300">
-                    <span class="text-lg font-bold text-dark group-hover:text-accent transition-colors duration-300 tracking-tight">
-                        ${faq.question}
-                    </span>
-                    <i class="fa-solid fa-chevron-down text-netral-400 transition-transform duration-300 text-sm"></i>
-                </button>
-                <div class="faq-answer hidden px-6 pb-6 text-netral-500 leading-relaxed">
-                    <div class="pt-4 border-t border-netral-100">
-                        ${faq.answer}
-                    </div>
-                </div>
-            </div>
-        `).join('');
-
-            const buttons = document.querySelectorAll('.faq-btn');
-
-            buttons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const answer = btn.nextElementSibling;
-                    const parent = btn.parentElement;
-                    const questionText = btn.querySelector('span');
-
-                    // Cek apakah item ini sudah terbuka
-                    const isAlreadyOpen = !answer.classList.contains('hidden');
-
-                    // Tutup SEMUA FAQ yang lagi terbuka
-                    document.querySelectorAll('.faq-answer').forEach(el => el.classList.add(
-                        'hidden'));
-                    document.querySelectorAll('.faq-btn span').forEach(span => {
-                        span.classList.remove('text-accent');
-                        span.classList.add('text-dark');
-                    });
-                    document.querySelectorAll('.faq-item').forEach(item => {
-                        item.classList.remove('border-accent', 'ring-1', 'ring-accent',
-                            'shadow-md');
-                    });
-
-                    // Kalau sebelumnya tertutup, buka yang diklik
-                    if (!isAlreadyOpen) {
-                        answer.classList.remove('hidden');
-                        parent.classList.add('border-accent', 'ring-1', 'ring-accent', 'shadow-md');
-                        questionText.classList.remove('text-dark');
-                        questionText.classList.add('text-accent');
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('js/faq.js') }}"></script>
 @endpush

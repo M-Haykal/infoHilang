@@ -4,7 +4,7 @@
         <ol class="flex items-center space-x-2">
             <li><a href="/" class="hover:text-primary transition">Beranda</a></li>
             <li><i class="fa-solid fa-chevron-right text-[10px] opacity-50"></i></li>
-            <li><a href="{{ route('list-missing') }}" class="hover:text-primary transition">Daftar Hilang</a></li>
+            <li><a href="{{ route('list-missing') }}" class="hover:text-primary transition">Daftar Laporan</a></li>
             <li><i class="fa-solid fa-chevron-right text-[10px] opacity-50"></i></li>
             <li class="font-semibold text-dark italic">{{ $data['title'] }}</li>
         </ol>
@@ -308,9 +308,9 @@
                         </div>
 
                         <button
-                            wire:click="$dispatch('openReportModal', { 
-                                id: {{ $data['raw']->id }}, 
-                                type: '{{ addslashes(get_class($data['raw'])) }}' 
+                            wire:click="$dispatch('openReportModal', {
+                                id: {{ $data['raw']->id }},
+                                type: '{{ addslashes(get_class($data['raw'])) }}'
                             })"
                             class="w-full py-4 border-2 border-dashed border-primary bg-primary-light rounded-3xl text-primary font-bold text-sm transition-all flex items-center justify-center gap-3 group">
                             <div

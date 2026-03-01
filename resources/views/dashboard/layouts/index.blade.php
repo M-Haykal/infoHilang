@@ -17,97 +17,119 @@
 <body class="bg-netral-50 font-sans min-h-screen">
     @include('components.loading')
     <div class="flex min-h-screen relative">
-        <div class="lg:hidden fixed inset-x-0 top-0 z-40 p-4">
+        <div class="lg:hidden fixed left-0 top-0 z-40 p-4 w-fit pointer-events-none">
             <button onclick="toggleSidebar()"
-                class="flex items-center justify-center w-12 h-12 bg-white backdrop-blur shadow-2xl rounded-2xl text-primary border border-slate-100 active:scale-95 transition-all">
+                class="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white backdrop-blur shadow-2xl rounded-2xl text-primary border border-slate-100 active:scale-95 transition-all">
                 <i class="fa-solid fa-bars-staggered text-xl"></i>
             </button>
         </div>
 
         <!-- Sidebar -->
         <aside id="sidebar"
-            class="flex flex-col overflow-visible fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto">
-            <div class="p-4 flex items-center justify-between border-b">
-                <a href="{{ route('start') }}" class="flex items-center gap-2 group">
-                    <div class="bg-primary p-2 rounded-xl">
-                        <i class="fa-solid fa-magnifying-glass text-white"></i>
+            class="flex flex-col fixed inset-y-0 left-0 z-[1000] w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto pointer-events-none lg:pointer-events-auto">
+            <div class="flex flex-col h-full w-full pointer-events-auto bg-white">
+                <div class="p-4 flex items-center justify-between border-b">
+                    <a href="{{ route('start') }}" class="flex items-center gap-2 group">
+                        <div class="bg-primary p-2 rounded-xl">
+                            <i class="fa-solid fa-magnifying-glass text-white"></i>
+                        </div>
+                        <span class="text-2xl font-black text-dark tracking-tight">Info<span
+                                class="text-primary">Hilang</span></span>
+                    </a>
+                    <div class="button-action">
+                        <button class="p-2 rounded-full hover:bg-netral-200 lg:block hidden"
+                            onclick="toggleFullScreen()" id="fullscreen-button" title="Memperluas Tampilan"><i
+                                class="fa-solid fa-expand text-dark"></i></button>
+                        <button class="lg:hidden p-2 rounded-full hover:bg-netral-200" onclick="toggleSidebar()">
+                            <i class="fa-solid fa-angle-left text-dark"></i>
+                        </button>
                     </div>
-                    <span class="text-2xl font-black text-dark tracking-tight">Info<span
-                            class="text-primary">Hilang</span></span>
-                </a>
-                <div class="button-action">
-                    <button class="p-2 rounded-full hover:bg-netral-200 lg:block hidden" onclick="toggleFullScreen()"
-                        id="fullscreen-button" title="Memperluas Tampilan"><i
-                            class="fa-solid fa-expand text-dark"></i></button>
-                    <button class="lg:hidden p-2 rounded-full hover:bg-netral-200" onclick="toggleSidebar()">
-                        <i class="fa-solid fa-angle-left text-dark"></i>
+                </div>
+                <nav class="py-4 overflow-y-auto flex-1">
+                    <ul class="space-y-2 px-2">
+
+                        @php
+                            $menus = [
+                                ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
+                                ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
+                                ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
+                                ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
+                                ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
+                            ];
+                        @endphp
+
+                        @foreach ($menus as $menu)
+                            @php
+                                $isActive = false;
+
+                                // pengecekan URL aktif
+                                if ($menu['route'] == 'dashboard') {
+                                    $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
+                                } elseif ($menu['route'] == 'missing') {
+                                    $isActive =
+                                        request()->is('user/hilang*') ||
+                                        request()->is('user/edit-laporan*') ||
+                                        request()->is('user/detail-laporan*');
+                                } elseif ($menu['route'] == 'artikel') {
+                                    $isActive = request()->is('user/artikel*');
+                                } else {
+                                    $isActive = request()->routeIs($menu['route'] . '*');
+                                }
+                            @endphp
+
+                            <li>
+                                <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}"
+                                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
+
+                                    <i
+                                        class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                                    </i>
+
+                                    <span class="tracking-wide">{{ $menu['label'] }}</span>
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </nav>
+                <div class="p-4 border-t border-netral-100 relative" x-data="{ open: false }">
+                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
+                        x-transition:enter-start="opacity-0 translate-y-2"
+                        x-transition:enter-end="opacity-100 translate-y-0"
+                        class="fixed z-[9999] w-56 overflow-hidden bg-white rounded-2xl shadow-xl border border-netral-100"
+                        :style="`left: ${$el.parentElement.getBoundingClientRect().left + 16}px;
+                                                                                                                    bottom: ${window.innerHeight - $el.parentElement.getBoundingClientRect().top + 8}px;`"
+                        x-cloak>
+
+                        <a href="{{ route('start') }}"
+                            class="flex items-center gap-3 px-4 py-3 text-sm text-dark hover:bg-primary-light hover:text-primary transition-all duration-200">
+                            <i class="fa-solid fa-house"></i>
+                            Back to Landing
+                        </a>
+
+                        <div class="border-t border-netral-100"></div>
+
+                        <form action="{{ route('logout') }}" method="POST">
+                            @csrf
+                            <button type="submit"
+                                class="flex items-center w-full gap-3 px-4 py-3 text-sm text-danger hover:bg-danger-light transition-all duration-200">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Keluar
+                            </button>
+                        </form>
+                    </div>
+
+                    <button @click="open = !open"
+                        class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
+
+                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                            class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
+                        <div class="flex-1 text-left min-w-0">
+                            <p class="text-sm font-bold text-dark truncate">{{ Auth::user()->fullname }}</p>
+                            <p class="text-[10px] text-netral-400 font-medium uppercase">{{ Auth::user()->role }}</p>
+                        </div>
+                        <i class="fa-solid fa-chevron-up text-[10px] text-netral-400 transition-transform"></i>
                     </button>
                 </div>
-            </div>
-            <nav class="py-4 overflow-y-auto flex-1">
-                <ul class="space-y-2 px-2">
-                    @php
-                        $menus = [
-                            ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
-                            ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
-                            ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
-                            ['route' => 'blog', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Blog'],
-                            ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
-                        ];
-                    @endphp
-                    @foreach ($menus as $menu)
-                        <li>
-                            <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}"
-                                class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ request()->routeIs($menu['route']) ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
-
-                                <i
-                                    class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ request()->routeIs($menu['route']) ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
-                                </i>
-
-                                <span class="tracking-wide">{{ $menu['label'] }}</span>
-                            </a>
-                        </li>
-                    @endforeach
-                </ul>
-            </nav>
-            <div class="p-4 border-t border-netral-100 relative" x-data="{ open: false }">
-                <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 translate-y-2"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                    class="fixed z-[9999] w-56 overflow-hidden bg-white rounded-2xl shadow-xl border border-netral-100"
-                    :style="`left: ${$el.parentElement.getBoundingClientRect().left + 16}px;
-                                     bottom: ${window.innerHeight - $el.parentElement.getBoundingClientRect().top + 8}px;`"
-                    x-cloak>
-
-                    <a href="{{ route('start') }}"
-                        class="flex items-center gap-3 px-4 py-3 text-sm text-dark hover:bg-primary-light hover:text-primary transition-all duration-200">
-                        <i class="fa-solid fa-house"></i>
-                        Back to Landing
-                    </a>
-
-                    <div class="border-t border-netral-100"></div>
-
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit"
-                            class="flex items-center w-full gap-3 px-4 py-3 text-sm text-danger hover:bg-danger-light transition-all duration-200">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            Keluar
-                        </button>
-                    </form>
-                </div>
-
-                <button @click="open = !open"
-                    class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
-
-                    <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
-                        class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
-                    <div class="flex-1 text-left min-w-0">
-                        <p class="text-sm font-bold text-dark truncate">{{ Auth::user()->fullname }}</p>
-                        <p class="text-[10px] text-netral-400 font-medium uppercase">{{ Auth::user()->role }}</p>
-                    </div>
-                    <i class="fa-solid fa-chevron-up text-[10px] text-netral-400 transition-transform"></i>
-                </button>
             </div>
         </aside>
 
@@ -135,7 +157,15 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script defer src="{{ asset('js/dashboard.js') }}"></script>
+    <script defer src="{{ asset('js/dashboard/sidebar.js') }}"></script>
+    <script defer src="{{ asset('js/dashboard/dashboard.js') }}"></script>
+    <script defer src="{{ asset('js/contact-selector.js') }}"></script>
+
+    <script>
+        // expose current authenticated user info for selector logic
+        window.currentUserId = {{ auth()->id() ?? 'null' }};
+        window.currentUserName = @json(optional(auth()->user())->name);
+    </script>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -203,12 +233,6 @@
             }
         });
     </script>
-
-    <!-- Contact Selector Modal (non-Livewire) -->
-    @include('dashboard.components.user-contact-selector')
-
-    <!-- Contact Selector Script -->
-    <script src="{{ asset('js/contact-selector.js') }}"></script>
 </body>
 
 </html>

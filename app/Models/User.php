@@ -65,4 +65,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(HewanHilang::class);
     }
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
 }
