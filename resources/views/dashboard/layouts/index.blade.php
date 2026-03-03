@@ -116,6 +116,11 @@
             </div>
         </aside>
 
+        <div id="sidebar-overlay"
+            onclick="toggleSidebar()"
+            class="fixed inset-0 bg-black/50 z-[999] hidden lg:hidden transition-opacity duration-300">
+        </div>
+
         <!-- Main Content -->
         <main class="flex-1 h-screen overflow-y-auto" id="main-content">
             <section class="p-6 pt-7">
