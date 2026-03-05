@@ -40,8 +40,8 @@ class DetailMissing extends Component
                 ],
                 'barang' => [
                     ['label' => 'Jenis', 'value' => $report->jenis_barang ?? '–', 'icon' => 'fa-tag'],
+                    ['label' => 'Merek', 'value' => $report->merk_barang ?? '–', 'icon' => 'fa-copyright'],
                     ['label' => 'Warna', 'value' => $report->warna_barang ?? '–', 'icon' => 'fa-palette'],
-                    ['label' => 'Merk', 'value' => $report->merk_barang ?? '–', 'icon' => 'fa-industry'],
                 ],
                 'hewan' => [
                     ['label' => 'Jenis/Ras', 'value' => $report->ras ?? '–', 'icon' => 'fa-paw'],

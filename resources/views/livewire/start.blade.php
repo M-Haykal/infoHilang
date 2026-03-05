@@ -33,7 +33,7 @@
                 <div class="flex flex-wrap justify-center md:justify-end gap-2">
                     @foreach (['Semua', 'Orang', 'Hewan', 'Barang'] as $item)
                         <button wire:click="setKategori('{{ $item }}')"
-                            class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm border {{ $kategori === $item ? 'bg-primary text-white border-primary' : 'bg-white text-netral-500 hover:border-primary' }}">
+                            class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 shadow-sm border {{ $kategori === $item ? 'bg-accent text-white border-accent' : 'bg-white text-netral-500 hover:border-accent' }}">
                             {{ $item }}
                         </button>
                     @endforeach

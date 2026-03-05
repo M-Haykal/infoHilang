@@ -29,6 +29,10 @@
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                     </div>
+                                    <span
+                                        class="block md:hidden absolute top-3 left-3 {{ $data['status'] == 'Hilang' ? 'bg-danger' : 'bg-success' }} z-10 px-4 py-1.5 text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                                        {{ $data['status'] }}
+                                    </span>
                                 </div>
 
                                 <div class="flex gap-2 px-1 overflow-x-auto pb-2 no-scrollbar">
@@ -109,8 +113,8 @@
                                             });
                                         }
                                     })" @endif
-                            class="h-14 flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
-                            <i class="{{ $icon }} text-lg"></i> {{ $label }}
+                            class="group h-14 flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all duration-300 active:scale-95">
+                            <i class="{{ $icon }} text-lg group-hover:animate-bounce"></i> {{ $label }}
                         </a>
 
                         {{-- Print PDF --}}
@@ -200,12 +204,10 @@
 
                     <div class="">
                         <h3 class="text-sm font-bold text-dark mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-quote-left text-primary"></i> Deskripsi & Kronologi
+                            <i class="fa-solid fa-align-left text-primary"></i> Deskripsi & Kronologi
                         </h3>
-                        <div
-                            class="prose prose-sm max-w-none text-netral-600 leading-relaxed bg-netral-50 p-5 rounded-2xl border-l-4 border-primary">
-                            {!! $data['description'] ?:
-                                '<span class="italic text-netral-400">Deskripsi tidak dicantumkan.</span>' !!}
+                        <div class="bg-netral-50 rounded-xl p-4 text-dark text-sm leading-relaxed border-2 border-dashed border-netral-200 min-h-[100px] relative overflow-hidden">
+                            {!! $data['description'] ?: '<span class="italic text-netral-400">Tidak ada deskripsi tambahan...</span>' !!}
                         </div>
                     </div>
                 </div>
@@ -285,7 +287,7 @@
                                         <div
                                             class="{{ $item->is_verified ? 'bg-success-light' : 'bg-white' }} p-4 rounded-2xl border border-netral-100 shadow-sm hover:shadow-md transition-all">
                                             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                                                <div class="flex items-center gap-2">
+                                                <div class="flex items-center flex-wrap gap-2">
                                                     <span
                                                         class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
                                                     <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
@@ -406,7 +408,8 @@
                                             str_contains($p, 'facebook') => 'fa-brands fa-facebook',
                                             str_contains($p, 'twitter') => 'fa-brands fa-x-twitter',
                                             str_contains($p, 'email') => 'fa-solid fa-envelope',
-                                            default => 'fa-solid fa-phone',
+                                            str_contains($p, 'telepon') || str_contains($p, 'hp') => 'fa-solid fa-phone',
+                                            default => 'fa-solid fa-address-book',
                                         };
                                     @endphp
                                     <i class="{{ $icon }} text-xl"></i>
