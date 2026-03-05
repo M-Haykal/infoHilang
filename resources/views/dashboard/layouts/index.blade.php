@@ -18,14 +18,13 @@
     @include('components.loading')
     <div class="flex min-h-screen relative">
         <div class="lg:hidden fixed left-0 top-0 z-40 p-4 w-fit pointer-events-none">
-            <button onclick="toggleSidebar()"
-                    class="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white backdrop-blur shadow-2xl rounded-2xl text-primary border border-slate-100 active:scale-95 transition-all">
+            <button onclick="toggleSidebar()" class="pointer-events-auto flex items-center justify-center w-12 h-12 bg-white backdrop-blur shadow-2xl rounded-2xl text-primary border border-slate-100 active:scale-95 transition-all">
                 <i class="fa-solid fa-bars-staggered text-xl"></i>
             </button>
         </div>
 
         <!-- Sidebar -->
-        <aside id="sidebar" class="flex flex-col fixed inset-y-0 left-0 z-[1000] w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto pointer-events-none lg:pointer-events-auto">
+        <aside id="sidebar" class="flex flex-col fixed inset-y-0 left-0 z-[1000] w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 lg:static lg:translate-x-0 lg:w-64 lg:z-auto pointer-events-none lg:pointer-events-auto overflow-hidden">
             <div class="flex flex-col h-full w-full pointer-events-auto bg-white">
                 <div class="p-4 flex items-center justify-between border-b">
                     <a href="{{ route('start') }}" class="flex items-center gap-2 group">
@@ -45,30 +44,30 @@
                     <ul class="space-y-2 px-2">
 
                         @php
-                            $menus = [
-                                ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
-                                ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
-                                ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
-                                ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
-                                ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
-                            ];
+                        $menus = [
+                        ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
+                        ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
+                        ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
+                        ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
+                        ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
+                        ];
                         @endphp
 
                         @foreach($menus as $menu)
-                            @php
-                                $isActive = false;
+                        @php
+                        $isActive = false;
 
-                                // pengecekan URL aktif
-                                if ($menu['route'] == 'dashboard') {
-                                    $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
-                                } elseif ($menu['route'] == 'missing') {
-                                    $isActive = request()->is('user/hilang*') || request()->is('user/edit-laporan*') || request()->is('user/detail-laporan*');
-                                } elseif ($menu['route'] == 'artikel') {
-                                    $isActive = request()->is('user/artikel*');
-                                } else {
-                                    $isActive = request()->routeIs($menu['route'] . '*');
-                                }
-                            @endphp
+                        // pengecekan URL aktif
+                        if ($menu['route'] == 'dashboard') {
+                        $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
+                        } elseif ($menu['route'] == 'missing') {
+                        $isActive = request()->is('user/hilang*') || request()->is('user/edit-laporan*') || request()->is('user/detail-laporan*');
+                        } elseif ($menu['route'] == 'artikel') {
+                        $isActive = request()->is('user/artikel*');
+                        } else {
+                        $isActive = request()->routeIs($menu['route'] . '*');
+                        }
+                        @endphp
 
                         <li>
                             <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}" class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
@@ -83,38 +82,41 @@
                         @endforeach
                     </ul>
                 </nav>
-                <div class="p-4 border-t border-netral-100 relative" x-data="{ open: false }">
-                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="fixed z-[9999] w-56 overflow-hidden bg-white rounded-2xl shadow-xl border border-netral-100" :style="`left: ${$el.parentElement.getBoundingClientRect().left + 16}px;
-                    bottom: ${window.innerHeight - $el.parentElement.getBoundingClientRect().top + 8}px;`" x-cloak>
+                <div class="p-4 border-t border-netral-100 relative group">
+                    <div id="user-dropdown" class="absolute bottom-[calc(100%-0.3rem)] left-4 right-4 mb-3 w-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-[9999] overflow-hidden">
 
-                        <a href="{{ route('start') }}" class="flex items-center gap-3 px-4 py-3 text-sm text-dark hover:bg-primary-light hover:text-primary transition-all duration-200">
-                            <i class="fa-solid fa-house"></i>
-                            Back to Landing
-                        </a>
-
-                        <div class="border-t border-netral-100"></div>
-
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit" class="flex items-center w-full gap-3 px-4 py-3 text-sm text-danger hover:bg-danger-light transition-all duration-200">
-                                <i class="fa-solid fa-right-from-bracket"></i>
-                                Keluar
-                            </button>
-                        </form>
+                        <div class="p-2">
+                            <a href="{{ route('start') }}" class="flex items-center gap-3 px-3 py-2 text-sm text-dark hover:bg-primary-light hover:text-primary rounded-xl transition-all duration-200">
+                                <i class="fa-solid fa-house"></i>
+                                Back to Landing
+                            </a>
+                            <div class="my-2 border-t border-netral-100"></div>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="flex items-center w-full gap-3 px-3 py-2 font-bold text-sm text-danger hover:bg-danger-light rounded-xl transition-all duration-200">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    Keluar
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
-                    <button @click="open = !open" class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
-
+                    <button class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
                         <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}" class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
+
                         <div class="flex-1 text-left min-w-0">
-                            <p class="text-sm font-bold text-dark truncate">{{  Auth::user()->fullname }}</p>
-                            <p class="text-[10px] text-netral-400 font-medium uppercase">{{  Auth::user()->role }}</p>
+                            <p class="text-sm font-bold text-dark truncate">{{ Auth::user()->fullname }}</p>
+                            <p class="text-[10px] text-netral-400 font-medium uppercase">{{ Auth::user()->role }}</p>
                         </div>
-                        <i class="fa-solid fa-chevron-up text-[10px] text-netral-400 transition-transform"></i>
+
+                        <i class="fa-solid fa-chevron-up text-[10px] text-netral-400 transition-transform duration-200 group-hover:rotate-180"></i>
                     </button>
                 </div>
             </div>
         </aside>
+
+        <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-[999] hidden lg:hidden transition-opacity duration-300">
+        </div>
 
         <!-- Main Content -->
         <main class="flex-1 h-screen overflow-y-auto" id="main-content">
