@@ -7,6 +7,7 @@ use App\Models\HewanHilang;
 use Illuminate\Http\Request;
 use App\Services\MissingAnimalService;
 use Illuminate\Validation\ValidationException;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MissingAnimalController extends Controller
 {

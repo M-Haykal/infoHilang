@@ -206,7 +206,7 @@
                             class="prose prose-sm max-w-none text-netral-600 leading-relaxed bg-netral-50 p-5 rounded-2xl border-l-4 border-primary">
                             {!! $data['description'] ?:
                                 '<span class="italic text-netral-400">Deskripsi tidak
-                                                                                                                                                                                                                                    dicantumkan.</span>' !!}
+                                                                                                                                                                                                                                                                dicantumkan.</span>' !!}
                         </div>
                     </div>
                 </div>

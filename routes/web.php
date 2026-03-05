@@ -14,6 +14,7 @@ use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\ChatBotController;
 use App\Livewire\Chat;
 use App\Livewire\DetailBlog;
 use App\Livewire\DetailMissing;
@@ -59,12 +60,29 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test-503', function () {
 //     return view('errors.503');
 // });
+Route::get('/chatbot/test-intent/{message}', function ($message) {
+    $service = app(\App\Services\ChatbotService::class);
 
+    // Gunakan reflection untuk test private method
+    $reflection = new ReflectionClass($service);
+    $method = $reflection->getMethod('detectIntent');
+    $method->setAccessible(true);
+
+    $intent = $method->invoke($service, strtolower($message));
+
+    return response()->json([
+        'input' => $message,
+        'intent' => $intent,
+        'is_valid' => $intent['is_valid'],
+        'should_handover' => !$intent['is_valid']
+    ]);
+});
 Route::get('/daftar-laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
 Route::get('/laporan-{type}/{slug}', DetailMissing::class)->name('detail-missing');
 Route::get('/artikel', ListBlog::class)->name('list-blog');
 Route::get('/artikel/{slug}', DetailBlog::class)->name('detail-blog');
+Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes

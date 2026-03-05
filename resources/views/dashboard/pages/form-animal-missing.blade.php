@@ -292,7 +292,7 @@
                     @include('dashboard.components.contacts', ['kontak' => old('kontak', [])])
 
                     <!-- Lokasi -->
-                    <div class="mt-6">
+                    <div class="mt-6" id="map-container">
                         <label class="block text-sm font-semibold text-dark mb-2">Lokasi Terakhir Dilihat</label>
                         <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="3"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
