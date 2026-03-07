@@ -14,13 +14,27 @@ class DetailMissing extends Component
 
     public function mount($type, $slug)
     {
-        // Cari data berdasarkan tipe
-        $report = match (strtolower($type)) {
-            'barang' => BarangHilang::where('slug', $slug)->firstOrFail(),
-            'hewan'  => HewanHilang::where('slug', $slug)->firstOrFail(),
-            'orang'  => OrangHilang::where('slug', $slug)->firstOrFail(),
+        // Cari data berdasarkan tipe/user
+        $query = match (strtolower($type)) {
+            'barang' => BarangHilang::with('user'),
+            'hewan'  => HewanHilang::with('user'),
+            'orang'  => OrangHilang::with('user'),
             default  => abort(404),
         };
+
+        $report = $query->where('slug', $slug)->firstOrFail();
+
+        $user = $report->user;
+
+        // Hitung total laporan dari semua kategori
+        $totalLaporan = $user->barangHilangs()->count() +
+                        $user->hewanHilangs()->count() +
+                        $user->orangHilangs()->count();
+
+        // Hitung total laporan yang sudah 'Ditemukan' atau 'Kembali'
+        $totalSelesai = $user->barangHilangs()->where('status', 'Ditemukan')->count() +
+                        $user->hewanHilangs()->where('status', 'Ditemukan')->count() +
+                        $user->orangHilangs()->where('status', 'Ditemukan')->count();
 
         $this->data = [
             'type'        => ucfirst($type),
@@ -32,30 +46,60 @@ class DetailMissing extends Component
             'status'      => $report->status,
             'raw'         => $report,
 
-            'grid_info'   => match (strtolower($type)) {
-                'orang' => [
-                    ['label' => 'Gender', 'value' => $report->jenis_kelamin, 'icon' => 'fa-venus-mars'],
-                    ['label' => 'Usia', 'value' => $report->umur ?? '–', 'icon' => 'fa-user-clock'],
-                    ['label' => 'Tinggi', 'value' => $report->ciri_ciri['Tinggi Badan'] ? $report->ciri_ciri['Tinggi Badan'] : '–', 'icon' => 'fa-arrows-up-down'],
-                ],
-                'barang' => [
-                    ['label' => 'Jenis', 'value' => $report->jenis_barang ?? '–', 'icon' => 'fa-tag'],
-                    ['label' => 'Merek', 'value' => $report->merk_barang ?? '–', 'icon' => 'fa-copyright'],
-                    ['label' => 'Warna', 'value' => $report->warna_barang ?? '–', 'icon' => 'fa-palette'],
-                ],
-                'hewan' => [
-                    ['label' => 'Jenis/Ras', 'value' => $report->ras ?? '–', 'icon' => 'fa-paw'],
-                    ['label' => 'Warna Bulu', 'value' => $report->warna ?? '–', 'icon' => 'fa-palette'],
-                    ['label' => 'Usia', 'value' => $report->umur ? $report->umur . ' th' : '–', 'icon' => 'fa-hourglass-half'],
-                ],
-                default => [],
-            },
+            'grid_info'   => $this->getGridInfo($type, $report),
+
+            'owner_stats' => [
+                'total' => $totalLaporan,
+                'selesai' => $totalSelesai
+            ]
+
+            // 'grid_info'   => match (strtolower($type)) {
+            //     'orang' => [
+            //         ['label' => 'Gender', 'value' => $report->jenis_kelamin, 'icon' => 'fa-venus-mars'],
+            //         ['label' => 'Usia', 'value' => $report->umur ?? '–', 'icon' => 'fa-user-clock'],
+            //         ['label' => 'Tinggi', 'value' => $report->ciri_ciri['Tinggi Badan'] ? $report->ciri_ciri['Tinggi Badan'] : '–', 'icon' => 'fa-arrows-up-down'],
+            //     ],
+            //     'barang' => [
+            //         ['label' => 'Jenis', 'value' => $report->jenis_barang ?? '–', 'icon' => 'fa-tag'],
+            //         ['label' => 'Merek', 'value' => $report->merk_barang ?? '–', 'icon' => 'fa-copyright'],
+            //         ['label' => 'Warna', 'value' => $report->warna_barang ?? '–', 'icon' => 'fa-palette'],
+            //     ],
+            //     'hewan' => [
+            //         ['label' => 'Jenis/Ras', 'value' => $report->ras ?? '–', 'icon' => 'fa-paw'],
+            //         ['label' => 'Warna Bulu', 'value' => $report->warna ?? '–', 'icon' => 'fa-palette'],
+            //         ['label' => 'Usia', 'value' => $report->umur ? $report->umur . ' th' : '–', 'icon' => 'fa-hourglass-half'],
+            //     ],
+            //     default => [],
+            // },
         ];
+    }
+
+    private function getGridInfo($type, $report)
+    {
+        return match (strtolower($type)) {
+            'orang' => [
+                ['label' => 'Gender', 'value' => $report->jenis_kelamin, 'icon' => 'fa-venus-mars'],
+                ['label' => 'Usia', 'value' => $report->umur ? $report->umur . ' Thn' : '–', 'icon' => 'fa-user-clock'],
+                ['label' => 'Tinggi', 'value' => ($report->ciri_ciri['Tinggi Badan'] ?? '–') . ' cm', 'icon' => 'fa-arrows-up-down'],
+            ],
+            'barang' => [
+                ['label' => 'Jenis', 'value' => $report->jenis_barang ?? '–', 'icon' => 'fa-tag'],
+                ['label' => 'Merek', 'value' => $report->merk_barang ?? '–', 'icon' => 'fa-copyright'],
+                ['label' => 'Warna', 'value' => $report->warna_barang ?? '–', 'icon' => 'fa-palette'],
+            ],
+            'hewan' => [
+                ['label' => 'Jenis/Ras', 'value' => $report->ras ?? '–', 'icon' => 'fa-paw'],
+                ['label' => 'Warna', 'value' => $report->warna ?? '–', 'icon' => 'fa-palette'],
+                ['label' => 'Usia', 'value' => $report->umur ? $report->umur . ' th' : '–', 'icon' => 'fa-hourglass-half'],
+            ],
+            default => [],
+        };
     }
 
     public function render()
     {
-        return view('livewire.detail-missing')->layout('layouts.index')
-            ->title('Daftar Hilang | InfoHilang');
+        return view('livewire.detail-missing')
+            ->layout('layouts.index')
+            ->title($this->data['title'] . ' | InfoHilang');
     }
 }
