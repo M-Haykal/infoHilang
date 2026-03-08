@@ -41,30 +41,30 @@
                 {{-- Beranda --}}
                 @php $isBeranda = request()->routeIs('start'); @endphp
                 <a href="{{ route('start') }}"
-                    class="relative py-2 transition-all duration-300 {{ $isBeranda ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    class="relative text-center py-2 transition-all duration-300 {{ $isBeranda ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Beranda
                     @if ($isBeranda)
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
 
                 {{-- Cari Laporan --}}
                 @php $isLaporan = request()->routeIs('list-missing') || request()->routeIs('detail-missing'); @endphp
                 <a href="{{ route('list-missing') }}"
-                    class="relative py-2 transition-all duration-300 {{ $isLaporan ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    class="relative text-center py-2 transition-all duration-300 {{ $isLaporan ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Cari Laporan
                     @if ($isLaporan)
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
 
                 {{-- Artikel --}}
                 @php $isArtikel = request()->routeIs('list-blog') || request()->routeIs('detail-blog'); @endphp
                 <a href="{{ route('list-blog') }}"
-                    class="relative py-2 transition-all duration-300 {{ $isArtikel ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                    class="relative text-center py-2 transition-all duration-300 {{ $isArtikel ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Artikel
                     @if ($isArtikel)
-                        <span class="absolute bottom-0 left-0 w-full h-0.5 bg-accent rounded"></span>
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
             </div>
@@ -74,18 +74,19 @@
                     <div class="relative group">
                         <button id="user-menu-button"
                             class="flex items-center space-x-3 bg-netral-50 p-1 pr-3 rounded-full hover:bg-netral-100 transition border border-netral-200">
-                            <img src="{{ asset('storage/' . Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff') ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                            <img src="{{ asset('storage/'. Auth::user()->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
                                 class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
                             <span
                                 class="text-sm font-bold text-dark hidden sm:inline-block">{{ Str::before(Auth::user()->fullname, ' ') }}</span>
-                            <i class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200"
-                                id="dropdown-icon"></i>
+                            <i
+                                class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200 group-hover:rotate-180"></i>
                         </button>
 
                         <div id="user-dropdown"
-                            class="hidden absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
                             <div class="px-5 py-4 bg-netral-50/50 border-b border-netral-100">
-                                <p class="text-xs text-netral-400 uppercase tracking-wider">Akun Saya</p>
+                                <p class="text-[10px] text-netral-400 uppercase tracking-wider">{{ Auth::user()->role }}
+                                </p>
                                 <p class="font-black text-dark truncate">{{ Auth::user()->fullname }}</p>
                             </div>
                             <div class="p-2">
@@ -108,17 +109,16 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
-                @else
-                    <div class="flex items-center gap-2">
-                        <a href="{{ route('showLogin') }}"
-                            class=" bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 transition active:scale-95">
-                            Buat Laporan +
-                        </a>
-                    </div>
-                @endauth
+                    @else
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('showLogin') }}"
+                                class=" bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 transition active:scale-95">
+                                Buat Laporan +
+                            </a>
+                        </div>
+                    @endauth
+                </div>
             </div>
-        </div>
     </nav>
 
     <!-- Konten Utama -->

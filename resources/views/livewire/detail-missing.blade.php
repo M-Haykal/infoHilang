@@ -29,6 +29,10 @@
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                                     </div>
+                                    <span
+                                        class="block md:hidden absolute top-3 left-3 {{ $data['status'] == 'Hilang' ? 'bg-danger' : 'bg-success' }} z-10 px-4 py-1.5 text-white text-[10px] font-bold uppercase tracking-widest rounded-full shadow-sm">
+                                        {{ $data['status'] }}
+                                    </span>
                                 </div>
 
                                 <div class="flex gap-2 px-1 overflow-x-auto pb-2 no-scrollbar">
@@ -109,8 +113,8 @@
                                             });
                                         }
                                     })" @endif
-                            class="h-14 flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all active:scale-95">
-                            <i class="{{ $icon }} text-lg"></i> {{ $label }}
+                            class="group h-14 flex-1 flex items-center justify-center gap-2 {{ $color }} text-white py-3 rounded-2xl font-bold hover:shadow-lg transition-all duration-300 active:scale-95">
+                            <i class="{{ $icon }} text-lg group-hover:animate-bounce"></i> {{ $label }}
                         </a>
 
                         {{-- Print PDF --}}
@@ -127,13 +131,59 @@
                         </button>
                     </div>
 
+                    {{-- Profil Pemilik/Pelapor --}}
+                    <div class="bg-white rounded-2xl shadow-sm border border-netral-100 p-3 mb-3" data-aos="fade-up">
+                        <div class="flex items-center gap-3">
+                            {{-- Avatar --}}
+                            <div class="relative flex-shrink-0">
+                                <img src="{{ asset('storage/'. $data['raw']->user->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode($data['raw']->user->fullname) . '&background=ea580c&color=fff' }}"
+                                    class="w-10 h-10 rounded-xl object-cover border border-netral-50 shadow-sm"
+                                    alt="Avatar">
+                                <div
+                                    class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-success border-2 border-white rounded-full flex items-center justify-center">
+                                    <i class="fa-solid fa-check text-[6px] text-white"></i>
+                                </div>
+                            </div>
+
+                            {{-- Nama & Stats --}}
+                            <div class="flex-1 flex items-center justify-between min-w-0">
+                                <div class="min-w-0 pr-2">
+                                    <p
+                                        class="text-[8px] text-primary font-black uppercase tracking-widest leading-none mb-1">
+                                        Pelapor</p>
+                                    <h4 class="font-black text-dark truncate text-sm leading-tight">
+                                        {{ $data['raw']->user->fullname }}</h4>
+                                </div>
+
+                                {{-- Stats Section --}}
+                                <div
+                                    class="flex items-center gap-2 bg-netral-50 px-2.5 py-1.5 rounded-lg border border-netral-100 flex-shrink-0">
+                                    <div class="text-center">
+                                        <p class="text-[9px] font-black text-dark leading-none">
+                                            {{ $data['owner_stats']['total'] }}</p>
+                                        <p
+                                            class="text-[7px] text-netral-400 uppercase font-bold tracking-tighter mt-0.5">
+                                            Laporan</p>
+                                    </div>
+                                    <div class="w-px h-4 bg-netral-200"></div>
+                                    <div class="text-center">
+                                        <p class="text-[9px] font-black text-success leading-none">
+                                            {{ $data['owner_stats']['selesai'] }}</p>
+                                        <p
+                                            class="text-[7px] text-netral-400 uppercase font-bold tracking-tighter mt-0.5">
+                                            Selesai</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- CTA --}}
                     <div class="p-6 bg-primary rounded-3xl text-white flex flex-col md:flex-row items-center justify-between gap-3"
                         data-aos="fade-up">
                         <div class="text-center md:text-left">
                             <h4 class="text-xl font-bold mb-2">Punya Informasi?</h4>
-                            <p class="text-sm">Bantu temukan {{ $data['title'] }} dengan menghubungi
-                                pemilik segera.</p>
+                            <p class="text-sm">Bantu temukan {{ $data['title'] }}</p>
                         </div>
                         <button
                             @click="
@@ -152,7 +202,7 @@
                                 });
                             })"
                             class="px-3 py-3 bg-white text-primary rounded-2xl font-black shadow-lg hover:scale-105 transition-transform flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-phone-flip"></i> Hubungi Pemilik
+                            <i class="fa-solid fa-phone-flip"></i> Hubungi Pelapor
                         </button>
                     </div>
                 </div>
@@ -165,7 +215,6 @@
                 <div class="bg-white rounded-3xl shadow-sm border border-netral-100 p-6" data-aos="fade-left">
                     <div class="mb-0">
                         <div class="flex items-center gap-2 mb-4">
-                            {{-- Status menggunakan $data['status'] --}}
                             <span
                                 class="px-4 py-1.5 text-[10px] font-bold uppercase tracking-widest rounded-full shadow-sm {{ $data['status'] === 'Hilang' ? 'bg-danger text-white' : 'bg-success text-white' }}">
                                 {{ $data['status'] }}
@@ -200,13 +249,11 @@
 
                     <div class="">
                         <h3 class="text-sm font-bold text-dark mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-quote-left text-primary"></i> Deskripsi & Kronologi
+                            <i class="fa-solid fa-align-left text-primary"></i> Deskripsi & Kronologi
                         </h3>
                         <div
-                            class="prose prose-sm max-w-none text-netral-600 leading-relaxed bg-netral-50 p-5 rounded-2xl border-l-4 border-primary">
-                            {!! $data['description'] ?:
-                                '<span class="italic text-netral-400">Deskripsi tidak
-                                                                                                                                                                                                                                                                dicantumkan.</span>' !!}
+                            class="bg-netral-50 rounded-xl p-4 text-dark text-sm leading-relaxed border-2 border-dashed border-netral-200 min-h-[100px] relative overflow-hidden">
+                            {!! $data['description'] ?: '<span class="italic text-netral-400">Tidak ada deskripsi tambahan...</span>' !!}
                         </div>
                     </div>
                 </div>
@@ -246,23 +293,23 @@
                                 @forelse ($riwayatPenemuan as $item)
                                     <div class="relative pl-12 group mb-3 last:mb-2">
                                         <div
-                                            class="absolute left-0 top-0 w-10 h-10 bg-white border-2 {{ $item->is_verified ? 'border-success shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-netral-100 shadow-sm' }} rounded-2xl shadow-sm flex items-center justify-center z-10 transition-all">
+                                            class="absolute left-0 top-0 w-10 h-10 bg-white border-2 {{ $item->is_confirmed ? 'border-success shadow-[0_0_15px_rgba(34,197,94,0.3)]' : 'border-netral-100 shadow-sm' }} rounded-2xl shadow-sm flex items-center justify-center z-10 transition-all">
                                             <i
-                                                class="text-sm fa-solid {{ $item->is_verified ? 'fa-check-double text-success' : 'fa-location-crosshairs text-primary' }}"></i>
+                                                class="text-sm fa-solid {{ $item->is_confirmed ? 'fa-check-double text-success' : 'fa-location-crosshairs text-primary' }}"></i>
                                         </div>
                                         <div
-                                            class="{{ $item->is_verified ? 'bg-success-light' : 'bg-white' }} p-4 rounded-2xl border border-netral-100 shadow-sm hover:shadow-md transition-all">
+                                            class="{{ $item->is_confirmed ? 'bg-success-light' : 'bg-white' }} p-4 rounded-2xl border border-netral-100 shadow-sm hover:shadow-md transition-all">
                                             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-                                                <div class="flex items-center gap-2">
+                                                <div class="flex items-center flex-wrap gap-2">
                                                     <span
-                                                        class="text-xs font-black text-dark">{{ optional($item->user)->name ?? 'Anonim' }}</span>
+                                                        class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
                                                     <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
                                                     <span class="text-[10px] text-netral-400 font-bold uppercase">
                                                         {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
                                                     </span>
                                                 </div>
 
-                                                @if ($item->is_verified)
+                                                @if ($item->is_confirmed)
                                                     <div
                                                         class="flex items-center gap-2 px-3 py-1 bg-success text-white text-xs rounded-full shadow-sm shadow-success animate-pulse-slow">
                                                         <i class="fa-solid fa-certificate"></i>
@@ -274,9 +321,9 @@
 
                                             {{-- Lokasi Box --}}
                                             <div
-                                                class="{{ $item->is_verified ? 'bg-white border-success' : 'bg-netral-50 border-netral-200' }} p-3 rounded-xl border border-dashed mb-3">
+                                                class="{{ $item->is_confirmed ? 'bg-white border-success' : 'bg-netral-50 border-netral-200' }} p-3 rounded-xl border border-dashed mb-3">
                                                 <p
-                                                    class="text-[10px] {{ $item->is_verified ? 'text-success' : 'text-netral-400' }} uppercase font-bold tracking-tighter mb-1">
+                                                    class="text-[10px] {{ $item->is_confirmed ? 'text-success' : 'text-netral-400' }} uppercase font-bold tracking-tighter mb-1">
                                                     Lokasi Temuan</p>
                                                 <p class="text-sm font-bold text-dark italic leading-tight">
                                                     {{ $item->lokasi_ditemukan }}</p>
@@ -284,13 +331,13 @@
 
                                             {{-- Deskripsi --}}
                                             <p
-                                                class="text-xs {{ $item->is_verified ? 'text-dark font-medium' : 'text-netral-500' }} leading-relaxed mb-3">
+                                                class="text-xs {{ $item->is_confirmed ? 'text-dark font-medium' : 'text-netral-500' }} leading-relaxed mb-3">
                                                 {{ $item->keterangan }}
                                             </p>
                                             {{-- Action Buttons --}}
                                             <div class="border-t border-netral-50 flex flex-wrap items-center gap-2">
                                                 <a href="{{ $item->link_bukti }}"
-                                                    class="inline-flex items-center gap-1 px-2 py-1 {{ $item->is_verified ? 'bg-success hover:bg-success-dark' : 'bg-dark hover:bg-primary' }} text-white text-[10px] font-bold rounded-md transition-all">
+                                                    class="inline-flex items-center gap-1 px-2 py-1 {{ $item->is_confirmed ? 'bg-success hover:bg-success-dark' : 'bg-dark hover:bg-primary' }} text-white text-[10px] font-bold rounded-md transition-all">
                                                     <i class="fa-solid fa-image"></i> Lihat Bukti
                                                 </a>
 
@@ -374,7 +421,9 @@
                                             str_contains($p, 'facebook') => 'fa-brands fa-facebook',
                                             str_contains($p, 'twitter') => 'fa-brands fa-x-twitter',
                                             str_contains($p, 'email') => 'fa-solid fa-envelope',
-                                            default => 'fa-solid fa-phone',
+                                            str_contains($p, 'telepon') || str_contains($p, 'hp')
+                                                => 'fa-solid fa-phone',
+                                            default => 'fa-solid fa-address-book',
                                         };
                                     @endphp
                                     <i class="{{ $icon }} text-xl"></i>
