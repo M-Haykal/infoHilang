@@ -64,6 +64,34 @@ use App\Http\Controllers\SiteMapController;
 //     return view('errors.503');
 // });
 Route::get('/generate-sitemap', [SiteMapController::class, 'generate']);
+Route::get('/test-sitemap', function () {
+    $url = config('app.url');
+    $path = public_path('sitemap.xml');
+
+    \Illuminate\Support\Facades\Log::info('URL: ' . $url);
+    \Illuminate\Support\Facades\Log::info('Path: ' . $path);
+
+    try {
+        \Spatie\Sitemap\SitemapGenerator::create($url)
+            ->writeToFile($path);
+
+        return 'Success! Check public folder.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+
+    if (!file_exists($path)) {
+        abort(404, 'Sitemap not found');
+    }
+
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+})->name('sitemap');
 
 Route::get('/daftar-laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
@@ -154,6 +182,8 @@ Route::middleware('auth')->group(function () {
 
         // Report Found
         Route::get('/ditemukan', [ReportFoundController::class, 'index'])->name('found');
+        Route::patch('/ditemukan/{id}/konfirmasi', [ReportFoundController::class, 'toggleConfirm'])
+            ->name('report-found.confirm');
     });
 });
 

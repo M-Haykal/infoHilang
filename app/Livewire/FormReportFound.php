@@ -21,12 +21,23 @@ class FormReportFound extends Component
     public $bukti_ditemukan = [];
     public $foundable_id;
     public $foundable_type;
+    public $isGuest = true;
+    public $laporAnonim = false;
+    public $isiKontak = false;
+
+    public function mount()
+    {
+        if (auth()->check()) {
+            $this->nama_penemu = auth()->user()->name;
+            $this->kontak_penemu = auth()->user()->phone ?? null;
+        }
+    }
 
     protected function rules()
     {
         return [
-            'nama_penemu' => 'required|string|max:255',
-            'kontak_penemu' => 'required|string|max:20',
+            'nama_penemu' => 'nullable|string|max:255',
+            'kontak_penemu' => 'nullable|string|max:20',
             'lokasi_ditemukan' => 'required|string|max:255',
             'keterangan' => 'nullable|string',
             'tanggal_ditemukan' => 'nullable|date',
@@ -53,8 +64,10 @@ class FormReportFound extends Component
     {
         $this->validate();
 
+        $nama = $this->laporAnonim ? null : $this->nama_penemu;
+
         $service->store([
-            'nama_penemu' => $this->nama_penemu,
+            'nama_penemu' => $nama,
             'kontak_penemu' => $this->kontak_penemu,
             'lokasi_ditemukan' => $this->lokasi_ditemukan,
             'keterangan' => $this->keterangan,
@@ -62,6 +75,7 @@ class FormReportFound extends Component
             'bukti_ditemukan' => $this->bukti_ditemukan,
             'foundable_id' => $this->foundable_id,
             'foundable_type' => $this->foundable_type,
+            'user_id' => auth()->id()
         ]);
 
         $this->reset();
