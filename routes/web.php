@@ -13,6 +13,7 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\ReportFoundController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\ChatBotController;
 use App\Livewire\Chat;
@@ -23,6 +24,8 @@ use App\Livewire\ListMissing;
 use App\Livewire\Profile;
 use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteMapController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -60,23 +63,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test-503', function () {
 //     return view('errors.503');
 // });
-Route::get('/chatbot/test-intent/{message}', function ($message) {
-    $service = app(\App\Services\ChatbotService::class);
+Route::get('/generate-sitemap', [SiteMapController::class, 'generate']);
 
-    // Gunakan reflection untuk test private method
-    $reflection = new ReflectionClass($service);
-    $method = $reflection->getMethod('detectIntent');
-    $method->setAccessible(true);
-
-    $intent = $method->invoke($service, strtolower($message));
-
-    return response()->json([
-        'input' => $message,
-        'intent' => $intent,
-        'is_valid' => $intent['is_valid'],
-        'should_handover' => !$intent['is_valid']
-    ]);
-});
 Route::get('/daftar-laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
 Route::get('/laporan-{type}/{slug}', DetailMissing::class)->name('detail-missing');
@@ -114,7 +102,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
         Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])->name('check-duplicate');
-
 
         // Settins
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
@@ -164,6 +151,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/artikel/{slug}/edit', [BlogController::class, 'edit'])->name('artikel.edit');
         Route::patch('/artikel/{slug}/update', [BlogController::class, 'update'])->name('artikel.update');
         Route::delete('/artikel/{slug}/hapus', [BlogController::class, 'destroy'])->name('artikel.destroy');
+
+        // Report Found
+        Route::get('/ditemukan', [ReportFoundController::class, 'index'])->name('found');
     });
 });
 
