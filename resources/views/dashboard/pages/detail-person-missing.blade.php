@@ -8,7 +8,8 @@
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
         <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
             <h1 class="text-3xl font-bold text-dark">Detail Laporan Orang Hilang</h1>
-            <nav class="flex justify-center lg:justify-start mt-2" aria-label="Breadcrumb">
+            <nav class="flex justify-center lg:justify-start mt-2" aria-
+            label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-2 text-xs font-medium text-netral-400">
                     <li>
                         <a href="{{ route('dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a>
