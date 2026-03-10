@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Mews\Purifier\Facades\Purifier;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class MissingStuffService
 {
@@ -88,6 +89,7 @@ class MissingStuffService
             'foto.*' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
             'document_pendukung' => 'nullable|array|max:3',
             'document_pendukung.*' => 'file|mimes:pdf,doc,docx,jpg,jpeg,png|max:5120', // max 5MB
+            'selected_user_id' => 'nullable|exists:users,id',
         ]);
     }
 
@@ -139,6 +141,14 @@ class MissingStuffService
                 if ($key && $val) {
                     $kontak[$key] = $val;
                 }
+            }
+        }
+
+        if ($request->filled('selected_user_id')) {
+            $user = User::find($request->input('selected_user_id'));
+            if ($user) {
+                $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
+                $kontak = $userKontak;
             }
         }
 

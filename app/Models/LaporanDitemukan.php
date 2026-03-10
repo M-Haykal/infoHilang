@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class LaporanDitemukan extends Model
 {
@@ -43,5 +44,19 @@ class LaporanDitemukan extends Model
     public function getNamaPengirimAttribute()
     {
         return $this->user?->name ?? 'Anonim';
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($report) {
+
+            $base = $report->nama_penemu
+                ? $report->nama_penemu
+                : 'laporan-ditemukan';
+
+            $report->slug = Str::slug($base . '-' . now()->timestamp);
+        });
     }
 }

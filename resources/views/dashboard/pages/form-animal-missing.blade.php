@@ -8,12 +8,14 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
             <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
                 <h1 class="text-3xl font-bold text-dark">Laporan Hewan Hilang</h1>
-                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan hewan
-                dengan lengkap dan teliti.</p>
+                <p class="text-xs font-medium text-netral-400 mt-2">Isi formulir di bawah ini untuk melaporkan kehilangan
+                    hewan
+                    dengan lengkap dan teliti.</p>
             </div>
 
             <div class="order-1 lg:order-2 flex justify-center lg:justify-end relative z-20 pointer-events-auto">
-                <a href="{{ route('dashboard') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-netral-500 border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-dark hover:border-dark hover:shadow-md transition-all group active:scale-95">
+                <a href="{{ route('dashboard') }}"
+                    class="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-netral-500 border border-netral-200 rounded-xl font-bold text-sm shadow-sm hover:text-dark hover:border-dark hover:shadow-md transition-all group active:scale-95">
                     <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
                     <span>Kembali</span>
                 </a>
@@ -248,6 +250,15 @@
 
                 <hr class="my-8 border-netral-200">
 
+                <!-- Hidden field for selected profile contact -->
+                <input type="hidden" id="selected_user_id" name="selected_user_id"
+                    value="{{ old('selected_user_id') }}" />
+                <div id="selected-user-label" class="text-sm text-primary mb-2">
+                    @if (old('selected_user_id'))
+                        Pengguna dipilih: {{ optional(App\Models\User::find(old('selected_user_id')))->name }}
+                    @endif
+                </div>
+
                 <!-- Kontak & Lokasi -->
                 <div class="mb-8">
                     <h3 class="text-xl font-semibold text-dark mb-4 flex items-center">
@@ -256,13 +267,16 @@
                     </h3>
 
                     <div class="mb-8">
-                        <label class="block text-sm font-semibold text-dark mb-3">Kontak Darurat</label>
+                        <div class="flex items-center justify-between mb-3">
+                            <label class="block text-sm font-semibold text-dark">Kontak Darurat</label>
+                            <button type="button" onclick="useMyProfileContacts()"
+                                class="text-sm text-primary hover:underline">Gunakan kontak profil</button>
+                        </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6">
                             @foreach ($contacts as $contact)
                                 <div class="mb-2">
-                                    <label for="kontak_{{ Str::snake($contact) }}"
-                                        class="block text-xs text-dark mb-1">
+                                    <label for="kontak_{{ Str::snake($contact) }}" class="block text-xs text-dark mb-1">
                                         {{ $contact }}
                                     </label>
                                     <input type="text" id="kontak_{{ Str::snake($contact) }}"
@@ -275,10 +289,10 @@
                     </div>
 
                     <!-- Kontak Darurat -->
-                    @include('dashboard.components.contacts', ['kontak' => []])
+                    @include('dashboard.components.contacts', ['kontak' => old('kontak', [])])
 
                     <!-- Lokasi -->
-                    <div class="mt-6">
+                    <div class="mt-6" id="map-container">
                         <label class="block text-sm font-semibold text-dark mb-2">Lokasi Terakhir Dilihat</label>
                         <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="3"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"
@@ -288,8 +302,7 @@
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-4">
                             <div>
-                                <label for="latitude"
-                                    class="block text-sm font-semibold text-dark mb-2">Latitude</label>
+                                <label for="latitude" class="block text-sm font-semibold text-dark mb-2">Latitude</label>
                                 <input type="text" id="latitude" name="latitude" readonly
                                     value="{{ old('latitude') }}"
                                     class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-netral-200 text-sm text-netral-500 transition-all outline-none cursor-not-allowed">

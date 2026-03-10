@@ -263,24 +263,65 @@
                             </button>
                         </div>
                     @endif
-                    </div>
-                    <div class="mt-8 p-4">
-                        {{ $reports->links('vendor.pagination.tailwind') }}
-                    </div>
+                </div>
+                <div class="mt-8 p-4">
+                    {{ $reports->links('vendor.pagination.tailwind') }}
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- MAP SECTION -->
-        <div class="mt-20 pt-10">
-            <div class="text-center">
-                <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Peta</h2>
-                <p class="text-netral-500 max-w-2xl mx-auto leading-relaxed mt-2">
-                    Laporan hilang di sekitarmu
-                </p>
-                <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
+    <!-- MAP SECTION -->
+    <div class="mt-20 pt-10">
+        <div class="text-center">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-dark">Peta</h2>
+            <p class="text-netral-500 max-w-2xl mx-auto leading-relaxed mt-2">
+                Laporan hilang di sekitarmu
+            </p>
+            <div class="w-20 h-1.5 bg-accent mx-auto rounded-full mt-4"></div>
+        </div>
+
+        <!-- Map Container -->
+        <div class="relative mt-4">
+            <!-- Maps container -->
+            <div id="map" wire:ignore
+                class="relative z-10 w-full h-80 rounded-xl shadow-inner border bg-netral-100">
             </div>
-            <div id="map" wire:ignore class="relative z-10 w-full h-64 mt-4 rounded-lg shadow-inner border mb-6">
+
+            <!-- Overlay untuk Loading & Permission Denied - Style sama -->
+            <div id="map-overlay"
+                class="absolute inset-0 z-20 bg-netral-100/95 backdrop-blur-sm rounded-xl border flex flex-col items-center justify-center">
+
+                <!-- Loading State -->
+                <div id="overlay-loading" class="flex flex-col items-center justify-center">
+                    <div class="relative">
+                        <div class="animate-spin rounded-full h-12 w-12 border-4 border-netral-200 border-t-primary">
+                        </div>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <i class="fa-solid fa-location-dot text-primary text-sm"></i>
+                        </div>
+                    </div>
+                    <p class="text-netral-500 font-medium mt-4">Mendeteksi lokasi Anda...</p>
+                    <p class="text-netral-400 text-xs mt-1">Mohon izinkan akses lokasi</p>
+                </div>
+
+                <!-- Permission Denied State - Style sama seperti loading -->
+                <div id="overlay-denied" class="hidden flex flex-col items-center justify-center">
+                    <div class="relative mb-4">
+                        <div class="w-12 h-12 rounded-full bg-danger/10 flex items-center justify-center">
+                            <i class="fa-solid fa-location-pin-lock text-danger text-xl"></i>
+                        </div>
+                    </div>
+                    <p class="text-netral-600 font-medium">Akses lokasi ditolak</p>
+                    <p class="text-netral-400 text-xs mt-1 mb-4">Izinkan akses untuk melihat laporan di sekitar</p>
+
+                    <button onclick="retryLocationPermission()"
+                        class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        Izinkan Lokasi
+                    </button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -290,37 +331,51 @@
     <script>
         let map;
         let markers = [];
+        let userLocation = null;
+        let isMapInitialized = false;
+
+        // Default location (Jakarta Pusat - Monas)
+        const DEFAULT_LOCATION = {
+            lat: -6.1754,
+            lng: 106.8272,
+            name: 'Jakarta Pusat',
+            zoom: 12
+        };
 
         document.addEventListener('livewire:init', () => {
             Livewire.on('refreshMap', (payload) => {
                 const reports = payload.reports || payload;
                 if (!map) return;
 
+                // Clear existing markers
                 markers.forEach(m => map.removeLayer(m));
                 markers = [];
 
+                // Add markers for reports
                 reports.forEach(r => {
                     const popupContent = `
-                        <div class="popup-card" style="min-width: 200px; font-family: sans-serif;">
-                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 6px;">
-                                <strong style="font-size: 14px; color: #1e293b;">${r.name}</strong>
-                                <span style="font-size: 11px; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 999px;">
+                        <div class="popup-card" style="min-width: 220px; font-family: sans-serif;">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
+                                <strong style="font-size: 14px; color: #1e293b; max-width: 140px; overflow: hidden; text-overflow: ellipsis;">${r.name}</strong>
+                                <span style="font-size: 10px; background: ${r.type === 'Hilang' ? '#fee2e2' : '#dcfce7'}; color: ${r.type === 'Hilang' ? '#991b1b' : '#166534'}; padding: 2px 8px; border-radius: 999px; font-weight: 600; text-transform: uppercase;">
                                     ${r.type}
                                 </span>
                             </div>
 
-                            <p style="font-size: 12px; color: #475569; margin: 4px 0 8px; line-height: 1.4;">
-                                ${r.description || '<em>Tanpa deskripsi</em>'}
+                            <p style="font-size: 12px; color: #475569; margin: 4px 0 8px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                ${r.description || '<em style="color: #94a3b8;">Tanpa deskripsi</em>'}
                             </p>
 
-                            <div style="font-size: 11px; color: #64748b; margin-bottom: 8px;">
-
-                                📍 ${r.location}
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;">
+                                <i class="fa-solid fa-location-dot" style="color: #f59e0b;"></i>
+                                <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px;">${r.location}</span>
                             </div>
 
-                            <div style="display: flex; gap: 8px; align-items: center; font-size: 11px;">
-                                <span style="color: #2563eb;">📏 ${r.distance} km</span>
-                                ${r.url ? `<a href="${r.url}" style="color: #059669; text-decoration: none; font-weight: 500;">Lihat Detail →</a>` : ''}
+                            <div style="display: flex; gap: 8px; align-items: center; font-size: 11px; justify-content: space-between;">
+                                <span style="color: #2563eb; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-route"></i> ${r.distance} km
+                                </span>
+                                ${r.url ? `<a href="${r.url}" style="color: #059669; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 4px;">Detail <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i></a>` : ''}
                             </div>
                         </div>
                     `;
@@ -328,41 +383,277 @@
                     const marker = L.marker([r.lat, r.lng])
                         .addTo(map)
                         .bindPopup(popupContent, {
-                            maxWidth: 280
+                            maxWidth: 300,
+                            className: 'custom-popup'
                         });
 
                     markers.push(marker);
                 });
             });
 
-            navigator.geolocation.getCurrentPosition(pos => {
-                const {
-                    latitude,
-                    longitude
-                } = pos.coords;
+            // Initialize map on load
+            initMap();
+        });
 
-                Livewire.dispatch('setUserLocation', {
-                    lat: latitude,
-                    lng: longitude
-                });
+        function initMap() {
+            const overlay = document.getElementById('map-overlay');
+            const loadingState = document.getElementById('overlay-loading');
+            const deniedState = document.getElementById('overlay-denied');
 
-                map = L.map('map').setView([latitude, longitude], 14);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            // Reset states
+            loadingState.classList.remove('hidden');
+            deniedState.classList.add('hidden');
+            overlay.classList.remove('hidden');
 
-                L.marker([latitude, longitude])
-                    .addTo(map)
-                    .bindPopup('Lokasi Anda')
-                    .openPopup();
+            // Check if geolocation is supported
+            if (!navigator.geolocation) {
+                loadingState.classList.add('hidden');
+                deniedState.classList.remove('hidden');
+                showNotification('Browser tidak mendukung geolocation', 'error');
+                return;
+            }
 
-                window.radiusCircle = L.circle([latitude, longitude], {
-                    radius: 5000,
+            // Try to get user location
+            navigator.geolocation.getCurrentPosition(
+                // SUCCESS
+                (position) => {
+                    const {
+                        latitude,
+                        longitude
+                    } = position.coords;
+                    userLocation = {
+                        lat: latitude,
+                        lng: longitude
+                    };
+
+                    // HIDE OVERLAY - ini yang diperbaiki
+                    overlay.classList.add('hidden');
+
+                    // Initialize map with user location
+                    initializeMap(latitude, longitude, 15, true);
+                },
+                // ERROR
+                (error) => {
+                    console.error('Geolocation error:', error);
+
+                    if (error.code === 1) {
+                        // PERMISSION_DENIED - tampilkan state ditolak
+                        loadingState.classList.add('hidden');
+                        deniedState.classList.remove('hidden');
+                    } else if (error.code === 2) {
+                        // POSITION_UNAVAILABLE
+                        showNotification('Lokasi tidak tersedia', 'warning');
+                        overlay.classList.add('hidden');
+                        initializeMap(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng, DEFAULT_LOCATION.zoom, false);
+                    } else if (error.code === 3) {
+                        // TIMEOUT
+                        showNotification('Waktu habis', 'warning');
+                        overlay.classList.add('hidden');
+                        initializeMap(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng, DEFAULT_LOCATION.zoom, false);
+                    } else {
+                        showNotification('Error tidak dikenal', 'error');
+                        overlay.classList.add('hidden');
+                        initializeMap(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng, DEFAULT_LOCATION.zoom, false);
+                    }
+                },
+                // OPTIONS
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        function retryLocationPermission() {
+            const overlay = document.getElementById('map-overlay');
+            const loadingState = document.getElementById('overlay-loading');
+            const deniedState = document.getElementById('overlay-denied');
+
+            // Show loading, hide denied
+            deniedState.classList.add('hidden');
+            loadingState.classList.remove('hidden');
+
+            // Try again
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const {
+                        latitude,
+                        longitude
+                    } = position.coords;
+                    userLocation = {
+                        lat: latitude,
+                        lng: longitude
+                    };
+
+                    // HIDE OVERLAY
+                    overlay.classList.add('hidden');
+
+                    // Remove old map and create new one
+                    if (map) {
+                        map.remove();
+                        map = null;
+                        markers = [];
+                    }
+
+                    initializeMap(latitude, longitude, 15, true);
+                    showNotification('Lokasi berhasil didapatkan!', 'success');
+                },
+                (error) => {
+                    if (error.code === 1) {
+                        // Still denied - tetap tampilkan denied state
+                        loadingState.classList.add('hidden');
+                        deniedState.classList.remove('hidden');
+                        showNotification('Permission masih ditolak', 'error');
+                    } else {
+                        // Error lain, gunakan default
+                        overlay.classList.add('hidden');
+                        if (map) {
+                            map.remove();
+                            map = null;
+                            markers = [];
+                        }
+                        initializeMap(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng, DEFAULT_LOCATION.zoom, false);
+                    }
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        function initializeMap(lat, lng, zoom, isUserLocation = false) {
+            // Dispatch to Livewire
+            Livewire.dispatch('setUserLocation', {
+                lat: lat,
+                lng: lng
+            });
+
+            // Create map
+            map = L.map('map', {
+                zoomControl: true,
+                dragging: true,
+                touchZoom: true,
+                scrollWheelZoom: true,
+                doubleClickZoom: true,
+                boxZoom: true
+            }).setView([lat, lng], zoom);
+
+            // Add tile layer
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+
+            // Custom marker icon
+            const markerHtml = isUserLocation ?
+                `<div style="background-color: #2563eb; width: 28px; height: 28px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4); position: relative;">
+                     <div style="position: absolute; inset: -8px; border: 2px solid #2563eb; border-radius: 50%; animation: pulse 2s infinite;"></div>
+                   </div>` :
+                `<div style="background-color: #f59e0b; width: 28px; height: 28px; border-radius: 50%; border: 4px solid white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);"></div>`;
+
+            const customIcon = L.divIcon({
+                className: 'custom-marker',
+                html: markerHtml,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14],
+                popupAnchor: [0, -14]
+            });
+
+            // Add marker
+            const popupText = isUserLocation ? 'Lokasi Anda' : `Lokasi Default: ${DEFAULT_LOCATION.name}`;
+            L.marker([lat, lng], {
+                    icon: customIcon
+                })
+                .addTo(map)
+                .bindPopup(popupText)
+                .openPopup();
+
+            // Add radius circle for user location
+            if (isUserLocation) {
+                L.circle([lat, lng], {
+                    radius: 3000,
                     color: '#2563eb',
                     fillColor: '#3b82f6',
-                    fillOpacity: 0.15
+                    fillOpacity: 0.1,
+                    weight: 2,
+                    dashArray: '5, 10'
                 }).addTo(map);
-            }, err => {
-                console.error('Geolocation error:', err);
+            }
+
+            // Add pulse animation style
+            if (!document.getElementById('map-pulse-style')) {
+                const style = document.createElement('style');
+                style.id = 'map-pulse-style';
+                style.textContent = `
+                    @keyframes pulse {
+                        0% { transform: scale(1); opacity: 1; }
+                        100% { transform: scale(1.5); opacity: 0; }
+                    }
+                    .custom-popup .leaflet-popup-content-wrapper {
+                        border-radius: 12px;
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+                    }
+                    .custom-popup .leaflet-popup-content {
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .custom-popup .leaflet-popup-tip {
+                        background: white;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+
+            isMapInitialized = true;
+
+            // Load reports
+            Livewire.dispatch('loadNearbyReports');
+        }
+
+        function showNotification(message, type = 'info') {
+            const colors = {
+                success: 'bg-success',
+                error: 'bg-danger',
+                warning: 'bg-warning text-dark',
+                info: 'bg-primary'
+            };
+
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-circle-xmark',
+                warning: 'fa-triangle-exclamation',
+                info: 'fa-circle-info'
+            };
+
+            const toast = document.createElement('div');
+            toast.className =
+                `fixed bottom-6 right-6 ${colors[type]} text-white px-5 py-3 rounded-xl shadow-2xl z-50 transform transition-all duration-500 translate-y-20 opacity-0 flex items-center gap-3 min-w-[300px] max-w-md`;
+            toast.innerHTML = `
+                <i class="fa-solid ${icons[type]} text-lg"></i>
+                <span class="text-sm font-medium">${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+
+            // Animate in
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-20', 'opacity-0');
             });
+
+            // Remove after 4 seconds
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // Handle tab visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && map) {
+                map.invalidateSize();
+            }
         });
     </script>
 @endpush

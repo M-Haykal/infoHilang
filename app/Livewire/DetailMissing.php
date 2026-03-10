@@ -7,10 +7,12 @@ use App\Models\BarangHilang;
 use App\Models\HewanHilang;
 use App\Models\OrangHilang;
 use Illuminate\Http\Request;
+use App\Models\LaporanDitemukan;
 
 class DetailMissing extends Component
 {
     public $data;
+    public $riwayatPenemuan = [];
 
     public function mount($type, $slug)
     {
@@ -26,6 +28,12 @@ class DetailMissing extends Component
 
         $user = $report->user;
 
+        $this->riwayatPenemuan = LaporanDitemukan::with('user')
+            ->where('foundable_id', $report->id)
+            ->where('foundable_type', get_class($report))
+            ->latest()
+            ->get();
+
         // Hitung total laporan dari semua kategori
         $totalLaporan = $user->barangHilangs()->count() +
                         $user->hewanHilangs()->count() +
@@ -37,14 +45,14 @@ class DetailMissing extends Component
                         $user->orangHilangs()->where('status', 'Ditemukan')->count();
 
         $this->data = [
-            'type'        => ucfirst($type),
-            'title'       => $report->nama_barang ?? $report->nama_hewan ?? $report->nama_orang,
-            'image'       => is_array($report->foto) ? $report->foto : [$report->foto ?? 'default.jpg'],
-            'date'        => $report->tanggal_terakhir_dilihat,
-            'location'    => $report->lokasi_terakhir_dilihat,
+            'type' => ucfirst($type),
+            'title' => $report->nama_barang ?? $report->nama_hewan ?? $report->nama_orang,
+            'image' => is_array($report->foto) ? $report->foto : [$report->foto ?? 'default.jpg'],
+            'date' => $report->tanggal_terakhir_dilihat,
+            'location' => $report->lokasi_terakhir_dilihat,
             'description' => $report->deskripsi_barang ?? $report->deskripsi_hewan ?? $report->deskripsi_orang,
-            'status'      => $report->status,
-            'raw'         => $report,
+            'status' => $report->status,
+            'raw' => $report,
 
             'grid_info'   => $this->getGridInfo($type, $report),
 

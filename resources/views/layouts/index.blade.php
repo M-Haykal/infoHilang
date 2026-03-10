@@ -3,10 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="InfoHilang adalah platform kemanusiaan tercepat untuk lapor dan temukan Orang Hilang, Hewan Hilang, dan Barang Hilang. Cepat, Gratis, dan Terhubung!">
+    <meta name="description"
+        content="InfoHilang adalah platform kemanusiaan tercepat untuk lapor dan temukan Orang Hilang, Hewan Hilang, dan Barang Hilang. Cepat, Gratis, dan Terhubung!">
     <meta name="theme-color" content="#ffd57d">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <title>{{ $title ?? 'InfoHilang' }}</title>
@@ -31,91 +33,106 @@
                 <div class="bg-primary p-2 rounded-xl group-hover:rotate-12 transition-transform duration-300">
                     <i class="fa-solid fa-magnifying-glass text-white"></i>
                 </div>
-                <span class="text-2xl font-black text-dark tracking-tight">Info<span class="text-primary">Hilang</span></span>
+                <span class="text-2xl font-black text-dark tracking-tight">Info<span
+                        class="text-primary">Hilang</span></span>
             </a>
 
             <div class="hidden md:flex items-center space-x-8 font-bold text-dark">
                 {{-- Beranda --}}
                 @php $isBeranda = request()->routeIs('start'); @endphp
-                <a href="{{ route('start') }}" class="relative text-center py-2 transition-all duration-300 {{ $isBeranda ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                <a href="{{ route('start') }}"
+                    class="relative text-center py-2 transition-all duration-300 {{ $isBeranda ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Beranda
-                    @if($isBeranda)
-                    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
+                    @if ($isBeranda)
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
 
                 {{-- Cari Laporan --}}
                 @php $isLaporan = request()->routeIs('list-missing') || request()->routeIs('detail-missing'); @endphp
-                <a href="{{ route('list-missing') }}" class="relative text-center py-2 transition-all duration-300 {{ $isLaporan ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                <a href="{{ route('list-missing') }}"
+                    class="relative text-center py-2 transition-all duration-300 {{ $isLaporan ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Cari Laporan
-                    @if($isLaporan)
-                    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
+                    @if ($isLaporan)
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
 
                 {{-- Artikel --}}
                 @php $isArtikel = request()->routeIs('list-blog') || request()->routeIs('detail-blog'); @endphp
-                <a href="{{ route('list-blog') }}" class="relative text-center py-2 transition-all duration-300 {{ $isArtikel ? 'text-primary' : 'hover:text-primary text-dark' }}">
+                <a href="{{ route('list-blog') }}"
+                    class="relative text-center py-2 transition-all duration-300 {{ $isArtikel ? 'text-primary' : 'hover:text-primary text-dark' }}">
                     Artikel
-                    @if($isArtikel)
-                    <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
+                    @if ($isArtikel)
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 h-[3px] bg-accent rounded"></span>
                     @endif
                 </a>
             </div>
 
             <div class="flex items-center space-x-4">
                 @auth
-                <div class="relative group">
-                    <button id="user-menu-button" class="flex items-center space-x-3 bg-netral-50 p-1 pr-3 rounded-full hover:bg-netral-100 transition border border-netral-200">
-                        <img src="{{ Auth::user()->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}" class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
-                        <span class="text-sm font-bold text-dark hidden sm:inline-block">{{ Str::before(Auth::user()->fullname, ' ') }}</span>
-                        <i class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200 group-hover:rotate-180"></i>
-                    </button>
+                    <div class="relative group">
+                        <button id="user-menu-button"
+                            class="flex items-center space-x-3 bg-netral-50 p-1 pr-3 rounded-full hover:bg-netral-100 transition border border-netral-200">
+                            <img src="{{ asset('storage/'. Auth::user()->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                                class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
+                            <span
+                                class="text-sm font-bold text-dark hidden sm:inline-block">{{ Str::before(Auth::user()->fullname, ' ') }}</span>
+                            <i
+                                class="fa-solid fa-chevron-down text-[10px] text-netral-400 transition-transform duration-200 group-hover:rotate-180"></i>
+                        </button>
 
-                    <div id="user-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
-                        <div class="px-5 py-4 bg-netral-50/50 border-b border-netral-100">
-                            <p class="text-[10px] text-netral-400 uppercase tracking-wider">{{ Auth::user()->role }}</p>
-                            <p class="font-black text-dark truncate">{{ Auth::user()->fullname }}</p>
+                        <div id="user-dropdown"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-netral-100 opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50 overflow-hidden">
+                            <div class="px-5 py-4 bg-netral-50/50 border-b border-netral-100">
+                                <p class="text-[10px] text-netral-400 uppercase tracking-wider">{{ Auth::user()->role }}
+                                </p>
+                                <p class="font-black text-dark truncate">{{ Auth::user()->fullname }}</p>
+                            </div>
+                            <div class="p-2">
+                                <a href="{{ route('dashboard') }}"
+                                    class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
+                                    <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard
+                                </a>
+                                <a href="{{ route('settings') }}"
+                                    class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
+                                    <i class="fa-solid fa-gear text-sm"></i> Pengaturan
+                                </a>
+                            </div>
+                            <div class="p-2 border-t border-netral-100">
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="flex items-center gap-3 w-full text-left px-3 py-2 text-danger hover:bg-danger-light rounded-xl transition font-bold">
+                                        <i class="fa-solid fa-right-from-bracket text-sm"></i> Keluar
+                                    </button>
+                                </form>
+                            </div>
                         </div>
-                        <div class="p-2">
-                            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
-                                <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard
+                    @else
+                        <div class="flex items-center gap-2">
+                            <a href="{{ route('showLogin') }}"
+                                class=" bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 transition active:scale-95">
+                                Buat Laporan +
                             </a>
-                            <a href="{{ route('settings') }}" class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
-                                <i class="fa-solid fa-gear text-sm"></i> Pengaturan
-                            </a>
                         </div>
-                        <div class="p-2 border-t border-netral-100">
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="flex items-center gap-3 w-full text-left px-3 py-2 text-danger hover:bg-danger-light rounded-xl transition font-bold">
-                                    <i class="fa-solid fa-right-from-bracket text-sm"></i> Keluar
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                    @endauth
                 </div>
-
-                @else
-                <div class="flex items-center gap-2">
-                    <a href="{{ route('showLogin') }}" class=" bg-accent hover:bg-accent-hover text-white px-5 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 transition active:scale-95">
-                        Buat Laporan +
-                    </a>
-                </div>
-                @endauth
             </div>
-        </div>
     </nav>
 
     <!-- Konten Utama -->
     {{ $slot }}
+
+    @include('components.chatbot-widget')
 
     <!-- Footer -->
     <footer class="bg-dark text-netral-400 py-12 px-8" wire:ignore>
         <div class="max-w-7xl mx-auto flex flex-col items-center text-center gap-8">
             <div>
                 <a href="{{ route('start') }}" class="inline-block mb-3">
-                    <span class="text-3xl font-bold text-white tracking-tight">Info<span class="text-primary">Hilang</span></span>
+                    <span class="text-3xl font-bold text-white tracking-tight">Info<span
+                            class="text-primary">Hilang</span></span>
                 </a>
                 <p class="text-sm md:text-base max-w-xs mx-auto">
                     Gotong royong untuk membantu sesama.

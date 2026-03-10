@@ -13,7 +13,9 @@ use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\ReportFoundController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\ChatBotController;
 use App\Livewire\Chat;
 use App\Livewire\DetailBlog;
 use App\Livewire\DetailMissing;
@@ -22,6 +24,8 @@ use App\Livewire\ListMissing;
 use App\Livewire\Profile;
 use App\Livewire\Start;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SiteMapController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -59,12 +63,42 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test-503', function () {
 //     return view('errors.503');
 // });
+Route::get('/generate-sitemap', [SiteMapController::class, 'generate']);
+Route::get('/test-sitemap', function () {
+    $url = config('app.url');
+    $path = public_path('sitemap.xml');
+
+    \Illuminate\Support\Facades\Log::info('URL: ' . $url);
+    \Illuminate\Support\Facades\Log::info('Path: ' . $path);
+
+    try {
+        \Spatie\Sitemap\SitemapGenerator::create($url)
+            ->writeToFile($path);
+
+        return 'Success! Check public folder.';
+    } catch (\Exception $e) {
+        return 'Error: ' . $e->getMessage();
+    }
+});
+
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+
+    if (!file_exists($path)) {
+        abort(404, 'Sitemap not found');
+    }
+
+    return response()->file($path, [
+        'Content-Type' => 'application/xml'
+    ]);
+})->name('sitemap');
 
 Route::get('/daftar-laporan', ListMissing::class)->name('list-missing');
 Route::get('/', Start::class)->name('start');
-Route::get('/laporan/{type}/{slug}', DetailMissing::class)->name('detail-missing');
+Route::get('/laporan-{type}/{slug}', DetailMissing::class)->name('detail-missing');
 Route::get('/artikel', ListBlog::class)->name('list-blog');
 Route::get('/artikel/{slug}', DetailBlog::class)->name('detail-blog');
+Route::post('/chatbot/message', [ChatbotController::class, 'chat'])->name('chatbot.message');
 
 Route::middleware('guest.redirect')->group(function () {
     // Google OAuth Routes
@@ -145,6 +179,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/artikel/{slug}/edit', [BlogController::class, 'edit'])->name('artikel.edit');
         Route::patch('/artikel/{slug}/update', [BlogController::class, 'update'])->name('artikel.update');
         Route::delete('/artikel/{slug}/hapus', [BlogController::class, 'destroy'])->name('artikel.destroy');
+
+        // Report Found
+        Route::get('/ditemukan', [ReportFoundController::class, 'index'])->name('found');
+        Route::patch('/ditemukan/{id}/konfirmasi', [ReportFoundController::class, 'toggleConfirm'])
+            ->name('report-found.confirm');
     });
 });
 

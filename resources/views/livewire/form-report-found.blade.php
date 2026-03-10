@@ -49,22 +49,65 @@
                             this.images.splice(index, 1);
                         }
                     }">
-
                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-dark mb-2">Nama Penemu <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" required wire:model="nama_penemu" name="nama_penemu"
-                                placeholder="Masukkan nama lengkap Anda"
-                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-dark mb-2">Kontak Penemu (WhatsApp/No. HP) <span
-                                    class="text-danger">*</span></label>
-                            <input type="text" required wire:model="kontak_penemu" name="kontak_penemu"
-                                placeholder="Contoh: 08123456789"
-                                class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-white text-sm transition-all outline-none">
-                        </div>
+
+                        {{-- Jika user login --}}
+                        @auth
+                            <div>
+                                <label class="block text-xs font-bold text-dark mb-2">Nama Penemu</label>
+                                <input type="text" wire:model="nama_penemu"
+                                    @if ($laporAnonim) readonly @endif
+                                    class="w-full px-4 py-3 border border-netral-200 rounded-xl text-sm
+                                    {{ $laporAnonim ? 'bg-netral-100 cursor-not-allowed' : 'bg-white' }}">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-dark mb-2">Kontak Penemu</label>
+                                <input type="text" wire:model="kontak_penemu"
+                                    class="w-full px-4 py-3 border rounded-xl text-sm">
+                            </div>
+                        @endauth
+
+                        {{-- Jika belum login / anonim --}}
+                        @guest
+                            <div class="md:col-span-2">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <input type="checkbox" wire:model.live="isiKontak" id="isiKontak"
+                                        class="rounded border-netral-300">
+                                    <label for="isiKontak" class="text-xs font-bold text-netral-500">
+                                        Saya ingin mencantumkan kontak saya
+                                    </label>
+                                </div>
+
+                                @if ($isiKontak)
+                                    <div>
+                                        <label class="block text-xs font-bold text-dark mb-2">Kontak Penemu</label>
+                                        <input type="text" wire:model="kontak_penemu" placeholder="Contoh: 08123456789"
+                                            class="w-full px-4 py-3 border border-netral-200 rounded-xl bg-white text-sm">
+                                    </div>
+                                @endif
+                            </div>
+                        @endguest
+                    </div>
+
+                    <div class="md:col-span-2 bg-white border border-netral-100 rounded-xl p-4">
+                        @guest
+                            <p class="text-xs text-netral-500 font-medium">
+                                Kamu saat ini melapor sebagai <span class="font-bold text-dark">Anonim</span> karena belum
+                                login.
+                            </p>
+                        @endguest
+                        @auth
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" wire:model.live="laporAnonim" id="anonim"
+                                    class="rounded border-netral-300">
+                                <label for="anonim" class="text-xs font-bold text-netral-500">
+                                    Laporkan sebagai anonim
+                                </label>
+                            </div>
+                            <p class="text-[10px] text-netral-400 mt-1">
+                                Jika diaktifkan, nama akun Anda tidak akan ditampilkan di laporan publik.
+                            </p>
+                        @endauth
                     </div>
 
                     <div class="flex flex-col h-full space-y-4">

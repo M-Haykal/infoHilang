@@ -1,4 +1,4 @@
-#custom-tour-overlay {
+/* #custom-tour-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.92);
@@ -13,7 +13,7 @@
 }
 
 /* Highlight lingkaran berdenyut */
-.tour-highlight {
+/* .tour-highlight {
     position: relative;
     z-index: 9999 !important;
 }
@@ -26,8 +26,8 @@
     animation: pulseGlow 2s infinite;
     pointer-events: none;
     box-shadow: 0 0 0 20px rgba(192, 132, 252, 0.25);
-}
-@keyframes pulseGlow {
+} */ */
+/* @keyframes pulseGlow {
     0%,
     100% {
         transform: scale(1);
@@ -37,7 +37,7 @@
         transform: scale(1.18);
         opacity: 1;
     }
-}
+} */
 
 .shepherd-button-primary {
     @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-7 py-3 rounded-xl shadow-lg hover:shadow-xl transition;
