@@ -305,11 +305,69 @@
             @endif
         </div>
 
-        <!-- Komentar -->
-        @include('dashboard.components.commentars', [
-            'model' => $barangHilang,
-            'modelName' => 'App\Models\BarangHilang',
-        ])
+        <div class="flex flex-col lg:flex-row gap-6" data-aos="fade-up">
+
+            {{-- KOMENTAR --}}
+            <div class="w-full lg:w-7/12">
+                @include('dashboard.components.commentars', [
+                    'model' => $barangHilang,
+                    'modelName' => 'App\Models\BarangHilang',
+                ])
+            </div>
+
+            {{-- LAPORAN DITEMUKAN --}}
+            <div class="w-full lg:w-5/12">
+                <div class="bg-white rounded-xl shadow-sm border border-netral-100 p-6">
+
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-1 h-6 bg-success rounded-full"></div>
+                        <h2 class="font-bold text-dark uppercase tracking-wider italic">
+                            Laporan Ditemukan
+                        </h2>
+                    </div>
+
+                    @forelse($laporanDitemukan as $lapor)
+                        <div class="p-4 border rounded-xl mb-3 bg-netral-50 hover:bg-white transition">
+
+                            <div class="flex justify-between items-start mb-2">
+                                <div class="text-sm font-bold text-dark">
+                                    {{ $lapor->nama_penemu ?? 'Anonim' }}
+                                </div>
+
+                                <span class="text-[10px] text-netral-400">
+                                    {{ $lapor->created_at->diffForHumans() }}
+                                </span>
+                            </div>
+
+                            <p class="text-xs text-netral-500 mb-2">
+                                {{ $lapor->keterangan ?? 'Tidak ada keterangan.' }}
+                            </p>
+
+                            @if ($lapor->lokasi_ditemukan)
+                                <div class="text-[11px] text-netral-400 flex gap-2 items-center">
+                                    <i class="fa-solid fa-location-dot text-success"></i>
+                                    {{ $lapor->lokasi_ditemukan }}
+                                </div>
+                            @endif
+
+                            @if ($lapor->kontak_penemu)
+                                <div class="mt-2 text-[11px] text-primary font-semibold">
+                                    Kontak: {{ $lapor->kontak_penemu }}
+                                </div>
+                            @endif
+
+                        </div>
+                    @empty
+                        <div class="flex flex-col items-center justify-center py-10 text-netral-400">
+                            <i class="fa-solid fa-box-open text-3xl mb-3 opacity-50"></i>
+                            <p class="text-xs italic">Belum ada laporan ditemukan.</p>
+                        </div>
+                    @endforelse
+
+                </div>
+            </div>
+
+        </div>
     </div>
 @endsection
 
@@ -319,31 +377,24 @@
 @push('script')
     @if ($barangHilang->latitude && $barangHilang->longitude)
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const map = L.map('map').setView([{
-                    {
-                        $barangHilang - > latitude
-                    }
-                }, {
-                    {
-                        $barangHilang - > longitude
-                    }
-                }], 14);
+            document.addEventListener("DOMContentLoaded", function() {
+
+                const map = L.map('map').setView([
+                    {{ $barangHilang->latitude }},
+                    {{ $barangHilang->longitude }}
+                ], 14);
+
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    attribution: '&copy; OpenStreetMap'
                 }).addTo(map);
 
-                L.marker([{
-                        {
-                            $barangHilang - > latitude
-                        }
-                    }, {
-                        {
-                            $barangHilang - > longitude
-                        }
-                    }])
+                L.marker([
+                        {{ $barangHilang->latitude }},
+                        {{ $barangHilang->longitude }}
+                    ])
                     .addTo(map)
                     .bindPopup("Lokasi terakhir terlihat");
+
             });
         </script>
     @endif

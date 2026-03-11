@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\MissingStuffService;
 use App\Models\BarangHilang;
+use App\Models\LaporanDitemukan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
@@ -32,7 +33,14 @@ class MissingStuffController extends Controller
             'comentars.user',
             'comentars.replies.user'
         ]);
-        return view('dashboard.pages.detail-stuff-missing', compact('barangHilang'));
+
+        $laporanDitemukan = LaporanDitemukan::where('foundable_id', $barangHilang->id)
+            ->where('foundable_type', BarangHilang::class)
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return view('dashboard.pages.detail-stuff-missing', compact('barangHilang', 'laporanDitemukan'));
     }
 
     public function edit(BarangHilang $barangHilang)

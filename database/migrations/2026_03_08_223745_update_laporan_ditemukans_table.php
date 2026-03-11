@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('kontak_penemu')->nullable()->change();
 
             // tambah slug
-            $table->string('slug')->unique()->after('id');
+            // $table->string('slug')->unique()->after('id');
         });
     }
 
@@ -31,7 +31,7 @@ return new class extends Migration {
             $table->string('nama_penemu')->nullable(false)->change();
             $table->string('kontak_penemu')->nullable(false)->change();
 
-            $table->dropColumn('slug');
+            // $table->dropColumn('slug');
         });
     }
 };
