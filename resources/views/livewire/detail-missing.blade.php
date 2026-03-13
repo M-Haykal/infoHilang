@@ -302,7 +302,7 @@
                                             <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
                                                 <div class="flex items-center flex-wrap gap-2">
                                                     <span
-                                                        class="text-xs font-black text-dark">{{ $item->nama_pelapor }}</span>
+                                                        class="text-xs font-black text-dark">{{ $item->nama_pelapor ?? 'Anonim' }}</span>
                                                     <span class="w-1 h-1 bg-netral-300 rounded-full"></span>
                                                     <span class="text-[10px] text-netral-400 font-bold uppercase">
                                                         {{ \Carbon\Carbon::parse($item->created_at)->diffForHumans() }}

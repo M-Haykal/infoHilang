@@ -109,25 +109,25 @@
 
                     <ul class="space-y-2 mb-6">
                         <li
-                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50/50 border border-netral-100 transition-hover hover:bg-white hover:shadow-sm">
+                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50 border border-netral-100 hover:shadow-sm">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-tag text-primary/60"></i>
+                                <i class="fa-solid fa-tag text-primary"></i>
                                 <span class="font-medium text-netral-500 text-sm">Jenis Barang</span>
                             </div>
                             <span class="font-bold text-dark text-sm">{{ $barangHilang->jenis_barang }}</span>
                         </li>
                         <li
-                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50/50 border border-netral-100 transition-hover hover:bg-white hover:shadow-sm">
+                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50 border border-netral-100 hover:shadow-sm">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-copyright text-primary/60"></i>
+                                <i class="fa-solid fa-copyright text-primary"></i>
                                 <span class="font-medium text-netral-500 text-sm">Merek</span>
                             </div>
                             <span class="font-bold text-dark text-sm">{{ $barangHilang->merk_barang }}</span>
                         </li>
                         <li
-                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50/50 border border-netral-100 transition-hover hover:bg-white hover:shadow-sm">
+                            class="flex items-center justify-between p-3 rounded-xl bg-netral-50 border border-netral-100 hover:shadow-sm">
                             <div class="flex items-center gap-3">
-                                <i class="fa-solid fa-palette text-primary/60"></i>
+                                <i class="fa-solid fa-palette text-primary"></i>
                                 <span class="font-medium text-netral-500 text-sm">Warna</span>
                             </div>
                             <span
@@ -137,7 +137,7 @@
 
                     <div>
                         <div class="flex items-center gap-2 mb-3 text-netral-500">
-                            <i class="fa-solid fa-align-left text-xs"></i>
+                            <i class="fa-solid fa-align-left text-xs text-primary"></i>
                             <span class="text-xs font-bold uppercase tracking-widest">Deskripsi Barang</span>
                         </div>
                         <div
@@ -153,7 +153,7 @@
         <!-- Info Utama -->
         <div class="flex flex-col lg:flex-row gap-6 items-stretch" data-aos="fade-up" data-aos-delay="100">
 
-            <div class="w-full lg:w-1/2 flex flex-col">
+            <div class="w-full lg:w-5/12 flex flex-col">
                 <div
                     class="bg-white rounded-xl shadow-sm border border-netral-100 p-6 h-full transition-all hover:shadow-md">
                     <div class="flex items-center gap-3 mb-4">
@@ -167,9 +167,9 @@
                         <ul class="space-y-2 text-sm">
                             @foreach ($barangHilang->ciri_ciri as $key => $value)
                                 <li
-                                    class="flex justify-between items-center p-3 rounded-xl bg-netral-50/50 border border-netral-100 transition-colors hover:bg-white">
+                                    class="flex items-center justify-between p-3 rounded-xl bg-netral-50 border border-netral-100 hover:shadow-sm">
                                     <div class="flex items-center gap-3">
-                                        <i class="fa-solid fa-magnifying-glass-plus text-primary/50 text-xs"></i>
+                                        <i class="fa-solid fa-magnifying-glass-plus text-primary text-xs"></i>
                                         <span
                                             class="font-medium text-netral-500">{{ ucwords(str_replace('_', ' ', $key)) }}</span>
                                     </div>
@@ -187,11 +187,11 @@
                 </div>
             </div>
 
-            <div class="w-full lg:w-1/2 flex flex-col">
+            <div class="w-full lg:w-7/12 flex flex-col">
                 <div
                     class="bg-white rounded-xl shadow-sm border border-netral-100 p-6 h-full transition-all hover:shadow-md">
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-1 h-6 bg-success rounded-full"></div>
+                        <div class="w-1 h-6 bg-primary rounded-full"></div>
                         <h2 class="font-bold text-dark uppercase tracking-wider italic">
                             Kontak Pelapor
                         </h2>
@@ -201,14 +201,14 @@
                         <ul class="space-y-2 text-sm">
                             @foreach ($barangHilang->kontak as $key => $value)
                                 <li onclick="copyToClipboard(this, '{{ $value }}')"
-                                    class="relative group flex justify-between items-center p-3 rounded-xl bg-white border border-netral-100 transition-colors hover:bg-netral-50 overflow-hidden cursor-pointer">
+                                    class="relative group flex justify-between items-center p-3 rounded-xl bg-netral-50 border border-netral-100 hover:shadow-sm overflow-hidden cursor-pointer">
                                     <div class="flex items-center gap-3">
                                         @if (Str::contains(strtolower($key), 'whatsapp'))
                                             <i class="fa-brands fa-whatsapp text-success text-base"></i>
                                         @elseif(Str::contains(strtolower($key), 'telepon') || Str::contains(strtolower($key), 'hp'))
-                                            <i class="fa-solid fa-phone text-success text-xs"></i>
+                                            <i class="fa-solid fa-phone text-primary text-xs"></i>
                                         @else
-                                            <i class="fa-solid fa-address-book text-success text-xs"></i>
+                                            <i class="fa-solid fa-address-book text-primary text-xs"></i>
                                         @endif
                                         <span class="font-medium text-netral-500">{{ $key }}</span>
                                     </div>
@@ -219,7 +219,7 @@
                                     </div>
 
                                     <div
-                                        class="copy-badge absolute inset-0 bg-success text-white flex items-center justify-center translate-y-full transition-transform duration-300 font-bold text-xs uppercase tracking-widest">
+                                        class="copy-badge absolute inset-0 bg-primary text-white flex items-center justify-center translate-y-full transition-transform duration-300 font-bold text-xs uppercase tracking-widest">
                                         Berhasil Disalin!
                                     </div>
                                 </li>
@@ -280,7 +280,7 @@
                     <i class="fa-solid fa-location-dot text-accent"></i>
                 </div>
                 <div class="flex-1">
-                    <p class="text-xs font-bold text-netral-400 uppercase tracking-tighter mb-1">Alamat Spesifik</p>
+                    <p class="text-xs font-bold text-netral-400 uppercase tracking-tighter mb-1">Alamat</p>
                     <div class="text-sm text-dark leading-relaxed font-medium">
                         {!! $barangHilang->lokasi_terakhir_dilihat ?:
                             '<span class="italic text-netral-400">Lokasi detail tidak diberikan...</span>' !!}
@@ -305,68 +305,133 @@
             @endif
         </div>
 
-        <div class="flex flex-col lg:flex-row gap-6" data-aos="fade-up">
-
-            {{-- KOMENTAR --}}
-            <div class="w-full lg:w-7/12">
-                @include('dashboard.components.commentars', [
-                    'model' => $barangHilang,
-                    'modelName' => 'App\Models\BarangHilang',
-                ])
-            </div>
-
-            {{-- LAPORAN DITEMUKAN --}}
-            <div class="w-full lg:w-5/12">
-                <div class="bg-white rounded-xl shadow-sm border border-netral-100 p-6">
-
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="w-1 h-6 bg-success rounded-full"></div>
-                        <h2 class="font-bold text-dark uppercase tracking-wider italic">
-                            Laporan Ditemukan
-                        </h2>
-                    </div>
-
-                    @forelse($laporanDitemukan as $lapor)
-                        <div class="p-4 border rounded-xl mb-3 bg-netral-50 hover:bg-white transition">
-
-                            <div class="flex justify-between items-start mb-2">
-                                <div class="text-sm font-bold text-dark">
-                                    {{ $lapor->nama_penemu ?? 'Anonim' }}
-                                </div>
-
-                                <span class="text-[10px] text-netral-400">
-                                    {{ $lapor->created_at->diffForHumans() }}
-                                </span>
-                            </div>
-
-                            <p class="text-xs text-netral-500 mb-2">
-                                {{ $lapor->keterangan ?? 'Tidak ada keterangan.' }}
-                            </p>
-
-                            @if ($lapor->lokasi_ditemukan)
-                                <div class="text-[11px] text-netral-400 flex gap-2 items-center">
-                                    <i class="fa-solid fa-location-dot text-success"></i>
-                                    {{ $lapor->lokasi_ditemukan }}
-                                </div>
-                            @endif
-
-                            @if ($lapor->kontak_penemu)
-                                <div class="mt-2 text-[11px] text-primary font-semibold">
-                                    Kontak: {{ $lapor->kontak_penemu }}
-                                </div>
-                            @endif
-
-                        </div>
-                    @empty
-                        <div class="flex flex-col items-center justify-center py-10 text-netral-400">
-                            <i class="fa-solid fa-box-open text-3xl mb-3 opacity-50"></i>
-                            <p class="text-xs italic">Belum ada laporan ditemukan.</p>
-                        </div>
-                    @endforelse
-
+        {{-- Laporan Penemuan --}}
+        <div class="bg-white rounded-xl shadow-sm border border-netral-100 p-6 mt-6 transition-all hover:shadow-md"
+            data-aos="fade-up" data-aos-delay="300">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-1 h-6 bg-primary rounded-full"></div>
+                    <h2 class="font-bold text-dark uppercase tracking-wider italic">
+                        Laporan Penemuan & Jejak
+                    </h2>
                 </div>
+                <span class="px-2 py-1 bg-netral-50 text-primary text-[10px] font-black rounded-lg border border-primary">
+                    {{ $barangHilang->laporanDitemukan->count() }} Laporan
+                </span>
             </div>
 
+            <div class="overflow-hidden border border-netral-100 rounded-xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-netral-50 border-b border-netral-100">
+                            <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest">Informasi
+                                Penemu</th>
+                            <th
+                                class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest hidden md:table-cell">
+                                Lokasi & Waktu</th>
+                            <th
+                                class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">
+                                Status</th>
+                            <th
+                                class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">
+                                Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-netral-50">
+                        @forelse($barangHilang->laporanDitemukan as $laporan)
+                            <tr class="hover:bg-netral-50/30 transition-colors group">
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center gap-3">
+                                        <div
+                                            class="w-10 h-10 rounded-xl overflow-hidden bg-netral-100 border border-netral-200 shrink-0">
+                                            @if ($laporan->bukti_ditemukan)
+                                                <img src="{{ asset('storage/' . $laporan->bukti_ditemukan[0]) }}"
+                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform cursor-pointer">
+                                            @else
+                                                <div
+                                                    class="w-full h-full flex items-center justify-center text-netral-300 bg-netral-50">
+                                                    <i class="fa-solid fa-image-slash text-xs"></i>
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="min-w-0">
+                                            <p class="text-sm font-black text-dark truncate">{{ $laporan->nama_penemu }}
+                                            </p>
+                                            <p
+                                                class="text-[10px] text-primary font-bold hover:underline select-all cursor-copy">
+                                                <i class="fa-solid fa-phone-volume mr-1"></i>
+                                                {{ $laporan->kontak_penemu }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-4 hidden md:table-cell">
+                                    <p class="text-xs font-bold text-dark italic leading-tight line-clamp-1">
+                                        <i class="fa-solid fa-location-crosshairs text-accent mr-1"></i>
+                                        {{ $laporan->lokasi_ditemukan }}
+                                    </p>
+                                    <p class="text-[9px] text-netral-400 font-bold uppercase mt-1">
+                                        {{ \Carbon\Carbon::parse($laporan->tanggal_ditemukan)->translatedFormat('d M Y, H:i') }}
+                                    </p>
+                                </td>
+                                <td class="px-4 py-4 text-center">
+                                    @if ($laporan->is_confirmed)
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2 py-1 bg-success text-white text-[9px] font-black uppercase rounded-lg shadow-sm shadow-success/30">
+                                            <i class="fa-solid fa-certificate"></i> Valid
+                                        </span>
+                                    @else
+                                        <span
+                                            class="inline-flex items-center gap-1 px-2 py-1 bg-netral-100 text-netral-400 text-[9px] font-black uppercase rounded-lg">
+                                            <i class="fa-solid fa-hourglass-half"></i> Pending
+                                        </span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <button wire:click="viewLaporanDetail({{ $laporan->id }})"
+                                            class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-primary hover:border-primary transition-all shadow-sm">
+                                            <i class="fa-solid fa-eye text-[10px]"></i>
+                                        </button>
+
+                                        {{-- Jika belum dikonfirmasi, pemilik bisa mengonfirmasi --}}
+                                        @if (!$laporan->is_confirmed)
+                                            <button wire:click="confirmFound({{ $laporan->id }})"
+                                                class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-success hover:border-success transition-all shadow-sm"
+                                                title="Konfirmasi sebagai temuan asli">
+                                                <i class="fa-solid fa-check-double text-[10px]"></i>
+                                            </button>
+                                        @endif
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="py-12 text-center text-netral-400">
+                                    <div class="flex flex-col items-center opacity-40">
+                                        <i class="fa-solid fa-route text-3xl mb-3"></i>
+                                        <p class="text-xs">Belum ada jejak masuk</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Komentar -->
+        <div class="bg-white rounded-xl shadow-sm border border-netral-100 p-6 h-full transition-all hover:shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-1 h-6 bg-primary rounded-full"></div>
+                <h2 class="font-bold text-dark uppercase tracking-wider italic">
+                    Komentar
+                </h2>
+            </div>
+            @include('dashboard.components.commentars', [
+                'model' => $barangHilang,
+                'modelName' => 'App\Models\BarangHilang',
+            ])
         </div>
     </div>
 @endsection
@@ -377,24 +442,31 @@
 @push('script')
     @if ($barangHilang->latitude && $barangHilang->longitude)
         <script>
-            document.addEventListener("DOMContentLoaded", function() {
-
-                const map = L.map('map').setView([
-                    {{ $barangHilang->latitude }},
-                    {{ $barangHilang->longitude }}
-                ], 14);
-
+            document.addEventListener('DOMContentLoaded', function() {
+                const map = L.map('map').setView([{
+                    {
+                        $barangHilang - > latitude
+                    }
+                }, {
+                    {
+                        $barangHilang - > longitude
+                    }
+                }], 14);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '&copy; OpenStreetMap'
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
 
-                L.marker([
-                        {{ $barangHilang->latitude }},
-                        {{ $barangHilang->longitude }}
-                    ])
+                L.marker([{
+                        {
+                            $barangHilang - > latitude
+                        }
+                    }, {
+                        {
+                            $barangHilang - > longitude
+                        }
+                    }])
                     .addTo(map)
                     .bindPopup("Lokasi terakhir terlihat");
-
             });
         </script>
     @endif

@@ -8,7 +8,7 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8 p-1">
             <div class="text-center lg:text-left order-2 lg:order-1 pointer-events-auto">
                 <h1 class="text-3xl font-bold text-dark">Detail Laporan Orang Hilang</h1>
-                <nav class="flex justify-center lg:justify-start mt-2" aria-label="Breadcrumb">
+                <nav class="flex justify-center lg:justify-start mt-2" aria- label="Breadcrumb">
                     <ol class="inline-flex items-center space-x-2 text-xs font-medium text-netral-400">
                         <li>
                             <a href="{{ route('dashboard') }}" class="hover:text-primary transition-colors">Dashboard</a>
@@ -196,12 +196,28 @@
     @if ($orangHilang->latitude && $orangHilang->longitude)
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const map = L.map('map').setView([{{ $orangHilang->latitude }}, {{ $orangHilang->longitude }}], 14);
+                const map = L.map('map').setView([{
+                    {
+                        $orangHilang - > latitude
+                    }
+                }, {
+                    {
+                        $orangHilang - > longitude
+                    }
+                }], 14);
                 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
 
-                L.marker([{{ $orangHilang->latitude }}, {{ $orangHilang->longitude }}])
+                L.marker([{
+                        {
+                            $orangHilang - > latitude
+                        }
+                    }, {
+                        {
+                            $orangHilang - > longitude
+                        }
+                    }])
                     .addTo(map)
                     .bindPopup("Lokasi terakhir terlihat");
             });

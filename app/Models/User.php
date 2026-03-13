@@ -70,4 +70,9 @@ class User extends Authenticatable implements CanResetPassword
     {
         return $this->hasMany(Blog::class);
     }
+
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }
