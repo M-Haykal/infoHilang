@@ -9,6 +9,8 @@ use App\Models\BarangHilang;
 use App\Models\LaporanDitemukan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Mail\LaporanHilangMailable;
+use Illuminate\Support\Facades\Mail;
 
 class MissingStuffController extends Controller
 {
@@ -54,7 +56,11 @@ class MissingStuffController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->missingStuffService->store($request);
+            $report = $this->missingStuffService->store($request);
+            
+            // Kirim Email
+            Mail::to($request->user())->send(new LaporanHilangMailable($report, 'barang', $request->user()));
+
             return redirect()->back()->with('success', 'Laporan barang hilang berhasil dikirim!');
         } catch (ValidationException $e) {
             return redirect()->back()

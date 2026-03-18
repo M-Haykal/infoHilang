@@ -22,18 +22,14 @@ class MissingStuffService
     {
         $validated = $this->validateRequest($request);
 
-        // CEK DUPLIKAT DULU!
-        //  $duplicateCheck = $this->duplicateDetection
-        //     ->check($type, $request->all());
+        // Cek duplikat dulu
+        $duplicateCheck = $this->duplicateDetection->check('barang', $request->all());
 
-        // if ($duplicateCheck['isDuplicate']) {
-        //     // Bisa return array atau throw exception
-        //     throw ValidationException::withMessages([
-        //         'duplicate' => 'Laporan barang ini terdeteksi sebagai duplikat! '
-        //             . 'Kemiripan: ' . $duplicateCheck['similarity'] . '%. '
-        //             . $duplicateCheck['reason']
-        //     ]);
-        // }
+        if ($duplicateCheck['isDuplicate']) {
+            throw ValidationException::withMessages([
+                'duplicate' => 'Laporan terdeteksi duplikat (' . $duplicateCheck['similarity'] . '%). ' . $duplicateCheck['reason']
+            ]);
+        }
 
         return $this->saveData($request, new BarangHilang(), $validated);
     }
@@ -147,8 +143,7 @@ class MissingStuffService
         if ($request->filled('selected_user_id')) {
             $user = User::find($request->input('selected_user_id'));
             if ($user) {
-                $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
-                $kontak = $userKontak;
+                $kontak = is_array($user->kontak) ? $user->kontak : [];
             }
         }
 

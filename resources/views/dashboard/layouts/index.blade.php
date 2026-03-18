@@ -118,7 +118,7 @@
 
                     <button
                         class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
-                        <img src="{{ asset('storage/' . Auth::user()->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                        <img src="{{ !empty(Auth::user()->avatar) ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
                             class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
 
                         <div class="flex-1 text-left min-w-0">
@@ -182,61 +182,107 @@
     @stack('script')
 
     <script>
-        document.getElementById('check-duplicate-btn') ? .addEventListener('click', async function() {
-            const btn = this;
-            const type = btn.dataset.type; // orang | hewan | barang
-            const resultDiv = document.getElementById('duplicate-result');
+        document.querySelectorAll('#check-duplicate-btn').forEach(btn => {
+            btn.addEventListener('click', async function() {
+                const type = this.dataset.type;
+                const resultDiv = document.getElementById('duplicate-result');
+                const form = this.closest('form');
 
-            resultDiv.innerHTML = '';
-            resultDiv.classList.add('hidden');
-            btn.disabled = true;
-            btn.innerHTML = 'Mengecek AI...';
+                resultDiv.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                        <span class="font-medium text-netral-600">AI Gemini sedang menganalisis data...</span>
+                    </div>
+                `;
+                resultDiv.className = 'mt-8 p-6 bg-white border border-netral-200 rounded-2xl shadow-sm';
+                resultDiv.classList.remove('hidden');
+                
+                this.disabled = true;
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Mengecek...';
 
-            const formData = new FormData(btn.closest('form'));
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const formData = new FormData(form);
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            try {
-                const response = await fetch(`/user/check-duplicate/${type}`, {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'Accept': 'application/json'
+                try {
+                    const response = await fetch(`/user/check-duplicate/${type}`, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+
+                    if (data.isDuplicate) {
+                        resultDiv.className = 'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm';
+                        let html = `
+                            <div class="flex items-start gap-4">
+                                <div class="bg-red-500 p-3 rounded-xl text-white">
+                                    <i class="fa-solid fa-triangle-exclamation text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-red-900 font-bold text-lg">Waspada! Laporan Duplikat Terdeteksi</h4>
+                                    <p class="text-red-700 mt-1">Kami menemukan laporan yang sangat mirip (<strong>${data.similarity}%</strong>) dengan data yang baru saja kamu masukkan.</p>
+                                    <p class="text-red-800 mt-3 italic text-sm font-medium">" ${data.reason} "</p>
+                        `;
+
+                        if (data.existing_report) {
+                            html += `
+                                <div class="mt-4 pt-4 border-t border-red-200">
+                                    <p class="text-sm text-red-600 mb-2">Laporan yang mirip:</p>
+                                    <a href="${data.existing_report.url}" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-bold text-sm">
+                                        <i class="fa-solid fa-eye"></i>
+                                        Lihat Laporan: ${data.existing_report.name}
+                                    </a>
+                                </div>
+                            `;
+                        }
+
+                        html += `</div></div>`;
+                        resultDiv.innerHTML = html;
+                    } else if (data.similarity >= 50) {
+                        resultDiv.className = 'mt-8 p-6 bg-yellow-50 border border-yellow-200 rounded-2xl shadow-sm';
+                        resultDiv.innerHTML = `
+                            <div class="flex items-start gap-4">
+                                <div class="bg-yellow-500 p-3 rounded-xl text-white">
+                                    <i class="fa-solid fa-circle-info text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-yellow-900 font-bold text-lg">Ditemukan Sedikit Kemiripan</h4>
+                                    <p class="text-yellow-700 mt-1">Kemiripan terdeteksi sekitar <strong>${data.similarity}%</strong>. Pastikan data kamu akurat.</p>
+                                    <p class="text-yellow-800 mt-2 text-sm italic">" ${data.reason} "</p>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        resultDiv.className = 'mt-8 p-6 bg-green-50 border border-green-200 rounded-2xl shadow-sm';
+                        resultDiv.innerHTML = `
+                            <div class="flex items-start gap-4">
+                                <div class="bg-green-500 p-3 rounded-xl text-white">
+                                    <i class="fa-solid fa-circle-check text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-green-900 font-bold text-lg">Data Aman!</h4>
+                                    <p class="text-green-700 mt-1">Gemini AI tidak mencatat adanya kemiripan signifikan dengan laporan lain.</p>
+                                    <p class="text-green-600 text-xs mt-2 uppercase font-bold tracking-wider">Skor Kemiripan: ${data.similarity}%</p>
+                                </div>
+                            </div>
+                        `;
                     }
-                });
-
-                const data = await response.json();
-
-                if (data.isDuplicate) {
-                    resultDiv.className =
-                        'mt-8 p-6 bg-red-100 border-l-4 border-red-600 text-red-800 rounded-r-xl shadow-lg';
-                    resultDiv.innerHTML =
-                        `<p class="font-bold text-xl">Duplikat Terdeteksi!</p><p>Kemiripan: <strong>${data.similarity}%</strong> — ${data.reason}</p>`;
-                } else if (data.similarity > 70) {
-                    resultDiv.className =
-                        'mt-8 p-6 bg-yellow-100 border-l-4 border-yellow-600 text-yellow-800 rounded-r-xl shadow-lg';
-                    resultDiv.innerHTML =
-                        `<p class="font-bold text-xl">Peringatan!</p><p>Kemiripan: ${data.similarity}% — ${data.reason}</p>`;
-                } else {
-                    resultDiv.className =
-                        'mt-8 p-6 bg-green-100 border-l-4 border-green-600 text-green-800 rounded-r-xl shadow-lg';
-                    resultDiv.innerHTML =
-                        `<p class="font-bold text-xl">Aman!</p><p>Tidak ada duplikat. Kemiripan tertinggi: ${data.similarity}%.</p>`;
+                } catch (err) {
+                    console.error(err);
+                    resultDiv.className = 'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm text-red-700';
+                    resultDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i>Terjadi kesalahan sistem saat menghubungi AI Gemini.`;
+                } finally {
+                    this.disabled = false;
+                    this.innerHTML = originalText;
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
-
-                resultDiv.classList.remove('hidden');
-
-            } catch (err) {
-                console.error(err);
-                resultDiv.className =
-                    'mt-8 p-6 bg-gray-100 border-l-4 border-gray-600 text-gray-800 rounded-r-xl';
-                resultDiv.innerHTML = '<p class="font-bold">Gagal! Cek console (F12)</p>';
-                resultDiv.classList.remove('hidden');
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = 'Cek Duplikat dengan AI';
-            }
+            });
         });
     </script>
 </body>

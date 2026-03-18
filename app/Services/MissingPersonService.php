@@ -26,16 +26,13 @@ class MissingPersonService
         $validated = $this->validateRequest($request);
 
         // Cek duplikat dulu
-        // $duplicateCheck = $this->duplicateDetection
-        //     ->check($type, $request->all());
+        $duplicateCheck = $this->duplicateDetection->check('orang', $request->all());
 
-        // if ($duplicateCheck['isDuplicate']) {
-        //     throw ValidationException::withMessages([
-        //         'duplicate' => 'Laporan ini terdeteksi sebagai duplikat! '
-        //             . 'Kemiripan: ' . $duplicateCheck['similarity'] . '% → '
-        //             . $duplicateCheck['reason']
-        //     ]);
-        // }
+        if ($duplicateCheck['isDuplicate']) {
+            throw ValidationException::withMessages([
+                'duplicate' => 'Laporan terdeteksi duplikat (' . $duplicateCheck['similarity'] . '%). ' . $duplicateCheck['reason']
+            ]);
+        }
 
         return $this->saveData($request, new OrangHilang(), $validated);
     }
@@ -137,8 +134,7 @@ class MissingPersonService
         if ($request->filled('selected_user_id')) {
             $user = User::find($request->input('selected_user_id'));
             if ($user) {
-                $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
-                $kontak = $userKontak;
+                $kontak = is_array($user->kontak) ? $user->kontak : [];
             }
         }
 

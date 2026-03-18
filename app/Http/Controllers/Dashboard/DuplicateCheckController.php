@@ -8,6 +8,7 @@ use App\Models\OrangHilang;
 use App\Models\HewanHilang;
 use App\Models\BarangHilang;
 use App\Services\DuplicateDetectionService;
+use Illuminate\Support\Facades\Log;
 
 class DuplicateCheckController extends Controller
 {
@@ -52,23 +53,32 @@ class DuplicateCheckController extends Controller
         $cfg = $config[$type];
 
         try {
-            $result = $this->duplicateDetection
-                ->check($type, $request->all());
+            $result = $this->duplicateDetection->check($type, $request->all());
 
             // Tambahkan URL kalau ada laporan mirip
-            if ($result['existing_id']) {
+            if (isset($result['details']) && $result['details']) {
+                $existing = $result['details'];
+                
+                // Cari model untuk dapat slug
+                $model = $cfg['model']::find($existing['id']);
+                
                 $result['existing_report'] = [
-                    'url' => route($cfg['route'], $result['existing_id'])
+                    'name' => $existing['name'],
+                    'similarity' => $existing['score'],
+                    'reason' => $existing['reason'],
+                    'url' => $model ? route($cfg['route'], $model->slug) : '#'
                 ];
+            } else {
+                $result['existing_report'] = null;
             }
 
             return response()->json($result);
         } catch (\Exception $e) {
-            \Log::error('Duplicate check failed: ' . $e->getMessage());
+            Log::error('Duplicate check failed: ' . $e->getMessage());
             return response()->json([
                 'isDuplicate' => false,
                 'similarity' => 0,
-                'reason' => 'Gagal cek duplikat. Coba lagi.',
+                'reason' => 'Gagal cek duplikat: ' . $e->getMessage(),
                 'existing_report' => null
             ], 500);
         }

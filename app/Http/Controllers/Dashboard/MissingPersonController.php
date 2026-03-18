@@ -10,6 +10,8 @@ use App\Models\OrangHilang;
 use App\Services\MissingPersonService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\ValidationException;
+use App\Mail\LaporanHilangMailable;
+use Illuminate\Support\Facades\Mail;
 
 class MissingPersonController extends Controller
 {
@@ -56,7 +58,11 @@ class MissingPersonController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->missingPersonService->store($request);
+            $report = $this->missingPersonService->store($request);
+            
+            // Kirim Email
+            Mail::to($request->user())->send(new LaporanHilangMailable($report, 'orang', $request->user()));
+
             return redirect()->back()->with('success', 'Laporan orang hilang berhasil dikirim!');
         } catch (ValidationException $e) {
             if ($e->errors()['duplicate'] ?? false) {

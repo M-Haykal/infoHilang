@@ -25,17 +25,14 @@ class MissingAnimalService
     {
         $validated = $this->validateRequest($request);
 
-        // // Cek duplikat dulu
-        // $duplicateCheck = $this->duplicateDetection
-        //     ->check($type, $request->all());
+        // Cek duplikat dulu
+        $duplicateCheck = $this->duplicateDetection->check('hewan', $request->all());
 
-        // if ($duplicateCheck['isDuplicate']) {
-        //     throw ValidationException::withMessages([
-        //         'duplicate' =>
-        //             'Laporan mirip dengan data sebelumnya (' .
-        //             $duplicateCheck['similarity'] . '%)'
-        //     ]);
-        // }
+        if ($duplicateCheck['isDuplicate']) {
+            throw ValidationException::withMessages([
+                'duplicate' => 'Laporan terdeteksi duplikat (' . $duplicateCheck['similarity'] . '%). ' . $duplicateCheck['reason']
+            ]);
+        }
 
         return $this->saveData($request, new HewanHilang(), $validated);
     }
@@ -137,8 +134,7 @@ class MissingAnimalService
         if ($request->filled('selected_user_id')) {
             $user = User::find($request->input('selected_user_id'));
             if ($user) {
-                $userKontak = is_array($user->kontak) ? $user->kontak : (json_decode($user->kontak, true) ?: []);
-                $kontak = $userKontak;
+                $kontak = is_array($user->kontak) ? $user->kontak : [];
             }
         }
 

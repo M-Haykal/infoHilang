@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Services\MissingAnimalService;
 use Illuminate\Validation\ValidationException;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Mail\LaporanHilangMailable;
+use Illuminate\Support\Facades\Mail;
 
 class MissingAnimalController extends Controller
 {
@@ -132,7 +134,11 @@ class MissingAnimalController extends Controller
 
         // dd($request->all());
         try {
-            $this->missingAnimalService->store($request);
+            $report = $this->missingAnimalService->store($request);
+            
+            // Kirim Email
+            Mail::to($request->user())->send(new LaporanHilangMailable($report, 'hewan', $request->user()));
+
             return redirect()->back()
                 ->with('success', 'Laporan hewan hilang berhasil dibuat!');
         } catch (ValidationException $e) {
