@@ -1,30 +1,23 @@
-{{-- <x-mail::message>
-Selamat Datang di Info Hilang
-
-Halo {{ $user->username ?? 'Pengguna' }},
-Terima kasih telah bergabung dengan Info Hilang. Kami sangat senang bahwa Anda telah bergabung dengan kami.
-
-Silakan klik tombol di bawah ini untuk membuat laporan hilang Anda:
-<x-mail::button :url="route('dashboard')">
-    Buat Laporan
-</x-mail::button>
-
-Terima kasih,<br>
-{{ config('app.name') }}
-</x-mail::message> --}}
-
 @component('mail::message')
-    {{-- Greeting --}}
-    Selamat Datang di Info Hilang, {{ $user->username ?? 'Pengguna' }}!
+    # Selamat Datang di Info Hilang!
 
-    {{-- Body --}}
-    Terima kasih telah bergabung dengan Info Hilang. Kami sangat senang bahwa Anda telah bergabung dengan kami.
+    Halo **{{ $user->fullname ?? ($user->username ?? 'Pengguna') }}**,
 
-    {{-- Action Button --}}
+    Kami sangat senang Anda bergabung dengan komunitas Info Hilang! Kami percaya setiap orang berhak mendapatkan kembali apa
+    yang hilang. Di sini, Anda dapat:
+
+    * **Melaporkan barang, orang, atau hewan yang hilang** dengan mudah dan cepat.
+    * **Membantu sesama** dengan menemukan dan mengembalikan apa yang hilang.
+    * **Berinteraksi dengan pengguna lain** untuk memperluas jaringan pencarian.
+
+    Mari mulai membantu dan ditemukan!
+
     @component('mail::button', ['url' => route('dashboard')])
-        Buat Laporan
+        Jelajahi Dashboard Anda
     @endcomponent
 
+    Jika Anda memiliki pertanyaan atau membutuhkan bantuan, jangan ragu untuk menghubungi kami.
+
     Terima kasih,<br>
-    {{ config('app.name') }}
+    Tim {{ config('app.name') }}
 @endcomponent

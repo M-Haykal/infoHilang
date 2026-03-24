@@ -10,6 +10,7 @@
         "guzzlehttp/guzzle": "^7.2",
         "intervention/image": "^3.11",
         "laravel/framework": "^10.49",
+        "laravel/reverb": "^1.8",
         "laravel/sanctum": "^3.2",
         "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.8",

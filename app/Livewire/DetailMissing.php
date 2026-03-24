@@ -11,6 +11,7 @@ use App\Models\LaporanDitemukan;
 
 class DetailMissing extends Component
 {
+    public $reportId;
     public $data;
     public $riwayatPenemuan = [];
 
@@ -19,13 +20,14 @@ class DetailMissing extends Component
         // Cari data berdasarkan tipe/user
         $query = match (strtolower($type)) {
             'barang' => BarangHilang::with('user'),
-            'hewan'  => HewanHilang::with('user'),
-            'orang'  => OrangHilang::with('user'),
-            default  => abort(404),
+            'hewan' => HewanHilang::with('user'),
+            'orang' => OrangHilang::with('user'),
+            default => abort(404),
         };
 
         $report = $query->where('slug', $slug)->firstOrFail();
 
+        $this->reportId = $report->id;
         $user = $report->user;
 
         $this->riwayatPenemuan = LaporanDitemukan::with('user')
@@ -36,13 +38,13 @@ class DetailMissing extends Component
 
         // Hitung total laporan dari semua kategori
         $totalLaporan = $user->barangHilangs()->count() +
-                        $user->hewanHilangs()->count() +
-                        $user->orangHilangs()->count();
+            $user->hewanHilangs()->count() +
+            $user->orangHilangs()->count();
 
         // Hitung total laporan yang sudah 'Ditemukan' atau 'Kembali'
         $totalSelesai = $user->barangHilangs()->where('status', 'Ditemukan')->count() +
-                        $user->hewanHilangs()->where('status', 'Ditemukan')->count() +
-                        $user->orangHilangs()->where('status', 'Ditemukan')->count();
+            $user->hewanHilangs()->where('status', 'Ditemukan')->count() +
+            $user->orangHilangs()->where('status', 'Ditemukan')->count();
 
         $this->data = [
             'type' => ucfirst($type),
@@ -54,7 +56,7 @@ class DetailMissing extends Component
             'status' => $report->status,
             'raw' => $report,
 
-            'grid_info'   => $this->getGridInfo($type, $report),
+            'grid_info' => $this->getGridInfo($type, $report),
 
             'owner_stats' => [
                 'total' => $totalLaporan,
@@ -102,6 +104,25 @@ class DetailMissing extends Component
             ],
             default => [],
         };
+    }
+
+    public function getListeners()
+    {
+        return [
+            "echo:report-found.{$this->reportId},.report.created" => 'handleNewReport',
+            'reportCreated' => 'handleNewReport'
+        ];
+    }
+
+
+    public function handleNewReport($event = null)
+    {
+        // ambil data fresh dari DB (AMAN)
+        $this->riwayatPenemuan = LaporanDitemukan::with('user')
+            ->where('foundable_id', $this->data['raw']->id)
+            ->where('foundable_type', get_class($this->data['raw']))
+            ->latest()
+            ->get();
     }
 
     public function render()

@@ -4,25 +4,27 @@ import Echo from "laravel-echo";
 import Pusher from "pusher-js";
 import introJs from "intro.js";
 import "intro.js/introjs.css";
-import 'select2';
-import 'select2/dist/css/select2.min.css';
+import "select2";
+import "select2/dist/css/select2.min.css";
 import "trix";
-import 'trix/dist/trix.css';
+import "trix/dist/trix.css";
 
 window.Pusher = Pusher;
 // window.Alpine = Alpine;
 window.introJs = introJs;
 
 window.Echo = new Echo({
-    broadcaster: "pusher",
-    key: import.meta.env.VITE_PUSHER_APP_KEY,
-    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-    forceTLS: true,
+    broadcaster: "reverb",
+    key: import.meta.env.VITE_REVERB_APP_KEY,
+    wsHost: import.meta.env.VITE_REVERB_HOST ?? window.location.hostname,
+    wsPort: import.meta.env.VITE_REVERB_PORT ?? 8080,
+    forceTLS: false,
+    disableStats: true,
 });
 
 document.addEventListener("DOMContentLoaded", () => {
     const pageElement = document.querySelector(
-        '[data-page="dashboard"], [data-page="form-animal-missing"], [data-page="form-person-missing"], [data-page="form-stuff-missing"]'
+        '[data-page="dashboard"], [data-page="form-animal-missing"], [data-page="form-person-missing"], [data-page="form-stuff-missing"]',
     );
     if (!pageElement) return;
 

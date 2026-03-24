@@ -21,10 +21,6 @@ class UserSeeder extends Seeder
                 'email' => 'infoHilang@gmail.com',
                 'password' => \Illuminate\Support\Facades\Hash::make('password'),
                 'role' => 'admin',
-                'provinsi' => 'Jawa Barat',
-                'kota' => 'Bandung',
-                'kecamatan' => 'Bandung Kota',
-                'kelurahan' => 'Bojongloa',
                 'alamat' => 'Bojongloa Kidul, Bandung Kota, Jawa Barat',
                 'no_hp' => '081234567890',
             ]
@@ -38,10 +34,6 @@ class UserSeeder extends Seeder
                 'email' => 'citranotes@gmail.com',
                 'password' => Hash::make('password'),
                 'role' => 'user',
-                'provinsi' => 'Jawa Barat',
-                'kota' => 'Depok',
-                'kecamatan' => 'Cimanggis',
-                'kelurahan' => 'Mekarsari',
                 'alamat' => 'RT. 005/001',
                 'no_hp' => '081234567890',
             ]

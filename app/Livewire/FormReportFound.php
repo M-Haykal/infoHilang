@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Events\ReportFoundCreated;
 use Livewire\Component;
 use Livewire\Attributes\On; // Tambahkan ini
 use Livewire\WithFileUploads;
@@ -66,7 +67,7 @@ class FormReportFound extends Component
 
         $nama = $this->laporAnonim ? null : $this->nama_penemu;
 
-        $service->store([
+        $report = $service->store([
             'nama_penemu' => $nama,
             'kontak_penemu' => $this->kontak_penemu,
             'lokasi_ditemukan' => $this->lokasi_ditemukan,
@@ -77,6 +78,10 @@ class FormReportFound extends Component
             'foundable_type' => $this->foundable_type,
             'user_id' => auth()->id()
         ]);
+
+        broadcast(new ReportFoundCreated($report));
+
+        $this->dispatch('reportCreated');
 
         $this->reset();
         $this->showReportModal = false;

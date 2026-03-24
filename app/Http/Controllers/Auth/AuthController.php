@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Mail\SendWelcomeToInfoHilang;
 
 class AuthController extends Controller
 {
@@ -72,7 +74,7 @@ class AuthController extends Controller
         ], [
             'username.unique' => 'Username sudah digunakan. Silakan pilih username lain.',
         ]);
-        
+
         $user = User::create([
             'fullname' => $request->fullname,
             'username' => $request->username,
@@ -81,6 +83,8 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+
+        Mail::to($user->email)->send(new SendWelcomeToInfoHilang($user));
 
         return redirect('/')->with('success', 'Registrasi berhasil!');
     }

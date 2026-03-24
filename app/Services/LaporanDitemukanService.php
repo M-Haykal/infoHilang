@@ -27,7 +27,7 @@ class LaporanDitemukanService
             }
         }
 
-        return LaporanDitemukan::create([
+        $report = LaporanDitemukan::create([
             'nama_penemu' => $data['nama_penemu'],
             'kontak_penemu' => $data['kontak_penemu'],
             'lokasi_ditemukan' => $data['lokasi_ditemukan'],
@@ -39,5 +39,7 @@ class LaporanDitemukanService
             'foundable_type' => $data['foundable_type'],
             'is_confirmed' => false,
         ]);
+
+        return $report;
     }
 }

@@ -267,7 +267,7 @@
                             <i class="fa-solid fa-fingerprint text-primary text-base"></i> Detail Khusus
                         </h3>
                         <div class="space-y-4">
-                            @forelse ($data['raw']->ciri_ciri ?? [] as $key => $value)
+                            {{-- @forelse ($data['raw']->ciri_ciri ?? [] as $key => $value)
                                 <div class="flex flex-col">
                                     <span
                                         class="text-[10px] text-netral-400 uppercase font-bold">{{ str_replace('_', ' ', $key) }}</span>
@@ -276,7 +276,7 @@
                                 </div>
                             @empty
                                 <p class="text-xs italic text-netral-400">Informasi tambahan tidak tersedia.</p>
-                            @endforelse
+                            @endforelse --}}
                         </div>
                     </div>
 
@@ -385,64 +385,7 @@
                     </button>
                 </div>
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    @foreach ($data['raw']->kontak as $platform => $value)
-                        {{-- Abaikan kalau data kosong atau hanya strip --}}
-                        @php
-                            if ($value === '-' || empty($value)) {
-                                continue;
-                            }
-                        @endphp
-
-                        <div x-data="{ copied: false }" class="relative">
-                            <button
-                                @click="
-                            navigator.clipboard.writeText('{{ $value }}');
-                            copied = true;
-                            setTimeout(() => copied = false, 2000);"
-                                class="w-full flex items-center gap-4 p-4 bg-white border border-netral-100 rounded-2xl hover:border-primary hover:shadow-md transition-all group overflow-hidden cursor-pointer text-left">
-                                {{-- Feedback kalau berhasil copy --}}
-                                <div x-show="copied" x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 scale-95"
-                                    x-transition:enter-end="opacity-100 scale-100"
-                                    x-transition:leave="transition ease-in duration-200"
-                                    class="absolute inset-0 bg-primary flex items-center justify-center z-20 text-white font-bold text-xs gap-2 rounded-2xl">
-                                    <i class="fa-solid fa-copy animate-bounce"></i> Berhasil Disalin!
-                                </div>
-
-                                {{-- Icon section --}}
-                                <div
-                                    class="w-12 h-12 rounded-xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
-                                    @php
-                                        $p = strtolower($platform);
-                                        $icon = match (true) {
-                                            str_contains($p, 'whatsapp') => 'fa-brands fa-whatsapp',
-                                            str_contains($p, 'instagram') => 'fa-brands fa-instagram',
-                                            str_contains($p, 'facebook') => 'fa-brands fa-facebook',
-                                            str_contains($p, 'twitter') => 'fa-brands fa-x-twitter',
-                                            str_contains($p, 'email') => 'fa-solid fa-envelope',
-                                            str_contains($p, 'telepon') || str_contains($p, 'hp')
-                                                => 'fa-solid fa-phone',
-                                            default => 'fa-solid fa-address-book',
-                                        };
-                                    @endphp
-                                    <i class="{{ $icon }} text-xl"></i>
-                                </div>
-
-                                {{-- Info section --}}
-                                <div class="flex-1 overflow-hidden">
-                                    <div class="flex items-center justify-between">
-                                        <p class="text-[10px] text-netral-400 uppercase font-black tracking-widest">
-                                            {{ $platform }}</p>
-                                        <i
-                                            class="fa-solid fa-clone text-[10px] text-netral-300 group-hover:text-primary transition-colors"></i>
-                                    </div>
-                                    <p class="text-sm font-bold text-dark truncate">{{ $value }}</p>
-                                </div>
-                            </button>
-                        </div>
-                    @endforeach
-                </div>
+              
             </div>
         </div>
 

@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Comentar;
 
-class CommentCreated
+class CommentCreated implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -32,11 +32,13 @@ class CommentCreated
      */
     public function broadcastOn(): array
     {
-        return new Channel(
-            'comments.' .
-            $this->comment->foundable_type. '.' .
-            $this->comment->foundable_id
-        );
+        return [
+            new Channel(
+                'comments.' .
+                $this->comment->foundable_type. '.' .
+                $this->comment->foundable_id
+            )
+        ];
     }
 
     public function broadcastAs(): string

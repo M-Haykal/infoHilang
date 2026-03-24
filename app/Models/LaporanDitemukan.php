@@ -46,17 +46,17 @@ class LaporanDitemukan extends Model
         return $this->user?->name ?? 'Anonim';
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::creating(function ($report) {
+    //     static::creating(function ($report) {
 
-            $base = $report->nama_penemu
-                ? $report->nama_penemu
-                : 'laporan-ditemukan';
+    //         $base = $report->nama_penemu
+    //             ? $report->nama_penemu
+    //             : 'laporan-ditemukan';
 
-            $report->slug = Str::slug($base . '-' . now()->timestamp);
-        });
-    }
+    //         $report->slug = Str::slug($base . '-' . now()->timestamp);
+    //     });
+    // }
 }
