@@ -1,6 +1,6 @@
 @props(['model', 'modelName'])
 
-<div class="mt-10 max-w-3xl">
+<div class="mt-10 w-full">
     <h2 class="text-xl font-semibold text-dark mb-4">
         {{ $model->comentars->count() }} Komentar
     </h2>

@@ -74,7 +74,7 @@
                     <div class="relative group">
                         <button id="user-menu-button"
                             class="flex items-center space-x-3 bg-netral-50 p-1 pr-3 rounded-full hover:bg-netral-100 transition border border-netral-200">
-                            <img src="{{ asset('storage/'. Auth::user()->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                            <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
                                 class="h-8 w-8 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
                             <span
                                 class="text-sm font-bold text-dark hidden sm:inline-block">{{ Str::before(Auth::user()->fullname, ' ') }}</span>

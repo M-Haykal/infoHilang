@@ -102,7 +102,7 @@
                             <a href="{{ route('start') }}"
                                 class="flex items-center gap-3 px-3 py-2 text-sm text-dark hover:bg-primary-light hover:text-primary rounded-xl transition-all duration-200">
                                 <i class="fa-solid fa-house"></i>
-                                Back to Landing
+                                Ke Halaman Utama
                             </a>
                             <div class="my-2 border-t border-netral-100"></div>
                             <form action="{{ route('logout') }}" method="POST">
@@ -118,7 +118,7 @@
 
                     <button
                         class="flex items-center w-full gap-3 p-2 rounded-xl hover:bg-netral-50 transition-all duration-200">
-                        <img src="{{ asset('storage/' . Auth::user()->avatar) ?? 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
+                        <img src="{{ Auth::user()->avatar ? asset('storage/' . Auth::user()->avatar) : 'https://ui-avatars.com/api/?name=' . urlencode(Auth::user()->fullname) . '&background=ea580c&color=fff' }}"
                             class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" alt="Avatar">
 
                         <div class="flex-1 text-left min-w-0">

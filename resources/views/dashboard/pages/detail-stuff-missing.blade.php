@@ -123,9 +123,9 @@
                 <div>
                     <div class="flex items-center gap-2 mb-3 text-netral-500">
                         <i class="fa-solid fa-align-left text-xs text-primary"></i>
-                        <span class="text-xs font-bold uppercase tracking-widest">Deskripsi Barang</span>
+                        <span class="text-xs font-bold uppercase tracking-widest">Deskripsi / Kronologi</span>
                     </div>
-                    <div class="bg-netral-50 rounded-xl p-4 text-dark text-sm leading-relaxed border-2 border-dashed border-netral-200 min-h-[100px] relative overflow-hidden">
+                    <div class="bg-netral-50 rounded-xl p-4 text-dark text-sm leading-relaxed border-2 border-dashed border-netral-200 relative overflow-hidden">
                         {!! $barangHilang->deskripsi_barang ?: '<span class="italic text-netral-400">Tidak ada deskripsi tambahan...</span>' !!}
                     </div>
                 </div>
@@ -232,11 +232,11 @@
                     Lokasi Terakhir
                 </h2>
             </div>
-            @if ($barangHilang->latitude && $barangHilang->longitude)
+            {{-- @if ($barangHilang->latitude && $barangHilang->longitude)
             <a href="https://www.google.com/maps/search/?api=1&query={{ $barangHilang->latitude }},{{ $barangHilang->longitude }}" target="_blank" class="text-[10px] font-bold text-primary hover:underline flex items-center gap-1 uppercase tracking-widest">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Buka di Maps
             </a>
-            @endif
+            @endif --}}
         </div>
 
         <div class="flex items-start gap-3 p-4 bg-netral-50 rounded-xl border border-netral-100 mb-4">
@@ -254,7 +254,7 @@
         @if ($barangHilang->latitude && $barangHilang->longitude)
         <div class="relative group">
             <div id="map" class="w-full h-56 rounded-xl border-2 border-white shadow-inner z-10"></div>
-            <div class="absolute bottom-3 right-3 z-20 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-netral-100 text-[9px] font-mono text-netral-500 shadow-sm">
+            <div class="absolute bottom-3 left-3 z-20 bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-netral-100 text-[9px] font-mono text-netral-500 shadow-sm">
                 {{ number_format($barangHilang->latitude, 6) }}, {{ number_format($barangHilang->longitude, 6) }}
             </div>
         </div>
@@ -272,7 +272,7 @@
             <div class="flex items-center gap-3">
                 <div class="w-1 h-6 bg-primary rounded-full"></div>
                 <h2 class="font-bold text-dark uppercase tracking-wider italic">
-                    Laporan Penemuan & Jejak
+                    Jejak Penemuan
                 </h2>
             </div>
             <span class="px-2 py-1 bg-netral-50 text-primary text-[10px] font-black rounded-lg border border-primary">
@@ -280,86 +280,117 @@
             </span>
         </div>
 
-    <div class="overflow-hidden border border-netral-100 rounded-xl">
-        <table class="w-full text-left border-collapse">
-            <thead>
-                <tr class="bg-netral-50 border-b border-netral-100">
-                    <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest">Informasi Penemu</th>
-                    <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest hidden md:table-cell">Lokasi & Waktu</th>
-                    <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">Status</th>
-                    <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">Aksi</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-netral-50">
-                @forelse($barangHilang->laporanDitemukan as $laporan)
-                <tr class="hover:bg-netral-50/30 transition-colors group">
-                    <td class="px-4 py-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl overflow-hidden bg-netral-100 border border-netral-200 shrink-0">
-                                @if($laporan->bukti_ditemukan)
-                                    <img src="{{ asset('storage/' . $laporan->bukti_ditemukan) }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform cursor-pointer">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-netral-300 bg-netral-50">
-                                        <i class="fa-solid fa-image-slash text-xs"></i>
+        <div class="overflow-hidden border border-netral-100 rounded-xl">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-netral-50 border-b border-netral-100">
+                        <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest">Informasi Penemu</th>
+                        <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest hidden md:table-cell">Lokasi & Waktu</th>
+                        <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest hidden md:table-cell">Bukti</th>
+                        <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">Status</th>
+                        <th class="px-4 py-3 font-bold text-[10px] text-netral-500 uppercase tracking-widest text-center">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-netral-50">
+                    @forelse($barangHilang->laporanDitemukan as $laporan)
+                    <tr class="hover:bg-primary-light transition-colors group">
+
+                        {{-- Kolom Informasi Penemu --}}
+                        <td class="px-4 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="min-w-0">
+                                    <p class="text-sm font-black text-dark truncate">{{ $laporan->nama_penemu }}</p>
+                                    <p class="text-[10px] text-primary font-bold hover:underline select-all cursor-copy">
+                                        <i class="fa-solid fa-phone-volume mr-1"></i> {{ $laporan->kontak_penemu }}
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+
+                        {{-- Kolom Lokasi & Waktu --}}
+                        <td class="px-4 py-4 hidden md:table-cell">
+                            <p class="text-xs font-bold text-dark italic leading-tight line-clamp-1">
+                                <i class="fa-solid fa-location-crosshairs text-accent mr-1"></i> {{ $laporan->lokasi_ditemukan }}
+                            </p>
+                            <p class="text-[9px] text-netral-400 font-bold uppercase mt-1">
+                                {{ \Carbon\Carbon::parse($laporan->tanggal_ditemukan)->translatedFormat('d M Y, H:i') }}
+                            </p>
+                        </td>
+
+                        {{-- Kolom Bukti (Multi-Gambar) --}}
+                        <td class="px-4 py-4 hidden md:table-cell">
+                            @php
+                            // Deteksi apakah bukti berupa array/JSON atau cuma 1 string
+                            $buktiImages = is_string($laporan->bukti_ditemukan) ? json_decode($laporan->bukti_ditemukan, true) : $laporan->bukti_ditemukan;
+                            @endphp
+
+                            <div class="flex">
+                                @if(is_array($buktiImages) && count($buktiImages) > 0)
+                                {{-- overlapping images jika gambar > 1 --}}
+                                <div class="flex items-center justify-center -space-x-3">
+                                    @foreach(array_slice($buktiImages, 0, 3) as $img)
+                                    <div class="w-10 h-10 rounded-lg overflow-hidden bg-white border-2 border-white shadow-sm relative transition-transform hover:scale-125 hover:z-20 cursor-pointer">
+                                        <img src="{{ asset('storage/' . $img) }}" class="w-full h-full object-cover">
                                     </div>
+                                    @endforeach
+                                </div>
+                                @elseif(is_string($buktiImages) && !empty($buktiImages))
+                                {{-- jika isinya cuma 1 string path --}}
+                                <div class="w-10 h-10 rounded-lg overflow-hidden bg-white border border-netral-200 shadow-sm transition-transform hover:scale-125 cursor-pointer">
+                                    <img src="{{ asset('storage/' . $buktiImages) }}" class="w-full h-full object-cover">
+                                </div>
+                                @else
+                                {{-- tampilan kosong --}}
+                                <div class="w-10 h-10 rounded-lg bg-netral-50 border border-netral-200 border-dashed flex items-center justify-center text-netral-300">
+                                    <i class="fa-solid fa-image-slash text-xs"></i>
+                                </div>
                                 @endif
                             </div>
-                            <div class="min-w-0">
-                                <p class="text-sm font-black text-dark truncate">{{ $laporan->nama_penemu }}</p>
-                                <p class="text-[10px] text-primary font-bold hover:underline select-all cursor-copy">
-                                    <i class="fa-solid fa-phone-volume mr-1"></i> {{ $laporan->kontak_penemu }}
-                                </p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-4 py-4 hidden md:table-cell">
-                        <p class="text-xs font-bold text-dark italic leading-tight line-clamp-1">
-                            <i class="fa-solid fa-location-crosshairs text-accent mr-1"></i> {{ $laporan->lokasi_ditemukan }}
-                        </p>
-                        <p class="text-[9px] text-netral-400 font-bold uppercase mt-1">
-                            {{ \Carbon\Carbon::parse($laporan->tanggal_ditemukan)->translatedFormat('d M Y, H:i') }}
-                        </p>
-                    </td>
-                    <td class="px-4 py-4 text-center">
-                        @if($laporan->is_confirmed)
+                        </td>
+
+                        {{-- Kolom Status --}}
+                        <td class="px-4 py-4 text-center">
+                            @if($laporan->is_confirmed)
                             <span class="inline-flex items-center gap-1 px-2 py-1 bg-success text-white text-[9px] font-black uppercase rounded-lg shadow-sm shadow-success/30">
                                 <i class="fa-solid fa-certificate"></i> Valid
                             </span>
-                        @else
+                            @else
                             <span class="inline-flex items-center gap-1 px-2 py-1 bg-netral-100 text-netral-400 text-[9px] font-black uppercase rounded-lg">
                                 <i class="fa-solid fa-hourglass-half"></i> Pending
                             </span>
-                        @endif
-                    </td>
-                    <td class="px-4 py-4">
-                        <div class="flex items-center justify-center gap-2">
-                            <button wire:click="viewLaporanDetail({{ $laporan->id }})" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-primary hover:border-primary transition-all shadow-sm">
-                                <i class="fa-solid fa-eye text-[10px]"></i>
-                            </button>
-
-                            {{-- Jika belum dikonfirmasi, pemilik bisa mengonfirmasi --}}
-                            @if(!$laporan->is_confirmed)
-                            <button wire:click="confirmFound({{ $laporan->id }})" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-success hover:border-success transition-all shadow-sm" title="Konfirmasi sebagai temuan asli">
-                                <i class="fa-solid fa-check-double text-[10px]"></i>
-                            </button>
                             @endif
-                        </div>
-                    </td>
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="4" class="py-12 text-center text-netral-400">
-                        <div class="flex flex-col items-center opacity-40">
-                            <i class="fa-solid fa-route text-3xl mb-3"></i>
-                            <p class="text-xs">Belum ada jejak masuk</p>
-                        </div>
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+                        </td>
+
+                        {{-- Kolom Aksi --}}
+                        <td class="px-4 py-4">
+                            <div class="flex items-center justify-center gap-2">
+                                <button type="button" onclick="openModalJejak('modal-jejak-{{ $laporan->id }}')" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-primary hover:border-primary transition-all shadow-sm">
+                                    <i class="fa-solid fa-eye text-[10px]"></i>
+                                </button>
+
+                                @if(!$laporan->is_confirmed)
+                                <button wire:click="confirmFound({{ $laporan->id }})" class="w-8 h-8 rounded-lg bg-white border border-netral-200 flex items-center justify-center text-netral-400 hover:text-success hover:border-success transition-all shadow-sm" title="Konfirmasi sebagai temuan asli">
+                                    <i class="fa-solid fa-check-double text-[10px]"></i>
+                                </button>
+                                @endif
+                            </div>
+                        </td>
+
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="py-12 text-center text-netral-400">
+                            <div class="flex flex-col items-center opacity-40">
+                                <i class="fa-solid fa-route text-3xl mb-3"></i>
+                                <p class="text-xs">Belum ada jejak masuk</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 
     <!-- Komentar -->
     <div class="bg-white rounded-xl shadow-sm border border-netral-100 p-6 h-full transition-all hover:shadow-md">
@@ -375,41 +406,31 @@
         ])
     </div>
 </div>
+
+@include('dashboard.components.modal-detail-penemuan', [
+    'laporans' => $barangHilang->laporanDitemukan
+])
 @endsection
 
 @push('style')
 @endpush
 
+
 @push('script')
-@if ($barangHilang->latitude && $barangHilang->longitude)
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const map = L.map('map').setView([{
-            {
-                $barangHilang - > latitude
-            }
-        }, {
-            {
-                $barangHilang - > longitude
-            }
-        }], 14);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+    @if ($barangHilang->latitude && $barangHilang->longitude)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const map = L.map('map').setView([{{ $barangHilang->latitude }}, {{ $barangHilang->longitude }}], 14);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
 
-        L.marker([{
-                {
-                    $barangHilang - > latitude
-                }
-            }, {
-                {
-                    $barangHilang - > longitude
-                }
-            }])
-            .addTo(map)
-            .bindPopup("Lokasi terakhir terlihat");
-    });
-
-</script>
-@endif
+                L.marker([{{ $barangHilang->latitude }}, {{ $barangHilang->longitude }}])
+                    .addTo(map)
+                    .bindPopup("Lokasi terakhir terlihat");
+            });
+        </script>
+    @endif
 @endpush
+
+

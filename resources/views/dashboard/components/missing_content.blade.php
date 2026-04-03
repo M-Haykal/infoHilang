@@ -3,7 +3,7 @@
     <div id="tab-barang" class="tab-pane hidden">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-semibold text-dark">Barang Hilang</h3>
-            <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
+            <span class="px-2 py-1 bg-netral-50 text-primary text-[10px] font-black rounded-lg border border-primary">
                 {{ $missingItems->count() }} barang
             </span>
         </div>
@@ -122,7 +122,7 @@
     <div id="tab-orang" class="tab-pane active">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-semibold text-dark">Orang Hilang</h3>
-            <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
+            <span class="px-2 py-1 bg-netral-50 text-primary text-[10px] font-black rounded-lg border border-primary">
                 {{ $missingPersons->count() }} orang
             </span>
         </div>
@@ -247,7 +247,7 @@
     <div id="tab-hewan" class="tab-pane hidden">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-xl font-semibold text-dark">Hewan Hilang</h3>
-            <span class="bg-blue-100 text-primary text-xs font-medium px-2.5 py-0.5 rounded-full">
+            <span class="px-2 py-1 bg-netral-50 text-primary text-[10px] font-black rounded-lg border border-primary">
                 {{ $missingAnimals->count() }} hewan
             </span>
         </div>
