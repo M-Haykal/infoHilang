@@ -8,12 +8,6 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                // primary: "#2563eb",
-                // secondary: "#FFFEFE",
-                // accent: "#f8fafc",
-                // highlight: "#f8fe06",
-                // danger: "#8C2F39",
-
                 success: {
                     DEFAULT: 'oklch(62.7% 0.194 149.214)', // green-600
                     dark: 'oklch(0.527 0.154 150.069)', // green-700
