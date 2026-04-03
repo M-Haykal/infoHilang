@@ -73,10 +73,6 @@ class BarangHilang extends Model
         return $this->lokasi_terakhir_dilihat;
     }
 
-    public function getFotoAttribute($value)
-    {
-        return json_decode($value, true);
-    }
 
     public function getReportTypeAttribute()
     {

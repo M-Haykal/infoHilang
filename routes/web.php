@@ -39,9 +39,9 @@ use App\Http\Controllers\SiteMapController;
 */
 
 // Route::view('/', 'home');
-// Route::get('/test-401', function () {
-//     return view('errors.401');
-// });
+Route::get('/test-401', function () {
+    return view('errors.401');
+});
 // Route::get('/test-402', function () {
 //     return view('errors.402');
 // });
@@ -142,7 +142,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail-laporan-orang/{orangHilang}', [MissingPersonController::class, 'show'])->name('form-orang-hilang.detail');
         Route::get('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'edit'])->name('form-orang-hilang.edit');
         Route::put('/edit-laporan-orang/{orangHilang}', [MissingPersonController::class, 'update'])->name('form-orang-hilang.update');
-        Route::get('/print-poster/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
+        Route::get('/print-poster/orang/{orangHilang}', [MissingPersonController::class, 'printPdf'])->name('form-orang-hilang.print-pdf');
         Route::delete('/orang-hilang/{orangHilang}', [MissingPersonController::class, 'destroy'])->name('form-orang-hilang.destroy');
 
         // Form laporan hilang barang
@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail-laporan-barang/{barangHilang}', [MissingStuffController::class, 'show'])->name('form-barang-hilang.detail');
         Route::get('/edit-laporan-barang/{barangHilang}', [MissingStuffController::class, 'edit'])->name('form-barang-hilang.edit');
         Route::put('/edit-laporan-barang/{barangHilang}', [MissingStuffController::class, 'update'])->name('form-barang-hilang.update');
-        Route::get('/print-poster/{barangHilang}', [MissingStuffController::class, 'printPdf'])->name('form-barang-hilang.print-pdf');
+        Route::get('/print-poster/barang/{barangHilang}', [MissingStuffController::class, 'printPdf'])->name('form-barang-hilang.print-pdf');
         Route::delete('/barang-hilang/{barangHilang}', [MissingStuffController::class, 'destroy'])->name('form-barang-hilang.destroy');
 
         // Form laporan hewan hilang
@@ -165,6 +165,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/detail-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'show'])->name('form-hewan-hilang.detail');
         Route::get('/edit-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'edit'])->name('form-hewan-hilang.edit');
         Route::put('/edit-laporan-hewan/{hewanHilang}', [MissingAnimalController::class, 'update'])->name('form-hewan-hilang.update');
+        Route::get('/print-poster/hewan/{hewanHilang}', [MissingAnimalController::class, 'printPdf'])->name('form-hewan-hilang.print-pdf');
         Route::delete('/hewan-hilang/{hewanHilang}', [MissingAnimalController::class, 'destroy'])->name('form-hewan-hilang.destroy');
 
         // Komentar routes

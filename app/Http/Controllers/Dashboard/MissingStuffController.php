@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use App\Mail\LaporanHilangMailable;
 use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class MissingStuffController extends Controller
 {
@@ -57,7 +58,7 @@ class MissingStuffController extends Controller
     {
         try {
             $report = $this->missingStuffService->store($request);
-            
+
             // Kirim Email
             Mail::to($request->user())->send(new LaporanHilangMailable($report, 'barang', $request->user()));
 
@@ -79,5 +80,12 @@ class MissingStuffController extends Controller
     {
         $this->missingStuffService->destroy($barangHilang);
         return redirect()->back()->with('success', 'Laporan barang hilang berhasil dihapus!');
+    }
+
+    public function printPdf(BarangHilang $barangHilang)
+    {
+        $barang = $barangHilang->load('user');
+        $pdf = PDF::loadView('dashboard.pdf.poster-missing-stuff', ['barang' => $barang]);
+        return $pdf->stream();
     }
 }

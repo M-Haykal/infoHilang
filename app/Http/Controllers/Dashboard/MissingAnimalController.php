@@ -181,4 +181,11 @@ class MissingAnimalController extends Controller
         $this->missingAnimalService->destroy($hewanHilang);
         return redirect()->back()->with('success', 'Laporan hewan hilang berhasil dihapus!');
     }
+
+    public function printPdf(HewanHilang $hewanHilang)
+    {
+        $hewan = $hewanHilang->load('user');
+        $pdf = PDF::loadView('dashboard.pdf.poster-missing-animal', ['hewan' => $hewan]);
+        return $pdf->stream();
+    }
 }

@@ -1,48 +1,71 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Terjadi Kesalahan') | {{ config('app.name', 'Laravel') }}</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>@yield('title', 'Error') | {{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="min-h-screen flex flex-col items-center justify-center relative overflow-hidden bg-netral-50 font-sans text-dark py-12">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
-    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 sm:p-10 mx-4 z-10 text-center" data-aos="zoom-in" data-aos-duration="600">
-        <div class="flex justify-center">
-            <div class="relative">
-                <img src="@yield('image')" alt="Error State" class="relative w-56 h-56 object-contain" />
-            </div>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+
+    @stack('styles')
+</head>
+
+<body class="min-h-screen bg-netral-50 flex items-center justify-center p-4">
+
+    <!-- Main Card -->
+    <div
+        class="w-full max-w-lg bg-white rounded-2xl shadow-xl border border-netral-200 p-8 md:p-12 text-center animate-slide-up">
+
+        <!-- Icon Section -->
+        <div
+            class="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-full @yield('icon_bg') @yield('icon_color') animate-bounce-soft">
+            @yield('icon')
         </div>
 
-        <h1 class="text-2xl md:text-3xl font-bold text-primary mb-4 tracking-tight">
-            @yield('title', 'Oops! Terjadi Kesalahan')
+        <!-- Error Code -->
+        <h1 class="text-6xl md:text-7xl font-black text-dark mb-2 tracking-tight">
+            @yield('code')
         </h1>
 
-        <p class="text-netral-500 mb-8 leading-relaxed font-medium">
-            @yield('message', 'Halaman yang Anda cari tidak ditemukan atau terjadi kesalahan pada sistem.')
+        <!-- Error Title -->
+        <h2 class="text-xl md:text-2xl font-bold text-dark mb-3">
+            @yield('title')
+        </h2>
+
+        <!-- Error Description -->
+        <p class="text-dark-soft text-base mb-8 leading-relaxed">
+            @yield('message')
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ url('/') }}" class="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-xl font-bold shadow-lg shadow-blue-200 transition-all active:scale-[0.98]">
-                <i class="fa-solid fa-house-chimney text-sm"></i>
-                Kembali ke Beranda
-            </a>
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            @yield('actions')
+        </div>
 
-            @if(request()->is('errors/401') || request()->status == 401)
-            <a href="{{ route('showLogin') }}" class="inline-flex items-center justify-center gap-2 border-2 border-accent text-accent-hover hover:bg-accent-surface px-8 py-3.5 rounded-xl font-bold transition-all">
-                Masuk Sekarang
-            </a>
-            @endif
+        <!-- Footer Links -->
+        <div class="mt-8 pt-6 border-t border-netral-200">
+            <div class="flex justify-center gap-4 text-sm">
+                <a href="{{ url('/') }}"
+                    class="text-primary hover:text-primary-dark font-medium transition-colors">Beranda</a>
+                <span class="text-netral-300">•</span>
+                <a href="{{ url('/contact') }}"
+                    class="text-primary hover:text-primary-dark font-medium transition-colors">Bantuan</a>
+                <span class="text-netral-300">•</span>
+                <a href="#" onclick="location.reload()"
+                    class="text-primary hover:text-primary-dark font-medium transition-colors">Muat Ulang</a>
+            </div>
         </div>
     </div>
 
-    <p class="text-netral-400 text-sm font-medium mt-10">
-        &copy; {{ date('Y') }} InfoHilang. All rights reserved.
-    </p>
-
+    @stack('scripts')
 </body>
 
 </html>
