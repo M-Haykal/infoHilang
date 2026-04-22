@@ -27,7 +27,12 @@ class ListMissing extends Component
 
     protected $paginationTheme = 'tailwind';
 
-    protected $listeners = ['setUserLocation'];
+    protected $listeners = [
+    'setUserLocation',
+    'locationPermissionGranted',
+    'locationPermissionDenied',
+    'loadNearbyReports'
+];
 
     protected $queryString = [
         'search' => ['except' => ''],
@@ -200,10 +205,34 @@ class ListMissing extends Component
         }
     }
 
-    public function setUserLocation($lat, $lng)
+    public function locationPermissionGranted($lat = null, $lng = null)
     {
+        if (!$lat || !$lng) return;
+
         $this->userLat = $lat;
         $this->userLng = $lng;
+        $this->loadMapReports();
+    }
+
+    // Sama untuk setUserLocation
+    public function setUserLocation($lat = null, $lng = null)
+    {
+        if (!$lat || !$lng) return;
+
+        $this->userLat = $lat;
+        $this->userLng = $lng;
+        $this->loadMapReports();
+    }
+
+    public function locationPermissionDenied()
+    {
+        $this->userLat = null;
+        $this->userLng = null;
+        $this->mapReports = [];
+    }
+
+    public function loadNearbyReports()
+    {
         $this->loadMapReports();
     }
 

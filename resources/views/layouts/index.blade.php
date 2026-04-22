@@ -168,7 +168,11 @@
     {{-- Font Awesome --}}
     {{-- <script src="{{ asset('js/all.js') }}"></script> --}}
     <script src="{{ asset('js/all.min.js') }}"></script>
-
+    <script>
+        window.Laravel = {
+            userId: {{ auth()->id() ?? 'null' }}
+        };
+    </script>
 </body>
 
 </html>

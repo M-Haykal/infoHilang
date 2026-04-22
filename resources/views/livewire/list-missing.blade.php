@@ -329,278 +329,285 @@
 
 @push('script')
     <script>
-        let map;
+        let map = null;
         let markers = [];
-        let userLocation = null;
+        let userCircle = null;
+        let userMarker = null;
+        let permissionStatus = null; // simpan ref untuk cleanup
 
-        const DEFAULT_LOCATION = {
+        const DEFAULT = {
             lat: -6.1754,
             lng: 106.8272,
-            name: 'Jakarta Pusat',
             zoom: 12
         };
 
-        // =========================
-        // INIT MAP
-        // =========================
-        function initMap() {
-
+        // ─── OVERLAY ──────────────────────────────────────────────────────
+        function showOverlay(state) {
+            // state: 'loading' | 'denied'
             const overlay = document.getElementById('map-overlay');
-            const loadingState = document.getElementById('overlay-loading');
-            const deniedState = document.getElementById('overlay-denied');
-
+            const loading = document.getElementById('overlay-loading');
+            const denied = document.getElementById('overlay-denied');
             if (!overlay) return;
 
-            loadingState.classList.remove('hidden');
-            deniedState.classList.add('hidden');
             overlay.classList.remove('hidden');
+            loading.classList.toggle('hidden', state !== 'loading');
+            denied.classList.toggle('hidden', state !== 'denied');
+        }
 
-            if (!navigator.geolocation) {
-                console.warn("Geolocation tidak didukung browser");
+        function hideOverlay() {
+            const overlay = document.getElementById('map-overlay');
+            if (overlay) overlay.classList.add('hidden');
+        }
 
-                loadingState.classList.add('hidden');
-                deniedState.classList.remove('hidden');
+        // ─── MAP ──────────────────────────────────────────────────────────
+        function buildMap(lat, lng, zoom) {
+            if (map) {
+                map.remove();
+                map = null;
+                markers = [];
+                userMarker = null;
+                userCircle = null;
+            }
 
-                initializeMap(DEFAULT_LOCATION.lat, DEFAULT_LOCATION.lng, DEFAULT_LOCATION.zoom, false);
+            map = L.map('map').setView([lat, lng], zoom);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors',
+                maxZoom: 19
+            }).addTo(map);
+        }
+
+        function placeUserMarker(lat, lng, isReal) {
+            if (userMarker) {
+                map.removeLayer(userMarker);
+                userMarker = null;
+            }
+            if (userCircle) {
+                map.removeLayer(userCircle);
+                userCircle = null;
+            }
+
+            const icon = L.divIcon({
+                className: '',
+                html: `<div style="
+            background:${isReal ? '#2563eb' : '#94a3b8'};
+            width:22px; height:22px; border-radius:50%;
+            border:3px solid white;
+            box-shadow:0 2px 8px rgba(0,0,0,0.25);">
+        </div>`,
+                iconSize: [22, 22],
+                iconAnchor: [11, 11]
+            });
+
+            userMarker = L.marker([lat, lng], {
+                    icon
+                })
+                .addTo(map)
+                .bindPopup(isReal ? 'Lokasi Anda' : 'Lokasi Default')
+                .openPopup();
+
+            // Radius 5km selalu tampil kalau lokasi real
+            if (isReal) {
+                userCircle = L.circle([lat, lng], {
+                    radius: 5000,
+                    color: '#2563eb',
+                    fillColor: '#3b82f6',
+                    fillOpacity: 0.07,
+                    weight: 1.5,
+                    dashArray: '6, 10'
+                }).addTo(map);
+            }
+        }
+
+        // ─── GET CURRENT POSITION ─────────────────────────────────────────
+        function fetchCurrentPosition() {
+            return new Promise((resolve, reject) => {
+                navigator.geolocation.getCurrentPosition(resolve, reject, {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                });
+            });
+        }
+
+        // ─── INIT UTAMA ───────────────────────────────────────────────────
+        async function initMap() {
+            if (!navigator.geolocation || !navigator.permissions) {
+                // Browser lama — pakai default tanpa permission watch
+                buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                hideOverlay();
                 return;
             }
 
-            navigator.geolocation.getCurrentPosition(
-
-                // SUCCESS
-                (position) => {
-
-                    const {
-                        latitude,
-                        longitude
-                    } = position.coords;
-
-                    console.log("Lokasi didapat:", latitude, longitude);
-
-                    userLocation = {
-                        lat: latitude,
-                        lng: longitude
-                    };
-
-                    overlay.classList.add('hidden');
-
-                    initializeMap(latitude, longitude, 15, true);
-                },
-
-                // ERROR
-                (error) => {
-
-                    console.error("Geolocation error:", error);
-
-                    if (error.code === 1) {
-
-                        loadingState.classList.add('hidden');
-                        deniedState.classList.remove('hidden');
-
-                    } else {
-
-                        overlay.classList.add('hidden');
-
-                        initializeMap(
-                            DEFAULT_LOCATION.lat,
-                            DEFAULT_LOCATION.lng,
-                            DEFAULT_LOCATION.zoom,
-                            false
-                        );
-                    }
-                },
-
-                {
-                    enableHighAccuracy: true,
-                    timeout: 20000,
-                    maximumAge: 0
-                }
-            );
-
-            // FALLBACK jika geolocation terlalu lama
-            setTimeout(() => {
-
-                if (!userLocation && !map) {
-
-                    console.warn("Geolocation timeout, pakai default location");
-
-                    overlay.classList.add('hidden');
-
-                    initializeMap(
-                        DEFAULT_LOCATION.lat,
-                        DEFAULT_LOCATION.lng,
-                        DEFAULT_LOCATION.zoom,
-                        false
-                    );
-                }
-
-            }, 10000);
-        }
-
-
-        // =========================
-        // RETRY PERMISSION
-        // =========================
-        function retryLocationPermission() {
-
-            const overlay = document.getElementById('map-overlay');
-            const loadingState = document.getElementById('overlay-loading');
-            const deniedState = document.getElementById('overlay-denied');
-
-            deniedState.classList.add('hidden');
-            loadingState.classList.remove('hidden');
-
-            navigator.geolocation.getCurrentPosition(
-
-                (position) => {
-
-                    const {
-                        latitude,
-                        longitude
-                    } = position.coords;
-
-                    userLocation = {
-                        lat: latitude,
-                        lng: longitude
-                    };
-
-                    overlay.classList.add('hidden');
-
-                    if (map) {
-                        map.remove();
-                        map = null;
-                        markers = [];
-                    }
-
-                    initializeMap(latitude, longitude, 15, true);
-                },
-
-                () => {
-                    loadingState.classList.add('hidden');
-                    deniedState.classList.remove('hidden');
-                }
-            );
-        }
-
-
-        // =========================
-        // CREATE MAP
-        // =========================
-        function initializeMap(lat, lng, zoom, isUserLocation = false) {
-
-            map = L.map('map').setView([lat, lng], zoom);
-
-            L.tileLayer(
-                'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors',
-                    maxZoom: 19
-                }
-            ).addTo(map);
-
-            // USER MARKER
-            const icon = L.divIcon({
-                className: 'custom-marker',
-                html: `<div style="
-                background:#2563eb;
-                width:26px;
-                height:26px;
-                border-radius:50%;
-                border:4px solid white;
-                box-shadow:0 4px 10px rgba(0,0,0,0.3);
-            "></div>`,
-                iconSize: [26, 26],
-                iconAnchor: [13, 13]
-            });
-
-            const popupText = isUserLocation ?
-                "Lokasi Anda" :
-                "Lokasi Default";
-
-            L.marker([lat, lng], {
-                    icon: icon
-                })
-                .addTo(map)
-                .bindPopup(popupText)
-                .openPopup();
-
-            // RADIUS USER
-            if (isUserLocation) {
-
-                L.circle([lat, lng], {
-                    radius: 3000,
-                    color: '#2563eb',
-                    fillColor: '#3b82f6',
-                    fillOpacity: 0.1,
-                    weight: 2,
-                    dashArray: '5, 10'
-                }).addTo(map);
-            }
-
-            // LOAD REPORTS
-            if (window.Livewire) {
-
-                Livewire.dispatch('setUserLocation', {
-                    lat: lat,
-                    lng: lng
+            try {
+                // Query state permission SEKARANG (tidak minta izin dulu)
+                permissionStatus = await navigator.permissions.query({
+                    name: 'geolocation'
                 });
 
-                Livewire.dispatch('loadNearbyReports');
+                // Pasang listener — ini yang bikin real-time TANPA refresh
+                permissionStatus.addEventListener('change', onPermissionChange);
+
+                // Handle state awal
+                await applyPermissionState(permissionStatus.state);
+
+            } catch (err) {
+                console.error('Permission query error:', err);
+                // Fallback
+                showOverlay('loading');
+                try {
+                    const pos = await fetchCurrentPosition();
+                    await onGranted(pos.coords.latitude, pos.coords.longitude);
+                } catch {
+                    buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                    placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                    hideOverlay();
+                }
             }
         }
 
+        // ─── TERAPKAN STATE PERMISSION ────────────────────────────────────
+        async function applyPermissionState(state) {
+            if (state === 'granted') {
+                // Langsung ambil posisi — tidak perlu minta izin lagi
+                showOverlay('loading');
+                try {
+                    const pos = await fetchCurrentPosition();
+                    await onGranted(pos.coords.latitude, pos.coords.longitude);
+                } catch {
+                    hideOverlay();
+                    buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                    placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                }
 
-        // =========================
-        // LIVEWIRE EVENT
-        // =========================
+            } else if (state === 'denied') {
+                // Langsung tampil denied — tidak perlu minta
+                if (!map) {
+                    buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                    placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                }
+                showOverlay('denied');
+                dispatchToLivewire('locationPermissionDenied', {});
+
+            } else {
+                // 'prompt' — user belum pernah jawab, minta sekarang
+                showOverlay('loading');
+                try {
+                    const pos = await fetchCurrentPosition();
+                    await onGranted(pos.coords.latitude, pos.coords.longitude);
+                } catch (err) {
+                    if (err.code === 1) { // PERMISSION_DENIED
+                        if (!map) {
+                            buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                            placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                        }
+                        showOverlay('denied');
+                        dispatchToLivewire('locationPermissionDenied', {});
+                    } else {
+                        // Timeout / unavailable
+                        hideOverlay();
+                        buildMap(DEFAULT.lat, DEFAULT.lng, DEFAULT.zoom);
+                        placeUserMarker(DEFAULT.lat, DEFAULT.lng, false);
+                        dispatchToLivewire('setUserLocation', {
+                            lat: DEFAULT.lat,
+                            lng: DEFAULT.lng
+                        });
+                    }
+                }
+            }
+        }
+
+        // ─── DIPANGGIL OTOMATIS SAAT PERMISSION BERUBAH ───────────────────
+        // Ini event dari BROWSER — tidak butuh Reverb untuk tab yang sama
+        async function onPermissionChange() {
+            const state = permissionStatus.state;
+            console.log('Permission changed to:', state);
+
+            if (state === 'granted') {
+                // User baru saja kasih izin dari settings browser
+                showOverlay('loading');
+                try {
+                    const pos = await fetchCurrentPosition();
+                    await onGranted(pos.coords.latitude, pos.coords.longitude);
+                } catch {
+                    hideOverlay();
+                }
+
+            } else if (state === 'denied') {
+                // User baru saja blokir dari settings browser
+                showOverlay('denied');
+                dispatchToLivewire('locationPermissionDenied', {});
+            }
+        }
+
+        // ─── ON GRANTED ───────────────────────────────────────────────────
+        async function onGranted(lat, lng) {
+            hideOverlay();
+
+            // Rebuild map di koordinat real
+            buildMap(lat, lng, 15);
+            placeUserMarker(lat, lng, true);
+
+            dispatchToLivewire('locationPermissionGranted', {
+                lat,
+                lng
+            });
+        }
+
+        // ─── RETRY (tombol "Izinkan Lokasi") ──────────────────────────────
+        // Hanya berguna kalau state 'prompt' — kalau 'denied' dari settings
+        // browser, tombol ini akan buka Settings secara native (Chrome)
+        async function retryLocationPermission() {
+            showOverlay('loading');
+            try {
+                const pos = await fetchCurrentPosition();
+                await onGranted(pos.coords.latitude, pos.coords.longitude);
+            } catch (err) {
+                showOverlay('denied');
+            }
+        }
+
+        // ─── HELPER LIVEWIRE ──────────────────────────────────────────────
+        function dispatchToLivewire(event, data) {
+            if (window.Livewire) {
+                Livewire.dispatch(event, data);
+            }
+        }
+
+        // ─── LIVEWIRE EVENTS (dari server) ───────────────────────────────
         document.addEventListener('livewire:init', () => {
 
+            // refreshMap — dipanggil server setelah loadMapReports()
             Livewire.on('refreshMap', (payload) => {
-
-                const reports = payload.reports || payload;
-
+                const reports = Array.isArray(payload) ? payload : (payload.reports ?? []);
                 if (!map) return;
 
                 markers.forEach(m => map.removeLayer(m));
                 markers = [];
 
                 reports.forEach(r => {
-
                     const popup = `
-                <div style="min-width:200px">
-                    <strong>${r.name}</strong><br>
-                    <small>${r.location}</small><br>
-                    <span>${r.distance} km</span>
-                    ${r.url ? `<br><a href="${r.url}">Detail</a>` : ''}
-                </div>
-            `;
+                <div style="min-width:190px">
+                    <strong style="font-size:13px">${r.name}</strong>
+                    <div style="color:#64748b;font-size:11px;margin:3px 0">${r.location}</div>
+                    <div style="display:flex;justify-content:space-between;margin-top:6px">
+                        <span style="background:#dbeafe;color:#1e40af;font-size:10px;padding:1px 7px;border-radius:99px">${r.type}</span>
+                        <span style="color:#64748b;font-size:11px">${r.distance} km</span>
+                    </div>
+                    ${r.url ? `<a href="${r.url}" style="display:block;margin-top:6px;color:#2563eb;font-size:11px">Lihat detail →</a>` : ''}
+                </div>`;
 
-                    const marker = L.marker([r.lat, r.lng])
-                        .addTo(map)
-                        .bindPopup(popup);
-
+                    const marker = L.marker([r.lat, r.lng]).addTo(map).bindPopup(popup);
                     markers.push(marker);
                 });
-
             });
-
         });
 
+        // ─── START ────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', initMap);
 
-        // =========================
-        // PAGE LOAD
-        // =========================
-        document.addEventListener("DOMContentLoaded", function() {
-            initMap();
-        });
-
-
-        // =========================
-        // FIX MAP SIZE
-        // =========================
         document.addEventListener('visibilitychange', () => {
-            if (!document.hidden && map) {
-                map.invalidateSize();
-            }
+            if (!document.hidden && map) map.invalidateSize();
         });
     </script>
 @endpush
