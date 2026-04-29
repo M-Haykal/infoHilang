@@ -48,50 +48,81 @@
                 <nav class="py-4 overflow-y-auto flex-1">
                     <ul class="space-y-2 px-2">
 
-                        @php
-                            $menus = [
-                                ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
-                                ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
-                                ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
-                                ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
-                                ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
-                            ];
-                        @endphp
-
-                        @foreach ($menus as $menu)
+                        @if(auth()->user()->hasRole('admin'))
+                            {{-- Menu Sidebar Untuk Admin --}}
                             @php
-                                $isActive = false;
-
-                                // pengecekan URL aktif
-                                if ($menu['route'] == 'dashboard') {
-                                    $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
-                                } elseif ($menu['route'] == 'missing') {
-                                    $isActive =
-                                        request()->is('user/hilang*') ||
-                                        request()->is('user/edit-laporan*') ||
-                                        request()->is('user/detail-laporan*');
-                                } elseif ($menu['route'] == 'artikel') {
-                                    $isActive = request()->is('user/artikel*');
-                                } elseif ($menu['route'] == 'found') {
-                                    $isActive = request()->is('user/laporan-penemuan*');
-                                }
-                                else {
-                                    $isActive = request()->routeIs($menu['route'] . '*');
-                                }
+                                $adminMenus = [
+                                    ['route' => 'admin.dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard Admin'],
+                                    ['route' => 'admin.report', 'icon' => 'fa-solid fa-list-check', 'label' => 'Kelola Laporan'],
+                                    ['route' => 'admin.users', 'icon' => 'fa-solid fa-users', 'label' => 'Manajemen User'],
+                                    ['route' => 'admin.settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan Sistem'],
+                                ];
                             @endphp
 
-                            <li>
-                                <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}"
-                                    class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
+                            @foreach ($adminMenus as $menu)
+                                @php
+                                    $isActive = request()->routeIs($menu['route'] . '*');
+                                @endphp
 
-                                    <i
-                                        class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
-                                    </i>
+                                <li>
+                                    <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}"
+                                        class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
 
-                                    <span class="tracking-wide">{{ $menu['label'] }}</span>
-                                </a>
-                            </li>
-                        @endforeach
+                                        <i
+                                            class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                                        </i>
+
+                                        <span class="tracking-wide">{{ $menu['label'] }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+
+                        @else
+                            {{-- Menu Sidebar Untuk User Biasa --}}
+                            @php
+                                $menus = [
+                                    ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
+                                    ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
+                                    ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
+                                    ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
+                                    ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
+                                ];
+                            @endphp
+
+                            @foreach ($menus as $menu)
+                                @php
+                                    $isActive = false;
+
+                                    // pengecekan URL aktif
+                                    if ($menu['route'] == 'dashboard') {
+                                        $isActive = request()->is('user/dashboard*') || request()->is('user/form-*');
+                                    } elseif ($menu['route'] == 'missing') {
+                                        $isActive =
+                                            request()->is('user/hilang*') ||
+                                            request()->is('user/edit-laporan*') ||
+                                            request()->is('user/detail-laporan*');
+                                    } elseif ($menu['route'] == 'artikel') {
+                                        $isActive = request()->is('user/artikel*');
+                                    } elseif ($menu['route'] == 'found') {
+                                        $isActive = request()->is('user/laporan-penemuan*');
+                                    } else {
+                                        $isActive = request()->routeIs($menu['route'] . '*');
+                                    }
+                                @endphp
+
+                                <li>
+                                    <a href="{{ Route::has($menu['route']) ? route($menu['route']) : '#!' }}"
+                                        class="flex items-center space-x-3 px-4 py-3 rounded-xl transition-all duration-200 group relative {{ $isActive ? 'text-primary font-bold' : 'text-dark hover:text-primary hover:bg-slate-50' }}">
+
+                                        <i
+                                            class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
+                                        </i>
+
+                                        <span class="tracking-wide">{{ $menu['label'] }}</span>
+                                    </a>
+                                </li>
+                            @endforeach
+                        @endif
                     </ul>
                 </nav>
                 <div class="p-4 border-t border-netral-100 relative group">
@@ -170,6 +201,8 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="{{ asset('js/all.js') }}"></script>
     <script src="{{ asset('js/all.min.js') }}"></script>
 
@@ -190,15 +223,17 @@
                         <span class="font-medium text-netral-600">AI Gemini sedang menganalisis data...</span>
                     </div>
                 `;
-                resultDiv.className = 'mt-8 p-6 bg-white border border-netral-200 rounded-2xl shadow-sm';
+                resultDiv.className =
+                'mt-8 p-6 bg-white border border-netral-200 rounded-2xl shadow-sm';
                 resultDiv.classList.remove('hidden');
-                
+
                 this.disabled = true;
                 const originalText = this.innerHTML;
                 this.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Mengecek...';
 
                 const formData = new FormData(form);
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                    'content');
 
                 try {
                     const response = await fetch(`/user/check-duplicate/${type}`, {
@@ -214,7 +249,8 @@
                     const data = await response.json();
 
                     if (data.isDuplicate) {
-                        resultDiv.className = 'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm';
+                        resultDiv.className =
+                            'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm';
                         let html = `
                             <div class="flex items-start gap-4">
                                 <div class="bg-red-500 p-3 rounded-xl text-white">
@@ -241,7 +277,8 @@
                         html += `</div></div>`;
                         resultDiv.innerHTML = html;
                     } else if (data.similarity >= 50) {
-                        resultDiv.className = 'mt-8 p-6 bg-yellow-50 border border-yellow-200 rounded-2xl shadow-sm';
+                        resultDiv.className =
+                            'mt-8 p-6 bg-yellow-50 border border-yellow-200 rounded-2xl shadow-sm';
                         resultDiv.innerHTML = `
                             <div class="flex items-start gap-4">
                                 <div class="bg-yellow-500 p-3 rounded-xl text-white">
@@ -255,7 +292,8 @@
                             </div>
                         `;
                     } else {
-                        resultDiv.className = 'mt-8 p-6 bg-green-50 border border-green-200 rounded-2xl shadow-sm';
+                        resultDiv.className =
+                            'mt-8 p-6 bg-green-50 border border-green-200 rounded-2xl shadow-sm';
                         resultDiv.innerHTML = `
                             <div class="flex items-start gap-4">
                                 <div class="bg-green-500 p-3 rounded-xl text-white">
@@ -271,12 +309,17 @@
                     }
                 } catch (err) {
                     console.error(err);
-                    resultDiv.className = 'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm text-red-700';
-                    resultDiv.innerHTML = `<i class="fa-solid fa-circle-xmark mr-2"></i>Terjadi kesalahan sistem saat menghubungi AI Gemini.`;
+                    resultDiv.className =
+                        'mt-8 p-6 bg-red-50 border border-red-200 rounded-2xl shadow-sm text-red-700';
+                    resultDiv.innerHTML =
+                        `<i class="fa-solid fa-circle-xmark mr-2"></i>Terjadi kesalahan sistem saat menghubungi AI Gemini.`;
                 } finally {
                     this.disabled = false;
                     this.innerHTML = originalText;
-                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    resultDiv.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
                 }
             });
         });

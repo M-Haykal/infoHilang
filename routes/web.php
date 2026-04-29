@@ -14,8 +14,11 @@ use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
 use App\Http\Controllers\Dashboard\SettingsController;
 use App\Http\Controllers\Dashboard\ReportFoundController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\WilayahController;
 use App\Http\Controllers\ChatBotController;
+use App\Http\Middleware\CheckRole;
 use App\Livewire\Chat;
 use App\Livewire\DetailBlog;
 use App\Livewire\DetailMissing;
@@ -124,10 +127,10 @@ Route::middleware('guest.redirect')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/chat', Chat::class)->name('chat');
-    Route::prefix('user')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::middleware(CheckRole::class.':user')->prefix('user')->group(function () {
         Route::get('/profile', action: Profile::class)->name('profile');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
         Route::get('/hilang', [MissingsController::class, 'index'])->name('missing');
         Route::post('/check-duplicate/{type}', [DuplicateCheckController::class, 'check'])->name('check-duplicate');
 
@@ -185,6 +188,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/ditemukan', [ReportFoundController::class, 'index'])->name('found');
         Route::patch('/ditemukan/{id}/konfirmasi', [ReportFoundController::class, 'toggleConfirm'])
             ->name('report-found.confirm');
+    });
+
+    Route::middleware(CheckRole::class.':admin')->prefix('admin')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+        Route::post('/dashboard/filter-chart', [AdminDashboardController::class, 'filterChart'])->name('admin.dashboard.filter-chart');
+        Route::get('/laporan', [ReportController::class, 'index'])->name('admin.report');
+        Route::get('/laporan/type/{type}', [ReportController::class, 'index'])->name('admin.report.type');
+        Route::get('/laporan/type/{type}/{id}', [ReportController::class, 'show'])->name('admin.report.show');
+        Route::get('/laporan/type/{type}/{id}/edit', [ReportController::class, 'edit'])->name('admin.report.edit');
+        Route::put('/laporan/type/{type}/{id}/update', [ReportController::class, 'update'])->name('admin.report.update');
+        Route::delete('/laporan/type/{type}/{id}/delete', [ReportController::class, 'destroy'])->name('admin.report.delete');
     });
 });
 

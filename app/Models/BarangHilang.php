@@ -43,6 +43,14 @@ class BarangHilang extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Reward untuk barang hilang ini (optional)
+     */
+    public function reward()
+    {
+        return $this->morphOne(Reward::class, 'rewardable');
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';

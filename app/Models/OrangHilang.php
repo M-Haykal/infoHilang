@@ -40,6 +40,14 @@ class OrangHilang extends Model
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * Reward untuk orang hilang ini (optional)
+     */
+    public function reward()
+    {
+        return $this->morphOne(Reward::class, 'rewardable');
+    }
+
     public function getRouteKeyName()
     {
         return 'slug';
