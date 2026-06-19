@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import 'trix/dist/trix.css';
+@import "trix/dist/trix.css";
 
 trix-toolbar .trix-button-group {
     border-color: #eeeeee !important; /* netral-100 */
@@ -10,10 +10,50 @@ trix-toolbar .trix-button-group {
 
 trix-editor:focus {
     outline: none !important;
-    border-color: #0061FF !important;
+    border-color: #0061ff !important;
     box-shadow: none;
 }
 
 trix-editor.border-danger {
-    border-color: #EF4444 !important;
+    border-color: #ef4444 !important;
+}
+
+/* Driver.js custom theme */
+.driver-popover {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow:
+        0 10px 25px -5px rgba(0, 0, 0, 0.1),
+        0 8px 10px -6px rgba(0, 0, 0, 0.02);
+    font-family: inherit;
+}
+
+.driver-popover-title {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.driver-popover-description {
+    color: #475569;
+}
+
+.driver-popover-footer button {
+    background-color: #3b82f6;
+    border-radius: 8px;
+    padding: 6px 12px;
+}
+
+.driver-popover-footer .driver-next-btn,
+.driver-popover-footer .driver-close-btn {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.driver-popover-footer .driver-prev-btn {
+    background-color: #e2e8f0;
+    color: #1e293b;
+}
+
+.driver-popover-arrow {
+    border-color: #ffffff;
 }

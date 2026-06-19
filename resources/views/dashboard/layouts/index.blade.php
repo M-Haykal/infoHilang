@@ -48,20 +48,49 @@
                 <nav class="py-4 overflow-y-auto flex-1">
                     <ul class="space-y-2 px-2">
 
-                        @if(auth()->user()->hasRole('admin'))
+                        @if (auth()->user()->hasRole('admin'))
                             {{-- Menu Sidebar Untuk Admin --}}
                             @php
                                 $adminMenus = [
-                                    ['route' => 'admin.dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard Admin'],
-                                    ['route' => 'admin.report', 'icon' => 'fa-solid fa-list-check', 'label' => 'Kelola Laporan'],
-                                    ['route' => 'admin.users', 'icon' => 'fa-solid fa-users', 'label' => 'Manajemen User'],
-                                    ['route' => 'admin.settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan Sistem'],
+                                    [
+                                        'route' => 'admin.dashboard',
+                                        'icon' => 'fa-solid fa-gauge-high',
+                                        'label' => 'Dashboard Admin',
+                                    ],
+                                    [
+                                        'route' => 'admin.report',
+                                        'icon' => 'fa-solid fa-list-check',
+                                        'label' => 'Kelola Laporan',
+                                    ],
+                                    [
+                                        'route' => 'admin.chat',
+                                        'icon' => 'fa-solid fa-comments',
+                                        'label' => 'Manajemen Chat',
+                                    ],
+                                    [
+                                        'route' => 'admin.customer-chats.index',
+                                        'icon' => 'fa-solid fa-headset',
+                                        'label' => 'Customer Service',
+                                        'badge' => true,
+                                        'badge_count' => \App\Models\CustomerChatMessage::countUnreadConversations(),
+                                    ],
+                                    [
+                                        'route' => 'admin.user',
+                                        'icon' => 'fa-solid fa-users',
+                                        'label' => 'Manajemen User',
+                                    ],
+                                    [
+                                        'route' => 'admin.settings',
+                                        'icon' => 'fa-solid fa-gear',
+                                        'label' => 'Pengaturan Sistem',
+                                    ],
                                 ];
                             @endphp
 
                             @foreach ($adminMenus as $menu)
                                 @php
                                     $isActive = request()->routeIs($menu['route'] . '*');
+                                    $badgeCount = isset($menu['badge']) && $menu['badge'] ? ($menu['badge_count'] ?? 0) : 0;
                                 @endphp
 
                                 <li>
@@ -72,17 +101,30 @@
                                             class="{{ $menu['icon'] }} text-lg transition-all duration-200 {{ $isActive ? 'text-primary' : 'text-dark group-hover:text-primary' }}">
                                         </i>
 
-                                        <span class="tracking-wide">{{ $menu['label'] }}</span>
+                                        <span class="tracking-wide flex-1">{{ $menu['label'] }}</span>
+
+                                        @if ($badgeCount > 0)
+                                            <span class="bg-danger text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">
+                                                {{ $badgeCount > 9 ? '9+' : $badgeCount }}
+                                            </span>
+                                        @endif
                                     </a>
                                 </li>
                             @endforeach
-
                         @else
                             {{-- Menu Sidebar Untuk User Biasa --}}
                             @php
                                 $menus = [
-                                    ['route' => 'dashboard', 'icon' => 'fa-solid fa-gauge-high', 'label' => 'Dashboard'],
-                                    ['route' => 'missing', 'icon' => 'fa-solid fa-archive', 'label' => 'Daftar Laporan'],
+                                    [
+                                        'route' => 'dashboard',
+                                        'icon' => 'fa-solid fa-gauge-high',
+                                        'label' => 'Dashboard',
+                                    ],
+                                    [
+                                        'route' => 'missing',
+                                        'icon' => 'fa-solid fa-archive',
+                                        'label' => 'Daftar Laporan',
+                                    ],
                                     ['route' => 'found', 'icon' => 'fa-regular fa-flag', 'label' => 'Penemu'],
                                     ['route' => 'artikel', 'icon' => 'fa-regular fa-newspaper', 'label' => 'Artikel'],
                                     ['route' => 'settings', 'icon' => 'fa-solid fa-gear', 'label' => 'Pengaturan'],
@@ -136,14 +178,15 @@
                                 Ke Halaman Utama
                             </a>
                             <div class="my-2 border-t border-netral-100"></div>
-                            <form action="{{ route('logout') }}" method="POST">
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                style="display: none;">
                                 @csrf
-                                <button type="submit"
-                                    class="flex items-center w-full gap-3 px-3 py-2 font-bold text-sm text-danger hover:bg-danger-light rounded-xl transition-all duration-200">
-                                    <i class="fa-solid fa-right-from-bracket"></i>
-                                    Keluar
-                                </button>
                             </form>
+                            <button type="button" data-logout
+                                class="flex items-center w-full gap-3 px-3 py-2 font-bold text-sm text-danger hover:bg-danger-light rounded-xl transition-all duration-200">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Keluar
+                            </button>
                         </div>
                     </div>
 
@@ -224,7 +267,7 @@
                     </div>
                 `;
                 resultDiv.className =
-                'mt-8 p-6 bg-white border border-netral-200 rounded-2xl shadow-sm';
+                    'mt-8 p-6 bg-white border border-netral-200 rounded-2xl shadow-sm';
                 resultDiv.classList.remove('hidden');
 
                 this.disabled = true;
@@ -324,6 +367,52 @@
             });
         });
     </script>
+
+    @if (auth()->user()?->hasRole('admin'))
+    <script>
+        // Real-time update sidebar badge for Customer Service chats
+        if (window.Echo) {
+            window.Echo.private('chat.admin')
+                .listen('.NewCustomerChatMessage', (e) => {
+                    // Refresh badge tanpa reload halaman
+                    fetch('{{ route("admin.customer-chats.index") }}', {
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Accept': 'text/html'
+                        }
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const badge = doc.querySelector('span.bg-danger');
+                        const currentBadge = document.querySelector('nav span.bg-danger');
+                        
+                        if (badge) {
+                            // Update badge di sidebar
+                            const text = badge.textContent.trim();
+                            if (currentBadge) {
+                                currentBadge.textContent = text;
+                            } else {
+                                // Tambah badge baru jika belum ada
+                                const customerLink = document.querySelector('a[href$="customer-chats"]');
+                                if (customerLink) {
+                                    const newBadge = document.createElement('span');
+                                    newBadge.className = 'bg-danger text-white text-[10px] font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center';
+                                    newBadge.textContent = text;
+                                    customerLink.appendChild(newBadge);
+                                }
+                            }
+                        } else if (currentBadge) {
+                            // Hapus badge jika tidak ada unread
+                            currentBadge.remove();
+                        }
+                    })
+                    .catch(() => {});
+                });
+        }
+    </script>
+    @endif
 </body>
 
 </html>

@@ -170,6 +170,29 @@
                     });
                 });
             });
+
+            // 🔸 Konfirmasi Logout
+            document.querySelectorAll('[data-logout]').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    Swal.fire({
+                        title: 'Yakin ingin Logout?',
+                        text: "Anda akan keluar dari sesi akun anda",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya, Logout!',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            document.getElementById('logout-form').submit();
+                        }
+                    });
+                });
+            });
         });
     </script>
 @endpush

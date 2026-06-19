@@ -194,11 +194,28 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::post('/dashboard/filter-chart', [AdminDashboardController::class, 'filterChart'])->name('admin.dashboard.filter-chart');
         Route::get('/laporan', [ReportController::class, 'index'])->name('admin.report');
-        Route::get('/laporan/type/{type}', [ReportController::class, 'index'])->name('admin.report.type');
-        Route::get('/laporan/type/{type}/{id}', [ReportController::class, 'show'])->name('admin.report.show');
-        Route::get('/laporan/type/{type}/{id}/edit', [ReportController::class, 'edit'])->name('admin.report.edit');
-        Route::put('/laporan/type/{type}/{id}/update', [ReportController::class, 'update'])->name('admin.report.update');
-        Route::delete('/laporan/type/{type}/{id}/delete', [ReportController::class, 'destroy'])->name('admin.report.delete');
+        Route::post('/laporan/ajax', [ReportController::class, 'ajax'])->name('admin.report.ajax');
+        
+        // Route Detail Laporan Admin
+        Route::get('/detail-laporan-barang/{slug}', [ReportController::class, 'showBarang'])->name('admin.report.detail.barang');
+        Route::get('/detail-laporan-orang/{slug}', [ReportController::class, 'showOrang'])->name('admin.report.detail.orang');
+        Route::get('/detail-laporan-hewan/{slug}', [ReportController::class, 'showHewan'])->name('admin.report.detail.hewan');
+        
+        // Route Manajemen User Admin
+        Route::get('/user', [\App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.user');
+        Route::post('/user/ajax', [\App\Http\Controllers\Admin\ManageUserController::class, 'ajax'])->name('admin.user.ajax');
+        
+         // Route Manajemen Chat Admin (Chatbot)
+        Route::get('/chat', [\App\Http\Controllers\Admin\ChatController::class, 'index'])->name('admin.chat');
+        Route::get('/chat/list', [\App\Http\Controllers\Admin\ChatController::class, 'list'])->name('admin.chat.list');
+        Route::get('/chat/session/{userId}', [\App\Http\Controllers\Admin\ChatController::class, 'getSession']);
+        Route::post('/chat/reply/{userId}', [\App\Http\Controllers\Admin\ChatController::class, 'sendReply']);
+        Route::post('/chat/handled/{userId}', [\App\Http\Controllers\Admin\ChatController::class, 'markHandled']);
+
+        // Route Customer Service Chat (Real-time)
+        Route::get('/customer-chats', [\App\Http\Controllers\Admin\CustomerChatController::class, 'index'])->name('admin.customer-chats.index');
+        Route::get('/customer-chats/{identifier}', [\App\Http\Controllers\Admin\CustomerChatController::class, 'show'])->name('admin.customer-chats.show');
+        Route::post('/customer-chats/{identifier}/reply', [\App\Http\Controllers\Admin\CustomerChatController::class, 'reply'])->name('admin.customer-chats.reply');
     });
 });
 

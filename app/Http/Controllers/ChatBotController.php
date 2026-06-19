@@ -39,10 +39,19 @@ class ChatBotController extends Controller
             // }
 
             // Step 2: Process dengan scope terbatas
+            // Generate atau ambil session id untuk guest user
+            $sessionId = $request->cookie('chat_session_id') ?? \Illuminate\Support\Str::uuid();
+            
             $result = $this->chatbotService->processMessage(
                 $validated['message'],
-                auth()->id()
+                auth()->id(),
+                $sessionId
             );
+
+            // Set cookie session untuk guest 7 hari
+            if (!auth()->check()) {
+                cookie()->queue('chat_session_id', $sessionId, 60 * 24 * 7);
+            }
 
             // Step 3: Jika AI response, post-filter
             // if (!($result['handover'] ?? false) && isset($result['message'])) {

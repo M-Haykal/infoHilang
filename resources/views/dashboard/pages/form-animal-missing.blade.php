@@ -54,7 +54,7 @@
                             <label class="block text-sm font-semibold text-dark mb-2">Jenis Kelamin <span
                                     class="text-danger">*</span></label>
                             <div class="relative">
-                                <select name="jenis_kelamin"
+                                <select id="jenis_kelamin" name="jenis_kelamin"
                                     class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none appearance-none cursor-pointer">
                                     <option value="" disabled selected>Pilih jenis kelamin</option>
                                     <option value="Jantan" {{ old('jenis_kelamin') == 'Jantan' ? 'selected' : '' }}>Jantan

@@ -229,9 +229,9 @@
 
                         // Update Chart Data
                         trafficChart.data.labels = data.labels;
-                        trafficChart.data.datasets[0].data = data.orang;
-                        trafficChart.data.datasets[1].data = data.hewan;
-                        trafficChart.data.datasets[2].data = data.barang;
+                        trafficChart.data.datasets[0].data = data.barang;
+                        trafficChart.data.datasets[1].data = data.orang;
+                        trafficChart.data.datasets[2].data = data.hewan;
                         trafficChart.update();
 
                     } catch (error) {

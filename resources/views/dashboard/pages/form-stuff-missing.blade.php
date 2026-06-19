@@ -56,7 +56,7 @@
                     </h3>
 
                     <!-- Nama Barang -->
-                    <div class="mb-6" id="nama_barang">
+                    <div class="mb-6">
                         <label for="nama_barang" class="block text-sm font-semibold text-dark mb-2">Nama Barang</label>
                         <input type="text" id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('nama_barang') border-danger @enderror"
@@ -67,10 +67,10 @@
                     </div>
 
                     <!-- Deskripsi Barang -->
-                    <div class="mb-6" id="deskripsi_barang">
+                    <div class="mb-6">
                         <label for="deskripsi_barang" class="block text-sm font-semibold text-dark mb-2">Deskripsi
                             Barang</label>
-                        <textarea name="deskripsi_barang" rows="3"
+                        <textarea id="deskripsi_barang" name="deskripsi_barang" rows="3"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('deskripsi_barang') border-danger @enderror"
                             placeholder="Contoh: Barang berwarna hitam, merk 'ABC', dll.">{{ old('deskripsi_barang') }}</textarea>
                         @error('deskripsi_barang')
@@ -80,20 +80,20 @@
 
                     <!-- Jenis & Merk Barang -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        <div class="mb-5 sm:mb-0" id="jenis_barang">
+                        <div class="mb-5 sm:mb-0">
                             <label for="jenis_barang" class="block text-sm font-semibold text-dark mb-2">Jenis
                                 Barang</label>
-                            <input type="text" name="jenis_barang" value="{{ old('jenis_barang') }}"
+                            <input type="text" id="jenis_barang" name="jenis_barang" value="{{ old('jenis_barang') }}"
                                 class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('jenis_barang') border-danger @enderror"
                                 placeholder="Masukan jenis barang" required>
                             @error('jenis_barang')
                                 <p class="text-danger text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div id="merk_barang">
+                        <div>
                             <label for="merk_barang" class="block text-sm font-semibold text-dark mb-2">Merk
                                 Barang</label>
-                            <input type="text" name="merk_barang" value="{{ old('merk_barang') }}"
+                            <input type="text" id="merk_barang" name="merk_barang" value="{{ old('merk_barang') }}"
                                 class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('merk_barang') border-danger @enderror"
                                 placeholder="Masukan merk barang" required>
                             @error('merk_barang')
@@ -113,10 +113,10 @@
                     </h3>
 
                     <!-- Warna Barang -->
-                    <div class="mb-6" id="warna_barang">
+                    <div class="mb-6">
                         <label for="warna_barang" class="block text-sm font-semibold text-dark mb-2">Warna
                             Barang</label>
-                        <input type="text" name="warna_barang" value="{{ old('warna_barang') }}"
+                        <input type="text" id="warna_barang" name="warna_barang" value="{{ old('warna_barang') }}"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none @error('warna_barang') border-danger @enderror"
                             placeholder="Masukan warna barang" required>
                         @error('warna_barang')
@@ -176,7 +176,7 @@
                     </h3>
 
                     <!-- Lokasi -->
-                    <div class="mb-6">
+                    <div class="mb-6" id="map-container">
                         <label class="block text-sm font-semibold text-dark mb-2">Lokasi Terakhir Dilihat</label>
                         <textarea id="lokasi_terakhir_dilihat" name="lokasi_terakhir_dilihat" rows="3"
                             class="w-full px-4 py-3 border border-netral-200 rounded-xl focus:border-primary bg-netral-50 text-sm transition-all outline-none"

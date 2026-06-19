@@ -90,10 +90,17 @@
                                 <p class="font-black text-dark truncate">{{ Auth::user()->fullname }}</p>
                             </div>
                             <div class="p-2">
-                                <a href="{{ route('dashboard') }}"
-                                    class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
-                                    <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard
-                                </a>
+                                @if (Auth::user()->role === 'user')
+                                    <a href="{{ route('dashboard') }}"
+                                        class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
+                                        <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard
+                                    </a>
+                                @else
+                                    <a href="{{ route('admin.dashboard') }}"
+                                        class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
+                                        <i class="fa-solid fa-gauge-high text-sm"></i> Dashboard Admin
+                                    </a>
+                                @endif
                                 <a href="{{ route('settings') }}"
                                     class="flex items-center gap-3 px-3 py-2 text-dark hover:bg-primary-light hover:text-primary rounded-xl transition">
                                     <i class="fa-solid fa-gear text-sm"></i> Pengaturan
@@ -124,7 +131,7 @@
     <!-- Konten Utama -->
     {{ $slot }}
 
-    @include('components.chatbot-widget')
+    {{-- @include('components.chatbot-widget') --}}
 
     <!-- Footer -->
     <footer class="bg-dark text-netral-400 py-12 px-8" wire:ignore>
@@ -173,6 +180,9 @@
             userId: {{ auth()->id() ?? 'null' }}
         };
     </script>
+
+    {{-- User Chat Support Widget --}}
+    @livewire('user-chat')
 </body>
 
 </html>

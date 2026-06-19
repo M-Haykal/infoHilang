@@ -23,9 +23,9 @@ class DashboardController extends Controller
 
         // Generate data per hari untuk chart
         $dates = [];
+        $barangData = [];
         $orangData = [];
         $hewanData = [];
-        $barangData = [];
 
         $start = Carbon::parse($startDate);
         $end = Carbon::parse($endDate);
@@ -41,9 +41,9 @@ class DashboardController extends Controller
 
         $chartData = [
             'labels' => $dates,
+            'barang' => $barangData,
             'orang' => $orangData,
             'hewan' => $hewanData,
-            'barang' => $barangData,
             'startDate' => $startDate,
             'endDate' => $endDate
         ];

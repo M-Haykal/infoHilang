@@ -62,7 +62,7 @@
 
 
         <!-- MODAL DETAIL -->
-        <div x-show="open" x-transition class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        {{-- <div x-show="open" x-transition class="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
 
             <div @click.away="open=false" class="bg-white rounded-xl shadow-lg w-full max-w-lg p-6 space-y-4">
 
@@ -107,7 +107,7 @@
                 </form>
 
             </div>
-        </div>
+        </div> --}}
 
     </div>
 @endsection

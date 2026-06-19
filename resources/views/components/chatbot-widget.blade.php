@@ -409,6 +409,67 @@
             localStorage.setItem('chatbot_seen', 'true');
         }, 2000);
     }
+
+    // Simple Polling untuk chat realtime (lebih stabil tanpa masalah websocket)
+    let lastMessageCount = messageHistory.length;
+    
+    function checkNewAdminMessage() {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+
+        const chatSessionId = getCookie('chat_session_id');
+        
+        if (chatSessionId) {
+            fetch(`/admin/chat/session/${chatSessionId}`, {
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.messages.length > lastMessageCount) {
+                    // Ada pesan baru dari admin
+                    const newMessages = data.messages.slice(lastMessageCount);
+                    
+                    newMessages.forEach(msg => {
+                        if (msg.sender === 'admin' || msg.sender === 'bot') {
+                            addMessage(msg.message, false, 'normal');
+                            
+                            // Hapus input disabled
+                            document.getElementById('chatbot-input').disabled = false;
+                            document.getElementById('send-btn').disabled = false;
+                            document.getElementById('chatbot-input').placeholder = 'Ketik pesan Anda...';
+                            
+                            // Notifikasi badge
+                            if (!isChatbotOpen) {
+                                document.getElementById('chatbot-badge').classList.remove('hidden');
+                            }
+
+                            // Aktifkan kembali mode AI
+                            if (isAdminMode) {
+                                resetToAI();
+                            }
+                        }
+                    });
+                    
+                    lastMessageCount = data.messages.length;
+                }
+            })
+            .catch(err => {
+                // Silent fail
+            });
+        }
+
+        // Cek setiap 3 detik
+        setTimeout(checkNewAdminMessage, 3000);
+    }
+
+    // Jalankan polling
+    checkNewAdminMessage();
 </script>
 @endpush
 
