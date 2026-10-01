@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Services\EmailOtpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -13,17 +14,23 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        $kontaks = [
-            'whatsapp' => 'Whatsapp',
+        // Daftar jenis kontak darurat yang boleh dipilih (dipakai sebagai dropdown).
+        $contactTypes = [
+            'whatsapp' => 'WhatsApp',
             'instagram' => 'Instagram',
             'email' => 'Email',
             'nomor_telepon' => 'Nomor Telepon',
         ];
 
         $user = Auth::user();
+
         return view('dashboard.pages.settings', [
             'user' => $user,
-            'kontak' => $user->kontak ?? []
+            'kontak' => $user->kontak ?? [],
+            'contactTypes' => $contactTypes,
+            // Data untuk modal verifikasi email (OTP)
+            'otpCooldownLeft' => $user->hasVerifiedEmail() ? 0 : app(EmailOtpService::class)->cooldownLeft($user),
+            'otpTtlMinutes' => EmailOtpService::TTL_MINUTES,
         ]);
     }
 
@@ -35,6 +42,7 @@ class SettingsController extends Controller
             'fullname' => 'required|string|max:255',
             'username' => 'nullable|string|max:50|unique:users,username,' . $user->id,
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:25',
             'alamat' => 'nullable|string|max:1000',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             'kontak_keys' => 'nullable|array',
@@ -70,6 +78,16 @@ class SettingsController extends Controller
         $user->fullname = $request->input('fullname');
         $user->username = $request->input('username') ?? $user->username;
         $user->email = $request->input('email');
+
+        // Bila email diubah, status verifikasi sebelumnya tidak lagi berlaku:
+        // reset email_verified_at + hapus kode OTP lama.
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+            app(EmailOtpService::class)->clear($user);
+        }
+
+        // 'phone' disimpan ke kolom 'no_hp' melalui accessor/mutator di model User.
+        $user->phone = $request->input('phone') ?: null;
         $user->alamat = $request->input('alamat') ?? null;
 
         // Handle avatar removal

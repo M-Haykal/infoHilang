@@ -14,7 +14,7 @@
     @stack('style')
 </head>
 
-<body class="bg-netral-50 font-sans min-h-screen">
+<body class="bg-netral-50 font-sans min-h-screen" data-user-role="{{ auth()->user()?->role ?? 'user' }}">
     @include('components.loading')
     <div class="flex min-h-screen relative">
         <div class="lg:hidden fixed left-0 top-0 z-40 p-4 w-fit pointer-events-none">

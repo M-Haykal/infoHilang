@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="space-y-6">
+    <div class="space-y-6" data-page="admin-manage-report">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <h1 class="text-2xl font-bold text-dark">Kelola Semua Laporan</h1>

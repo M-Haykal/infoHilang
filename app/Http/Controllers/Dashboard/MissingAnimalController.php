@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\HewanHilang;
+use App\Models\LaporanDitemukan;
 use Illuminate\Http\Request;
 use App\Services\MissingAnimalService;
 use Illuminate\Validation\ValidationException;
@@ -60,7 +61,14 @@ class MissingAnimalController extends Controller
             'comentars.user',
             'comentars.replies.user'
         ]);
-        return view('dashboard.pages.detail-animal-missing', compact('hewanHilang'));
+
+        $laporanDitemukan = LaporanDitemukan::where('foundable_id', $hewanHilang->id)
+            ->where('foundable_type', HewanHilang::class)
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return view('dashboard.pages.detail-animal-missing', compact('hewanHilang', 'laporanDitemukan'));
     }
 
     // Di controller

@@ -12,7 +12,9 @@ use App\Http\Controllers\Dashboard\MissingAnimalController;
 use App\Http\Controllers\Dashboard\MissingPersonController;
 use App\Http\Controllers\Dashboard\MissingsController;
 use App\Http\Controllers\Dashboard\MissingStuffController;
+use App\Http\Controllers\Dashboard\SSEController;
 use App\Http\Controllers\Dashboard\SettingsController;
+use App\Http\Controllers\Dashboard\EmailVerificationController;
 use App\Http\Controllers\Dashboard\ReportFoundController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ReportController;
@@ -128,6 +130,10 @@ Route::middleware('guest.redirect')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/chat', Chat::class)->name('chat');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // SSE endpoint untuk real-time dashboard updates
+    Route::get('/sse/dashboard-counts', [SSEController::class, 'stream'])->name('sse.dashboard');
+    
     Route::middleware(CheckRole::class.':user')->prefix('user')->group(function () {
         Route::get('/profile', action: Profile::class)->name('profile');
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -138,6 +144,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
         Route::put('/settings/profil', [SettingsController::class, 'updateProfile'])->name('settings.profile.update');
         Route::put('/settings/password', [SettingsController::class, 'updatePassword'])->name('settings.password.update');
+
+        // Verifikasi email via OTP
+        Route::post('/settings/email/otp', [EmailVerificationController::class, 'send'])->name('settings.email.send-otp');
+        Route::post('/settings/email/verify', [EmailVerificationController::class, 'verify'])->name('settings.email.verify');
 
         // Form laporan orang hilang
         Route::get('/form-orang-hilang', [MissingPersonController::class, 'index'])->name('form-orang-hilang');

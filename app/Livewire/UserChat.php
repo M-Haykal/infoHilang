@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Events\NewCustomerChatMessage;
 use App\Models\CustomerChatMessage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -88,8 +89,14 @@ class UserChat extends Component
             'is_read' => false,
         ]);
 
-        // Broadcast event (tanpa toOthers karena broadcast ke semua termasuk sender)
-        broadcast(new NewCustomerChatMessage($chatMessage));
+        // Broadcast event (tanpa toOthers karena broadcast ke semua termasuk sender).
+        // Dibungkus try/catch supaya pesan user tetap terkirim walau server
+        // realtime (Reverb) sedang tidak berjalan / tidak bisa dihubungi.
+        try {
+            broadcast(new NewCustomerChatMessage($chatMessage));
+        } catch (\Throwable $e) {
+            Log::warning('Gagal broadcast pesan chat: ' . $e->getMessage());
+        }
 
         // Tambahkan pesan ke array lokal tanpa reload dari DB (lebih cepat)
         $this->messages[] = [

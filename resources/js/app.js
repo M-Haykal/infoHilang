@@ -28,17 +28,19 @@ window.Echo = new Echo({
 
 document.addEventListener("DOMContentLoaded", () => {
     const pageElement = document.querySelector(
-        '[data-page="dashboard"], [data-page="form-animal-missing"], [data-page="form-person-missing"], [data-page="form-stuff-missing"]',
+        '[data-page="dashboard"], [data-page="form-animal-missing"], [data-page="form-person-missing"], [data-page="form-stuff-missing"], [data-page="admin-manage-report"], [data-page="admin-manage-user"], [data-page="admin-chat"], [data-page="admin-customer-chats"]',
     );
     if (!pageElement) return;
 
     const page = pageElement.dataset.page;
 
     // ============================================================
-    //  DEFINISI TOUR UNTUK SEMUA HALAMAN (sudah di-uncomment semua)
+    //  DEFINISI TOUR UNTUK SEMUA HALAMAN
     // ============================================================
     const tours = {
-        // -------------------- DASHBOARD --------------------
+        // ==================== USER TOURS ====================
+
+        // -------------------- DASHBOARD USER --------------------
         dashboard: {
             key: "tour_dashboard_done",
             steps: [
@@ -106,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
         },
 
-        // -------------------- FORM HEWAN HILANG --------------------
+        // -------------------- FORM HEWAN HILANG (USER) --------------------
         "form-animal-missing": {
             key: "tour_animal_done",
             steps: [
@@ -155,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     position: "bottom",
                 },
                 {
-                    element: "#map-container", // perbaiki selector
+                    element: "#map-container",
                     intro: "Klik peta untuk menandai lokasi secara akurat",
                     position: "bottom",
                 },
@@ -180,7 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
         },
 
-        // -------------------- FORM ORANG HILANG --------------------
+        // -------------------- FORM ORANG HILANG (USER) --------------------
         "form-person-missing": {
             key: "tour_person_done",
             steps: [
@@ -224,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     position: "bottom",
                 },
                 {
-                    element: "#map-container", // perbaiki selector
+                    element: "#map-container",
                     intro: "Tandai lokasi di peta (sangat penting!)",
                     position: "bottom",
                 },
@@ -249,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
             ],
         },
 
-        // -------------------- FORM BARANG HILANG --------------------
+        // -------------------- FORM BARANG HILANG (USER) --------------------
         "form-stuff-missing": {
             key: "tour_stuff_done",
             steps: [
@@ -298,7 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     position: "bottom",
                 },
                 {
-                    element: "#map-container", // perbaiki selector
+                    element: "#map-container",
                     intro: "Tandai lokasi di peta",
                     position: "bottom",
                 },
@@ -327,12 +329,196 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
             ],
         },
+
+        // ==================== ADMIN TOURS ====================
+
+        // -------------------- DASHBOARD ADMIN --------------------
+        "admin-dashboard": {
+            key: "tour_admin_dashboard_done",
+            steps: [
+                {
+                    title: "Selamat Datang di Dashboard Admin InfoHilang!",
+                    intro: "Di sini Anda dapat memonitor seluruh laporan kehilangan dan mengelola sistem.",
+                },
+                {
+                    title: "Halaman Dashboard Admin",
+                    element: "#dashboard",
+                    intro: "Ini adalah dashboard admin. Pantau semua aktivitas laporan kehilangan di sini.",
+                    position: "bottom",
+                },
+                {
+                    title: "Memperluas Tampilan",
+                    element: "#fullscreen-button",
+                    intro: "Klik tombol ini untuk memperluas tampilan dashboard ke layar penuh.",
+                    position: "bottom",
+                },
+                {
+                    title: "Keterangan Barang Hilang",
+                    element: "#missing-stuff-card",
+                    intro: "Total jumlah laporan barang hilang dari seluruh user.",
+                    position: "bottom",
+                },
+                {
+                    title: "Keterangan Orang Hilang",
+                    element: "#missing-person-card",
+                    intro: "Total jumlah laporan orang hilang dari seluruh user.",
+                    position: "bottom",
+                },
+                {
+                    title: "Keterangan Hewan Hilang",
+                    element: "#missing-animal-card",
+                    intro: "Total jumlah laporan hewan hilang dari seluruh user.",
+                    position: "bottom",
+                },
+                {
+                    title: "Grafik Traffic Laporan",
+                    element: "#admin-charts",
+                    intro: "Lihat grafik traffic laporan hilang berdasarkan tanggal. Filter sesuai rentang waktu yang diinginkan.",
+                    position: "top",
+                },
+                {
+                    title: "Filter Grafik",
+                    element: "#filterChartForm",
+                    intro: "Gunakan filter tanggal untuk melihat data laporan pada periode tertentu.",
+                    position: "bottom",
+                },
+                {
+                    intro: "Itu saja untuk tur dashboard admin! Gunakan menu sidebar untuk mengelola laporan, user, dan chat.",
+                },
+            ],
+        },
+
+        // -------------------- KELOLA LAPORAN (ADMIN) --------------------
+        "admin-manage-report": {
+            key: "tour_admin_report_done",
+            steps: [
+                {
+                    title: "Kelola Semua Laporan",
+                    intro: "Di halaman ini Anda dapat melihat dan mengelola semua laporan kehilangan dari seluruh user.",
+                },
+                {
+                    title: "Filter Kategori",
+                    element: "#filterKategori",
+                    intro: "Filter laporan berdasarkan kategori: Orang Hilang, Hewan Hilang, atau Barang Hilang.",
+                    position: "bottom",
+                },
+                {
+                    title: "Filter Tanggal",
+                    element: "#startDate",
+                    intro: "Filter laporan berdasarkan rentang tanggal pembuatan laporan.",
+                    position: "bottom",
+                },
+                {
+                    title: "Tombol Filter & Reset",
+                    element: "#btnFilter",
+                    intro: "Klik tombol Filter untuk menerapkan filter, atau Reset untuk menghapus filter.",
+                    position: "bottom",
+                },
+                {
+                    title: "Tabel Data Laporan",
+                    element: "#reportsTable",
+                    intro: "Tabel ini menampilkan semua laporan. Anda bisa melihat detail atau menghapus laporan yang tidak sesuai.",
+                    position: "top",
+                },
+                {
+                    intro: "Selesai! Gunakan fitur ini untuk memantau dan memoderasi laporan pengguna.",
+                },
+            ],
+        },
+
+        // -------------------- MANAJEMEN USER (ADMIN) --------------------
+        "admin-manage-user": {
+            key: "tour_admin_user_done",
+            steps: [
+                {
+                    title: "Manajemen User",
+                    intro: "Di halaman ini Anda dapat mengelola semua user yang terdaftar di sistem InfoHilang.",
+                },
+                {
+                    title: "Filter Tanggal",
+                    element: "#startDate",
+                    intro: "Filter user berdasarkan tanggal pendaftaran.",
+                    position: "bottom",
+                },
+                {
+                    title: "Tombol Filter & Reset",
+                    element: "#btnFilter",
+                    intro: "Klik tombol Filter untuk menerapkan filter tanggal, atau Reset untuk menghapusnya.",
+                    position: "bottom",
+                },
+                {
+                    title: "Tabel Data User",
+                    element: "#usersTable",
+                    intro: "Tabel ini menampilkan semua user terdaftar. Anda bisa melihat detail atau menghapus user jika diperlukan.",
+                    position: "top",
+                },
+                {
+                    intro: "Selesai! Gunakan halaman ini untuk memantau dan mengelola pengguna sistem.",
+                },
+            ],
+        },
+
+        // -------------------- MANAJEMEN CHAT (ADMIN) --------------------
+        "admin-chat": {
+            key: "tour_admin_chat_done",
+            steps: [
+                {
+                    title: "Manajemen Chat",
+                    intro: "Di halaman ini Anda dapat menanggapi chat user ketika AI tidak bisa menjawab pertanyaan mereka.",
+                },
+                {
+                    title: "Daftar User Aktif",
+                    element: "#userList",
+                    intro: "Daftar user yang sedang atau pernah chat dengan admin. Klik salah satu untuk melihat percakapan.",
+                    position: "right",
+                },
+                {
+                    title: "Area Chat",
+                    element: "#chatMessages",
+                    intro: "Percakapan dengan user akan tampil di sini. Pesan user di sebelah kanan, balasan admin di sebelah kiri.",
+                    position: "left",
+                },
+                {
+                    title: "Ketik Balasan",
+                    element: "#replyMessage",
+                    intro: "Ketik pesan balasan Anda di sini, lalu klik Kirim untuk mengirimkannya ke user.",
+                    position: "top",
+                },
+                {
+                    title: "Tandai Selesai",
+                    element: "#markHandledBtn",
+                    intro: "Setelah selesai menangani chat, klik tombol ini untuk menandai sesi chat sebagai selesai.",
+                    position: "bottom",
+                },
+                {
+                    intro: "Selesai! Pastikan untuk selalu merespon chat user dengan cepat dan ramah.",
+                },
+            ],
+        },
     };
 
     // ============================================================
     //  EKSEKUSI TOUR
     // ============================================================
-    const tourConfig = tours[page];
+
+    // Tentukan tour key berdasarkan halaman dan role
+    let tourKey = null;
+    let tourConfig = null;
+
+    // Untuk halaman dashboard, bedakan antara admin dan user
+    if (page === "dashboard") {
+        // Cek apakah user adalah admin (dari meta tag atau data attribute)
+        const isAdmin = document.body.dataset.userRole === "admin";
+        if (isAdmin) {
+            tourKey = "admin-dashboard";
+        } else {
+            tourKey = "dashboard";
+        }
+    } else {
+        tourKey = page;
+    }
+
+    tourConfig = tours[tourKey];
     if (!tourConfig) return;
 
     // Cek apakah tur sudah pernah ditampilkan
@@ -348,15 +534,64 @@ document.addEventListener("DOMContentLoaded", () => {
                 nextLabel: "Lanjut",
                 prevLabel: "Kembali",
                 doneLabel: "Selesai",
-                disableInteraction: true, // mencegah interaksi selama tur (opsional)
+                disableInteraction: true,
                 showProgress: true,
                 exitOnOverlayClick: false,
                 exitOnEsc: true,
-                scrollToElement: true, // aktifkan scroll otomatis ke elemen
-                scrollPadding: 80, // beri jarak 80px dari atas agar tidak terlalu menempel
+                scrollToElement: true,
+                scrollPadding: 80,
             })
             .oncomplete(() => localStorage.setItem(tourConfig.key, "yes"))
             .onexit(() => localStorage.setItem(tourConfig.key, "yes"))
             .start();
-    }, 800); // delay 800ms cukup untuk AOS dan peta
+    }, 800);
 });
+
+// ============================================================
+//  SSE REAL-TIME DASHBOARD UPDATES
+//  Update jumlah laporan (barang, orang, hewan) secara real-time
+// ============================================================
+(function initSSE() {
+    // Hanya jalankan di halaman yang memiliki card laporan (dashboard)
+    if (!document.querySelector('#missing-stuff-card, #missing-person-card, #missing-animal-card')) {
+        return;
+    }
+
+    if (!window.EventSource) {
+        console.warn('Browser tidak mendukung SSE (Server-Sent Events)');
+        return;
+    }
+
+    const sseSource = new EventSource('/sse/dashboard-counts');
+
+    sseSource.onmessage = function (event) {
+        try {
+            const data = JSON.parse(event.data);
+
+            const stuffCard = document.querySelector('#missing-stuff-card p');
+            const personCard = document.querySelector('#missing-person-card p');
+            const animalCard = document.querySelector('#missing-animal-card p');
+
+            if (stuffCard && data.missing_items !== undefined) {
+                stuffCard.textContent = data.missing_items;
+            }
+            if (personCard && data.missing_persons !== undefined) {
+                personCard.textContent = data.missing_persons;
+            }
+            if (animalCard && data.missing_animals !== undefined) {
+                animalCard.textContent = data.missing_animals;
+            }
+        } catch (e) {
+            console.error('[SSE] Parse error:', e);
+        }
+    };
+
+    sseSource.onerror = function () {
+        console.warn('[SSE] Connection error. Akan reconnect otomatis...');
+    };
+
+    // Tutup koneksi saat page unload
+    window.addEventListener('beforeunload', function () {
+        sseSource.close();
+    });
+})();

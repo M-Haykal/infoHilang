@@ -8,10 +8,11 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements CanResetPassword
+class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, CanResetPasswordTrait, HasRoles;
 
@@ -28,6 +29,7 @@ class User extends Authenticatable implements CanResetPassword
         'avatar',
         'role',
         'alamat',
+        'no_hp',
         'kontak',
         'google_id',
     ];
@@ -40,6 +42,10 @@ class User extends Authenticatable implements CanResetPassword
     protected $hidden = [
         'password',
         'remember_token',
+        'email_otp_code',
+        'email_otp_expires_at',
+        'email_otp_sent_at',
+        'email_otp_attempts',
     ];
 
     /**
@@ -49,6 +55,8 @@ class User extends Authenticatable implements CanResetPassword
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'email_otp_expires_at' => 'datetime',
+        'email_otp_sent_at' => 'datetime',
         'kontak' => 'array',
     ];
 
@@ -75,5 +83,36 @@ class User extends Authenticatable implements CanResetPassword
     public function hasRole($role)
     {
         return $this->role === $role;
+    }
+
+    /**
+     * Kolom database untuk nomor telepon/WhatsApp bernama "no_hp".
+     * Accessor & mutator ini membuat penggunaannya konsisten sebagai "phone"
+     * (dipakai di form Pengaturan Akun maupun saat mengambil kontak penemu).
+     */
+    public function getPhoneAttribute(): ?string
+    {
+        return $this->attributes['no_hp'] ?? null;
+    }
+
+    public function setPhoneAttribute($value): void
+    {
+        $this->attributes['no_hp'] = $value;
+    }
+
+    /**
+     * Kirim notifikasi verifikasi email.
+     *
+     * Kita override agar memakai alur OTP milik InfoHilang (bukan link
+     * verifikasi bawaan Laravel). Dipakai oleh event `Registered`
+     * (lihat App\Providers\EventServiceProvider) maupun pemanggilan manual.
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        if ($this->hasVerifiedEmail()) {
+            return;
+        }
+
+        app(\App\Services\EmailOtpService::class)->send($this);
     }
 }

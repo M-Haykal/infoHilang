@@ -7,6 +7,7 @@ use App\Services\GeminiConnectService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\OrangHilang;
+use App\Models\LaporanDitemukan;
 use App\Services\MissingPersonService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Validation\ValidationException;
@@ -52,7 +53,14 @@ class MissingPersonController extends Controller
             'comentars.user',
             'comentars.replies.user'
         ]);
-        return view('dashboard.pages.detail-person-missing', compact('orangHilang'));
+
+        $laporanDitemukan = LaporanDitemukan::where('foundable_id', $orangHilang->id)
+            ->where('foundable_type', OrangHilang::class)
+            ->with('user')
+            ->latest()
+            ->get();
+
+        return view('dashboard.pages.detail-person-missing', compact('orangHilang', 'laporanDitemukan'));
     }
 
     public function store(Request $request)
