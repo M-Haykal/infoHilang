@@ -48,8 +48,8 @@
                 <nav class="py-4 overflow-y-auto flex-1">
                     <ul class="space-y-2 px-2">
 
-                        @if (auth()->user()->hasRole('admin'))
-                            {{-- Menu Sidebar Untuk Admin --}}
+                        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('developer'))
+                            {{-- Menu Sidebar Untuk Admin & Developer --}}
                             @php
                                 $adminMenus = [
                                     [
@@ -85,6 +85,14 @@
                                         'label' => 'Pengaturan Sistem',
                                     ],
                                 ];
+
+                                if (auth()->user()->hasRole('developer')) {
+                                    $adminMenus[] = [
+                                        'route' => 'log-viewer.index',
+                                        'icon' => 'fa-solid fa-server',
+                                        'label' => 'Log Sistem',
+                                    ];
+                                }
                             @endphp
 
                             @foreach ($adminMenus as $menu)

@@ -55,8 +55,14 @@ class GoogleAuthController extends Controller
 
                 Auth::login($newUser);
             }
+            $redirectRoute = 'dashboard';
+            if (Auth::user()->hasRole('developer')) {
+                $redirectRoute = 'developer.dashboard';
+            } elseif (Auth::user()->hasRole('admin')) {
+                $redirectRoute = 'admin.dashboard';
+            }
 
-            return redirect()->route('dashboard');
+            return redirect()->route($redirectRoute);
         } catch (\Throwable $th) {
             // optionally log the exception: \Log::error($th);
             return redirect()->route('login')->withErrors('Unable to login using Google. Please try again.');

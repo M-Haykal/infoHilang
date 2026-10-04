@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.6",
         "mews/purifier": "^3.4",
+        "opcodesio/log-viewer": "^3.24",
         "spatie/laravel-permission": "^6.25",
         "spatie/laravel-sitemap": "^7.3",
         "yajra/laravel-datatables-oracle": "^10.11"

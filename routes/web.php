@@ -227,6 +227,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/customer-chats/{identifier}', [\App\Http\Controllers\Admin\CustomerChatController::class, 'show'])->name('admin.customer-chats.show');
         Route::post('/customer-chats/{identifier}/reply', [\App\Http\Controllers\Admin\CustomerChatController::class, 'reply'])->name('admin.customer-chats.reply');
     });
+
+    Route::middleware(CheckRole::class.':developer')->prefix('developer')->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\Dashboard\DeveloperController::class, 'index'])->name('developer.dashboard');
+    });
 });
 
 //get api wilayah indonesia
